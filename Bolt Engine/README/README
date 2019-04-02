@@ -1,0 +1,41 @@
+	Welcome Developers to Bolt!
+	
+	Bolt is designed to be a simple but powerful 2d Java engine. Before you read or use it,
+	know a few things:
+	
+		-Im garbage at spelling. Tell me when I spell something wrong please.
+		-I havent done much documentation, so if you feel like it, document please
+		-Im the only one working on the engine, so progress is slow
+		-This code has been worked on for a while, so excuse its messyness.
+	
+	Ive put a lot of work into this engine, however, Im only one guy.
+	The engine's current state isnt quite finished. Currently, the primary focus is 
+	on rendering, menus, and collisions. Things like audio, tags, and networking 
+	wont be finished for a while. 
+	
+		Current finished things:
+		
+		-Time Keeping (Needs to be rewritten)
+		
+		-Rendering  
+			Animations (Needs to be rewritten)
+			FrameEvents (Needs to be rewritten)
+			Image
+		
+		-Menu (Only Buttons, MenuImage, and MenuText, and the entire Menu package)
+	
+		-Utils (Some of it needs to be rewritten)
+		
+		-IO (Only Key, KeyboardKey, MouseKey, and EasyLoader)
+		
+		-Bodys (Only Surface, AARectangle, and Rectangle)
+		
+		-Sorting (Only Bubble and Merge)
+
+	If you decide to work on the code, do a few things
+	
+		-Tell me first (I need to know what you are modifying)
+		
+		-Ask me anything (I wrote the code, so I can answer some questions about it)
+		
+		-You may not want to work on the code (Its an absolute mess)
