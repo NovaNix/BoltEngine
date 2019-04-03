@@ -220,13 +220,13 @@ public class Polygon extends Shape
 	public void Move(Vector2f Translation)
 	{
 		Position.Add(Translation);
-		Corners.Add(Translation);
+//		Corners.Add(Translation);
 	}
 
 	@Override
 	public void SetPosition(Vector2f Position)
 	{
-		this.Position = Position;
+		this.Position.SetPosition(Position);
 	}
 	
 	public Circle GetBoundingBubble()
@@ -272,6 +272,6 @@ public class Polygon extends Shape
 		Vector2f Translation = this.Center.Derive();
 		Translation.Subtract(Center);
 		Position.Add(Translation);
-		Corners.Add(Translation);
+//		Corners.Add(Translation);
 	}
 }
