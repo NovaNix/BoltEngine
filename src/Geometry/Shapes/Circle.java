@@ -15,7 +15,7 @@ public class Circle extends Shape
 		this.Radius = Radius;
 		
 		this.Position = Center.Derive();
-		Center.Add(new Vector2f(-Radius, -Radius));
+		Position.Add(new Vector2f(-Radius, -Radius));
 	}
 	
 	@Override
@@ -175,7 +175,8 @@ public class Circle extends Shape
 	public void SetPosition(Vector2f Position)
 	{
 		this.Position = Position;
-		this.Position.Add(new Vector2f(Radius, Radius));
+		this.Center = Position.Derive();
+		this.Center.Add(new Vector2f(Radius, Radius));
 	}
 
 	public float GetRadius()
