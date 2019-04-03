@@ -2,8 +2,10 @@ package Cashe;
 
 public interface Cashable
 {
-	public Object[] GetVariables(String StringVariables);
-	public Object[] GetResult(String StringResult);
+	public String GetEquasionName();
 	
-	public Object[] Calculate(String Variables);
+	public String GetEquasion();
+	public String[] GetResult();
+	
+	public Object[] GetResultFrom(String[] ResultString);
 }
