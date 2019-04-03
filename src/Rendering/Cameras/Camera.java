@@ -129,17 +129,17 @@ public abstract class Camera extends JComponent implements Movable
 	{
 		this.Zoom = Zoom;
 		
-		float XTranslation = CameraCollision.GetCenter().GetX() - (CameraCollision.GetScale().GetX() * Zoom / 2) - Position.GetX();
-		float YTranslation = CameraCollision.GetCenter().GetY() - (CameraCollision.GetScale().GetY() * Zoom / 2) - Position.GetY();
+		Vector2f ZoomCollisionScale = CameraCollision.GetScale();
+		ZoomCollisionScale.Multiply(new Vector2f(Zoom, Zoom));
+		
+		float XTranslation = CameraCollision.GetCenter().GetX() - (ZoomCollisionScale.GetX()/2) - Position.GetX();
+		float YTranslation = CameraCollision.GetCenter().GetY() - (ZoomCollisionScale.GetY()/2) - Position.GetY();
 		
 		this.ZoomOffset = new Vector2f(XTranslation, YTranslation);
 		
 		Vector2f ZoomCollisionPosition = Position.Derive();
 		ZoomCollisionPosition.Add(ZoomOffset);
-		
-		Vector2f ZoomCollisionScale = CameraCollision.GetScale();
-		ZoomCollisionScale.Divide(new Vector2f(Zoom, Zoom));
-		
+
 		this.ZoomCollision = new Rectangle(ZoomCollisionPosition, ZoomCollisionScale);
 	}
 	
