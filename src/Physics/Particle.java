@@ -28,7 +28,8 @@ public class Particle extends PhysicsObject
 	public void Move(float X, float Y)
 	{
 		Position.Add(new Vector2f(X, Y));
-		Collision.Move(X, Y);
+		Collision.SetCenter(Position);
+	//	Collision.Move(X, Y);
 	}
 
 	@Override
