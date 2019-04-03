@@ -1,4 +1,4 @@
-package Physics
+package Physics;
 
 public class PhysicsWorld
 {
