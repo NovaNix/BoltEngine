@@ -78,9 +78,7 @@ public abstract class PhysicsObject implements Followable
 		LastPosition = GetPosition();
 		
 		LastSpeed = Speed;
-		
-		UpdateSpeeds();	
-		
+
 		UpdatePositions();
 	}
 
