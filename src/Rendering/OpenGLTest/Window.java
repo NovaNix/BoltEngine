@@ -63,22 +63,21 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwSetWindowSizeCallback(WindowHandle, this);
 	}
 	
+	public void Update()
+	{
+
+	}
+	
+	public void Render()
+	{
+	
+	}
+	
 	public Vector2f GetSize()
 	{
 		return CurrentSize.Derive();
 	}
-//	
-//	public void Update()
-//	{
-//		if (isFocused())
-//		{
-//			WinScreen.requestFocus();
-//		}
-//		
-//		WinScreen.Update();
-//		
-//	}
-//
+
 //	public void AddCamera(Camera Cam)
 //	{
 //		try
