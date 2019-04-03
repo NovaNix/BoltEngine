@@ -46,7 +46,7 @@ public abstract class Camera extends JComponent implements Movable
 	
 	public void Update()
 	{
-		this.AspectRatio = new Vector2f(0, getHeight() / getWidth());
+		this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
 		
 		if (!CameraCollision.GetScale().equals(GetCameraScale()))
 		{
@@ -129,12 +129,18 @@ public abstract class Camera extends JComponent implements Movable
 	{
 		this.Zoom = Zoom;
 		
-		float XTranslation = CameraCollision.GetCenter().GetX() - (CameraCollision.GetScale().GetX() / 2) - Position.GetX();
-		float YTranslation = CameraCollision.GetCenter().GetY() - (CameraCollision.GetScale().GetY() / 2) - Position.GetY();
+		float XTranslation = CameraCollision.GetCenter().GetX() - (CameraCollision.GetScale().GetX() * Zoom / 2) - Position.GetX();
+		float YTranslation = CameraCollision.GetCenter().GetY() - (CameraCollision.GetScale().GetY() * Zoom / 2) - Position.GetY();
 		
 		this.ZoomOffset = new Vector2f(XTranslation, YTranslation);
 		
-	//	this.ZoomCollision = new Rectangle(Position.Add(ZoomOffset), CameraCollision.GetScale().Divide(new Vector2f(Zoom, Zoom)));
+		Vector2f ZoomCollisionPosition = Position.Derive();
+		ZoomCollisionPosition.Add(ZoomOffset);
+		
+		Vector2f ZoomCollisionScale = CameraCollision.GetScale();
+		ZoomCollisionScale.Divide(new Vector2f(Zoom, Zoom));
+		
+		this.ZoomCollision = new Rectangle(ZoomCollisionPosition, ZoomCollisionScale);
 	}
 	
 	public Vector2f GetCameraScale()
