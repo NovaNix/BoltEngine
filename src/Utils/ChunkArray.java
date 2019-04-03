@@ -143,7 +143,7 @@ public class ChunkArray <H>
 	{
 		for (int i = 0; i < Pointers.size(); i++)
 		{
-			if (Math.abs(Pointers.get(i).GetXDistanceTo(Position)) <= Distance && Math.abs(Pointers.get(i).GetYDistanceTo(Position)) <= Distance)
+			if (Pointers.get(i).GetDistanceTo(Position) <= Distance)
 			{
 				return true;
 			}
