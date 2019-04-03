@@ -214,6 +214,6 @@ public class Segmant extends Line implements Renderable
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedLine(Point1, Point2, 5f, new Color(255, 255, 255));
+		Rendering.RenderReferencedLine(Point1, Point2, 1f, new Color(255, 255, 255));
 	}
 }
