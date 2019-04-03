@@ -25,14 +25,14 @@ public class Polygon extends Shape
 		this.Position = new Vector2f(Vector2fUtils.GetFurthestWest(Corners).GetX(), Vector2fUtils.GetFurthestNorth(Corners).GetY());
 		
 		this.Corners = new Vector2fGroup(Corners);
-		this.Sides = Segmant.GenerateSegmants(Corners);
-		
 		this.Corners.ToRelative(Position);
+		
+		this.Sides = Segmant.GenerateSegmants(Corners);
 		
 		Vector2f AVCenter = Vector2fUtils.GetAverage(Corners);
 		
 		this.Center = new ReferencedVector2f(Position);
-		this.Center = AVCenter.Derive();
+		this.Center.SetPosition(AVCenter);
 		
 		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
 		
@@ -44,14 +44,14 @@ public class Polygon extends Shape
 		this.Position = Position;
 		
 		this.Corners = new Vector2fGroup(Corners);
-		this.Sides = Segmant.GenerateSegmants(Corners);
-		
 		this.Corners.ToRelative(Position);
 		
+		this.Sides = Segmant.GenerateSegmants(Corners);
+
 		Vector2f AVCenter = Vector2fUtils.GetAverage(Corners);
 		
 		this.Center = new ReferencedVector2f(Position);
-		this.Center = AVCenter.Derive();
+		this.Center.SetPosition(AVCenter);
 		
 		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
 		
