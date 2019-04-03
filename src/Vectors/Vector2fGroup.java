@@ -42,7 +42,7 @@ public class Vector2fGroup
 	{
 		for (int i = 0; i < Vectors.size(); i++)
 		{
-			Subtract(Vector);
+			Vectors.get(i).Subtract(Vector);
 		}
 	}
 	
