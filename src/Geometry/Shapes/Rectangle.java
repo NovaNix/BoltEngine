@@ -61,7 +61,7 @@ public class Rectangle extends Polygon
 	{
 		if (Rotation == 0)
 		{
-			return Collision.InDomain(TopFace.GetDomain()[0], TopFace.GetDomain()[1]) && Collision.InRange(TopFace.GetRange()[0], TopFace.GetRange()[1]); 
+			return Collision.InDomain(TopFace.GetDomain()[0], TopFace.GetDomain()[1]) && Collision.InRange(LeftFace.GetRange()[0], LeftFace.GetRange()[1]); 
 		}
 		
 		else
