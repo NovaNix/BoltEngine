@@ -168,7 +168,7 @@ public abstract class Camera extends JComponent implements Movable
 	@Override
 	public void SetPosition(Vector2f Position)
 	{
-		this.Position.Add(Position);
+		this.Position.SetPosition(Position);
 	//	Update();
 	}
 	
