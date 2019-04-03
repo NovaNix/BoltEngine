@@ -43,7 +43,7 @@ public class Polygon extends Shape
 	{
 		this.Position = Position;
 		
-		this.Corners = new Vector2fGroup(this.Corners.ToArray());
+		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
 		
 		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
