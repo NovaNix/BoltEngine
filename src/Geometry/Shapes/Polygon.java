@@ -171,7 +171,7 @@ public class Polygon extends Shape
 
 	public boolean CollidesWith(Polygon Collision)
 	{
-		if (BoundingBubble.CollidesWith(((Polygon) Collision).GetBoundingBubble()))
+		if (BoundingBubble.CollidesWith(Collision.GetBoundingBubble()))
 		{
 			if (CollidesWith(Collision.GetCenter()) || Collision.CollidesWith(Center))
 			{
@@ -254,10 +254,10 @@ public class Polygon extends Shape
 		
 		Corners.Multiply(MultiplyBy);
 		
-		this.Sides = Segmant.GenerateSegmants(Corners.ToArray());
+//		this.Sides = Segmant.GenerateSegmants(Corners.ToArray());
 		
 		this.Center = new ReferencedVector2f(Position);
-		this.Center = Vector2fUtils.GetAverage(Corners.ToArray());
+		this.Center.SetPosition(Vector2fUtils.GetAverage(Corners.ToArray()));
 		
 	}
 
