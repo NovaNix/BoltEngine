@@ -35,7 +35,7 @@ public class SingleFollowCamera extends Camera
 					if (Collisions != null)
 					{
 						Vector2f MoveTo = Collisions[0];
-						Move(MoveTo.GetXDistanceTo(Following.GetFollowingPosition()), MoveTo.GetYDistanceTo(Following.GetFollowingPosition()));
+						Move(CameraCollision.GetCenter().GetXDistanceTo(MoveTo), CameraCollision.GetCenter().GetYDistanceTo(MoveTo));
 					}
 				}
 			}
