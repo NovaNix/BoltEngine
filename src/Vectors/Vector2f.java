@@ -6,7 +6,7 @@ public class Vector2f extends Vector<Vector2f>
 	protected float X;
 	protected float Y;
 
-	private Long HashCode = 0;
+	private Long HashCode = 0L;
 
 	public Vector2f()
 	{
@@ -81,7 +81,7 @@ public class Vector2f extends Vector<Vector2f>
 	
 	public void UpdateHashCode()
 	{
-		this.HashCode = (((long) GetX()) << 32) | (GetY() & 0xffffffffL);
+		this.HashCode = (((long) GetX()) << 32) | ((long) GetY() & 0xffffffffL);
 	}
 	
 	public void Invert()
