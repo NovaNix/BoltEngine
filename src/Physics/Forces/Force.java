@@ -49,6 +49,10 @@ public class Force
 
 	public Vector2f GetInverse()
 	{
-		return Direction.Invert();
+		Vector2f InvertedForce = Direction.Derive();
+		
+		InvertedForce.Invert();
+		
+		return InvertedForce;
 	}
 }

@@ -369,8 +369,10 @@ public class Rendering
 
 	private static void ReferencedShift()
 	{
-		Vector2f FlippedReference = ReferencePoint.Invert();
+		Vector2f FlippedReference = ReferencePoint.Derive();
 
+		ReferencePoint.Invert();
+		
 		TempXReferencedOffset = FlippedReference.GetX();
 		TempYReferencedOffset = FlippedReference.GetY();
 
