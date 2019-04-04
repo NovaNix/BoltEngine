@@ -6,7 +6,10 @@ import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
 import Vectors.Vector2f;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -70,7 +73,8 @@ public class Window implements GLFWWindowSizeCallbackI
 	
 	public void Render()
 	{
-	
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 	}
 	
 	public Vector2f GetSize()
