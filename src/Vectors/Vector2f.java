@@ -6,6 +6,8 @@ public class Vector2f extends Vector<Vector2f>
 	protected float X;
 	protected float Y;
 
+	private Long HashCode = 0;
+
 	public Vector2f()
 	{
 		this.X = 0;
@@ -68,9 +70,17 @@ public class Vector2f extends Vector<Vector2f>
 		this.Y = Vars[1];
 	}
 	
-	public Vector2f Invert()
+	public void UpdateHashCode()
 	{
-		return new Vector2f(-GetX(), -GetY());
+		this.HashCode = (((long) GetX()) << 32) | (GetY() & 0xffffffffL);
+	}
+	
+	public void Invert()
+	{
+		SetX(-GetX());
+		SetY(-GetY());
+		
+		UpdateHashCode();
 	}
 
 	public float GetX()
@@ -86,11 +96,15 @@ public class Vector2f extends Vector<Vector2f>
 	public void SetX(float X)
 	{
 		this.X = X;
+		
+		UpdateHashCode();
 	}
 	
 	public void SetY(float Y)
 	{
 		this.Y = Y;
+		
+		UpdateHashCode();
 	}
 	
 	public float GetDistanceTo(Vector2f Point)
@@ -141,6 +155,12 @@ public class Vector2f extends Vector<Vector2f>
 		return false;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return HashCode.hashCode();
+	}
+
 	public boolean AboveDomain(float X)
 	{
 		return X < GetX();
@@ -176,6 +196,8 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X += Change.GetX();
 		this.Y += Change.GetY();
+		
+		UpdateHashCode();
 	}
 
 	@Override
@@ -183,6 +205,8 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X -= Change.GetX();
 		this.Y -= Change.GetY();
+		
+		UpdateHashCode();
 	}
 
 	@Override
@@ -190,6 +214,8 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X *= Change.GetX();
 		this.Y *= Change.GetY();
+		
+		UpdateHashCode();
 	}
 
 	@Override
@@ -197,12 +223,16 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X /= Change.GetX();
 		this.Y /= Change.GetY();
+		
+		UpdateHashCode();
 	}
 	
 	public void SetPosition(Vector2f Position)
 	{
 		SetX(Position.GetX());
 		SetY(Position.GetY());
+		
+		UpdateHashCode();
 	}
 	
 	@Override
@@ -214,7 +244,7 @@ public class Vector2f extends Vector<Vector2f>
 	@Override
 	public String ToString()
 	{
-		return "" + X + ", " + Y;
+		return "" + GetX() + ", " + GetY();
 	}
 	
 	public Vector2f Derive()
