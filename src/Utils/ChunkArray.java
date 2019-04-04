@@ -132,7 +132,7 @@ public class ChunkArray <H>
 						
 						if (!Has(ChunkPosition))
 						{
-							if (!NeededChunks.contains(ChunkPosition)
+							if (!NeededChunks.contains(ChunkPosition))
 							{
 								NeededChunks.add(new Vector2f(x, y));
 							}
