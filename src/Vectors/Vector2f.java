@@ -3,8 +3,8 @@ package Vectors;
 public class Vector2f extends Vector<Vector2f>
 {
 
-	protected float X;
-	protected float Y;
+	protected float X = 0;
+	protected float Y = 0;
 
 	private Long HashCode = 0L;
 
