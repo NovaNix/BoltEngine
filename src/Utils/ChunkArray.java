@@ -100,6 +100,7 @@ public class ChunkArray <H>
 					ToRemove.add(Key);
 				}
 			}
+			
 			for (int i = 0; i < ToRemove.size(); i++)
 			{
 				Chunks.remove(ToRemove.get(i));
@@ -127,13 +128,19 @@ public class ChunkArray <H>
 				{
 					for (int y = (int) Pointers.get(i).GetY() - Distance; y < Pointers.get(i).GetY() + Distance; y++)
 					{
-						if (!Has(new Vector2f(x, y)))
+						Vector2f ChunkPosition = new Vector2f(x, y);
+						
+						if (!Has(ChunkPosition))
 						{
-							NeededChunks.add(new Vector2f(x, y));
+							if (!NeededChunks.contains(ChunkPosition)
+							{
+								NeededChunks.add(new Vector2f(x, y));
+							}
 						}
 					}
 				}
 			}
+			
 			return NeededChunks;
 		}
 		
