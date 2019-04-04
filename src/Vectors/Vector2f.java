@@ -12,18 +12,21 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X = 0;
 		this.Y = 0;
+		UpdateHashCode();
 	}
 	
 	public Vector2f(float X, float Y)
 	{
 		this.X = X;
 		this.Y = Y;
+		UpdateHashCode();
 	}
 	
 	public Vector2f(float[] Vars)
 	{
 		this.X = Vars[0];
 		this.Y = Vars[1];
+		UpdateHashCode();
 	}
 	
 	public Vector2f(String Name, float X, float Y)
@@ -32,6 +35,7 @@ public class Vector2f extends Vector<Vector2f>
 		
 		this.X = X;
 		this.Y = Y;
+		UpdateHashCode();
 	}
 	
 	public Vector2f(String Name, float[] Vars)
@@ -40,18 +44,21 @@ public class Vector2f extends Vector<Vector2f>
 		
 		this.X = Vars[0];
 		this.Y = Vars[1];
+		UpdateHashCode();
 	}
 	
 	public Vector2f(int X, int Y)
 	{
 		this.X = (float) X;
 		this.Y = (float) Y;
+		UpdateHashCode();
 	}
 	
 	public Vector2f(int[] Vars)
 	{
 		this.X = (float) Vars[0];
 		this.Y = (float) Vars[1];
+		UpdateHashCode();
 	}
 	
 	public Vector2f(String Name, int X, int Y)
@@ -60,6 +67,7 @@ public class Vector2f extends Vector<Vector2f>
 		
 		this.X = (float) X;
 		this.Y = (float) Y;
+		UpdateHashCode();
 	}
 	
 	public Vector2f(String Name, int[] Vars)
@@ -68,6 +76,7 @@ public class Vector2f extends Vector<Vector2f>
 		
 		this.X = Vars[0];
 		this.Y = Vars[1];
+		UpdateHashCode();
 	}
 	
 	public void UpdateHashCode()
