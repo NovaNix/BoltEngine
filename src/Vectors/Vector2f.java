@@ -12,7 +12,7 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.X = 0;
 		this.Y = 0;
-		UpdateHashCode();
+//		UpdateHashCode();
 	}
 	
 	public Vector2f(float X, float Y)
