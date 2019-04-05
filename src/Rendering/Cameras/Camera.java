@@ -70,7 +70,7 @@ public abstract class Camera extends JComponent implements Movable
 	
 	public Image Render()
 	{
-		Rendering.Start(new Vector2f(getWidth(), getHeight()), Position, ZoomOffset, new Vector2f(Zoom, Zoom), CameraCollision);
+		Rendering.Start(GetCameraScale(), Position, ZoomOffset, new Vector2f(Zoom, Zoom), CameraCollision);
 		
 		for (int i = 0; i < Rendered.size(); i++)
 		{

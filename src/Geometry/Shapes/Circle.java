@@ -93,7 +93,7 @@ public class Circle extends Shape
 		{
 			if (Collision.PointOnLine(Center))
 			{
-				return new Vector2f[] {Center};
+				return new Vector2f[] {Center.Derive()};
 			}
 			
 			else
@@ -195,7 +195,7 @@ public class Circle extends Shape
 	@Override
 	public void SetCenter(Vector2f Center)
 	{
-		this.Position = Center.Derive();
+		this.Position.SetPosition(Center);
 		Position.Add(new Vector2f(-Radius, -Radius));
 		this.Center = Center;
 	}

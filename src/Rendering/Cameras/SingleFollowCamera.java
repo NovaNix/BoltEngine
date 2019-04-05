@@ -28,14 +28,14 @@ public class SingleFollowCamera extends Camera
 			{
 				if (!FollowCollision.CollidesWith(Following.GetFollowingPosition()))
 				{
-					Segmant Path = new Segmant(CameraCollision.GetCenter(), Following.GetFollowingPosition());
+					Segmant Path = new Segmant(FollowCollision.GetCenter(), Following.GetFollowingPosition());
 					
 					Vector2f[] Collisions = FollowCollision.GetCollisionPointsWith(Path);
 					
 					if (Collisions != null)
 					{
 						Vector2f MoveTo = Collisions[0];
-						Move(CameraCollision.GetCenter().GetXDistanceTo(MoveTo), CameraCollision.GetCenter().GetYDistanceTo(MoveTo));
+						Move(MoveTo.GetXDistanceTo(Following.GetFollowingPosition()), MoveTo.GetYDistanceTo(Following.GetFollowingPosition()));
 					}
 				}
 			}
