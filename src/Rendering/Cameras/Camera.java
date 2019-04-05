@@ -50,7 +50,7 @@ public abstract class Camera extends JComponent implements Movable
 		
 		if (!CameraCollision.GetScale().equals(GetCameraScale()))
 		{
-			this.CameraCollision = new Rectangle(Position, GetCameraScale());
+			this.CameraCollision.SetScale(GetCameraScale());
 
 			this.SetZoom(Zoom);
 		}
@@ -77,7 +77,7 @@ public abstract class Camera extends JComponent implements Movable
 			Rendered.get(i).Render();
 		}
 
-		CameraCollision.Render();
+//		CameraCollision.Render();
 		
 		Image Final = Rendering.GetProduct();
 		
