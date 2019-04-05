@@ -371,7 +371,7 @@ public class Rendering
 	{
 		Vector2f FlippedReference = ReferencePoint.Derive();
 
-		ReferencePoint.Invert();
+		FlippedReference.Invert();
 		
 		TempXReferencedOffset = FlippedReference.GetX();
 		TempYReferencedOffset = FlippedReference.GetY();
