@@ -74,10 +74,10 @@ public class SingleFollowCamera extends Camera
 	public void Follow(Followable Focused, float XDistance, float YDistance)
 	{
 		Following = Focused;
+
+		ReferencedVector2f FollowPosition = new ReferencedVector2f(CameraCollision.GetCenter(), new Vector2f(-XDistance, -YDistance));
 		
-		ReferencedVector2f Position = new ReferencedVector2f(CameraCollision.GetCenter(), new Vector2f(-XDistance, -YDistance));
-		
-		FollowCollision = new Rectangle(Position, new Vector2f(XDistance*2, YDistance*2));
+		FollowCollision = new Rectangle(FollowPosition, new Vector2f(XDistance*2, YDistance*2));
 	}
 	
 	public void StopFollowing()
@@ -101,6 +101,7 @@ public class SingleFollowCamera extends Camera
 	public void Move(Vector2f Translation)
 	{
 		Position.Add(Translation);
+	//	this.FollowCollision.SetCenter(CameraCollision.GetCenter());
 	//	Update();
 	}
 //
