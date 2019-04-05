@@ -4,6 +4,7 @@ import Geometry.Line;
 import Geometry.Segmant;
 import Rendering.Rendering;
 import Utils.BoltUtils;
+import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 
 public class Circle extends Shape
@@ -14,7 +15,7 @@ public class Circle extends Shape
 		this.Center = Center;
 		this.Radius = Radius;
 		
-		this.Position = Center.Derive();
+		this.Position = new ReferencedVector2f(Center);
 		Position.Add(new Vector2f(-Radius, -Radius));
 	}
 	
@@ -29,6 +30,7 @@ public class Circle extends Shape
 			float h = Center.GetX();
 			float k = Center.GetY();
 			float r = Radius;
+			
 			if (!Collision.IsVertical())
 			{
 
@@ -168,15 +170,13 @@ public class Circle extends Shape
 	public void Move(Vector2f Translation)
 	{
 		Center.Add(Translation);
-		Position.Add(Translation);
 	}
 
 	@Override
 	public void SetPosition(Vector2f Position)
-	{
-		this.Position = Position;
-		this.Center = Position.Derive();
-		this.Center.Add(new Vector2f(Radius, Radius));
+	{	
+		Center.SetPosition(Position);
+		Center.Add(new Vector2f(Radius, Radius));
 	}
 
 	public float GetRadius()
@@ -188,16 +188,14 @@ public class Circle extends Shape
 	public void SetScale(Vector2f Scale)
 	{
 		this.Radius = Scale.GetX()/2;
-		this.Center = Position.Derive();
-		Center.Add(new Vector2f(Radius, Radius));
+		this.Position.SetPosition(Center);
+		Position.Subtract(new Vector2f(Radius, Radius));
 	}
 
 	@Override
 	public void SetCenter(Vector2f Center)
 	{
-		this.Position.SetPosition(Center);
-		Position.Add(new Vector2f(-Radius, -Radius));
-		this.Center = Center;
+		this.Center.SetPosition(Center);
 	}
 	
 }
