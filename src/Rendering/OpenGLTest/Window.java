@@ -37,6 +37,12 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 		
+		glfwMakeContextCurrent(WindowHandle);
+		
+		glfwSwapInterval(0);
+		
+		glfwSetWindowSizeCallback(WindowHandle, this);
+		
 //		ImageIcon Icon = EasyLoader.LoadLocalImageIcon(IconPath);
 //		
 //		GLFWImage.Buffer gb = GLFWImage.create(1);
@@ -62,6 +68,10 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		
+		glfwMakeContextCurrent(WindowHandle);
+		
+		glfwSwapInterval(0);
 		
 		glfwSetWindowSizeCallback(WindowHandle, this);
 	}
