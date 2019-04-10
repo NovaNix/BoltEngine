@@ -171,7 +171,10 @@ public class ChunkArray <H>
 	
 	public ArrayList<H> GetAllChunks()
 	{
-		return new ArrayList<H>(Chunks.values());
+		synchronized (Chunks) 
+		{
+			return new ArrayList<H>(Chunks.values());
+		}
 	}
 	
 	public int GetNumberOfLoadedChunks()

@@ -75,9 +75,9 @@ public abstract class PhysicsObject implements Followable
 	
 	public void UpdatePhysics()
 	{
-		LastPosition = GetPosition();
+		LastPosition = GetPosition().Derive();
 		
-		LastSpeed = Speed;
+		LastSpeed = Speed.Derive();
 
 		UpdatePositions();
 	}
@@ -91,114 +91,114 @@ public abstract class PhysicsObject implements Followable
 	
 	private void UpdatePositions()
 	{
-		Move(Speed.GetX(), Speed.GetY());
+//		Move(Speed.GetX(), Speed.GetY());
 		
-//		if (IsMovingUp())
-//		{
-//			for (int i = 0; i < MovementBreaking; i++)
-//			{
-//				Move(0, YSpeed / MovementBreaking);
-//				
-//				boolean Collides = false;
-//				
-//				for (int j = 0; j < CollisionGroups.size(); j++)
-//				{
-//					if (CollidesWith(CollisionGroups.get(j)))
-//					{
-//						Move(0, -YSpeed / MovementBreaking);
-//						Collides = true;
-//						break;
-//					}
-//				}
-//				
-//				if (Collides)
-//				{
-//					Collision(Direction.North);
-//					break;
-//				}
-//			}
-//		}
-//		
-//		else if (IsMovingDown())
-//		{
-//			for (int i = 0; i < MovementBreaking; i++)
-//			{
-//				Move(0, YSpeed / MovementBreaking);
-//				
-//				boolean Collides = false;
-//				
-//				for (int j = 0; j < CollisionGroups.size(); j++)
-//				{
-//					if (CollidesWith(CollisionGroups.get(j)))
-//					{
-//						Move(0, -YSpeed / MovementBreaking);
-//						Collides = true;
-//						break;
-//					}
-//				}
-//				
-//				if (Collides)
-//				{
-//					Collision(Direction.South);
-//					YSpeed = 0;
-//					break;
-//				}
-//			}
-//		}
-//		
-//		if (IsMovingLeft())
-//		{
-//			for (int i = 0; i < MovementBreaking; i++)
-//			{
-//				Move(XSpeed / MovementBreaking, 0);
-//				
-//				boolean Collides = false;
-//				
-//				for (int j = 0; j < CollisionGroups.size(); j++)
-//				{
-//					if (CollidesWith(CollisionGroups.get(j)))
-//					{
-//						Move(-XSpeed / MovementBreaking, 0);
-//						Collides = true;
-//						break;
-//					}
-//				}
-//				
-//				if (Collides)
-//				{
-//					Collision(Direction.West);
-//					YSpeed = 0;
-//					break;
-//				}
-//			}
-//		}
-//		
-//		else if (IsMovingRight())
-//		{
-//			for (int i = 0; i < MovementBreaking; i++)
-//			{
-//				Move(XSpeed / MovementBreaking, 0);
-//				
-//				boolean Collides = false;
-//				
-//				for (int j = 0; j < CollisionGroups.size(); j++)
-//				{
-//					if (CollidesWith(CollisionGroups.get(j)))
-//					{
-//						Move(-XSpeed / MovementBreaking, 0);
-//						Collides = true;
-//						break;
-//					}
-//				}
-//				
-//				if (Collides)
-//				{
-//					Collision(Direction.East);
-//					YSpeed = 0;
-//					break;
-//				}
-//			}
-//		}
+		if (IsMovingUp())
+		{
+			for (int i = 0; i < MovementBreaking; i++)
+			{
+				Move(0, YSpeed / MovementBreaking);
+				
+				boolean Collides = false;
+				
+				for (int j = 0; j < CollisionGroups.size(); j++)
+				{
+					if (CollidesWith(CollisionGroups.get(j)))
+					{
+						Move(0, -YSpeed / MovementBreaking);
+						Collides = true;
+						break;
+					}
+				}
+				
+				if (Collides)
+				{
+					Collision(Direction.North);
+					break;
+				}
+			}
+		}
+		
+		else if (IsMovingDown())
+		{
+			for (int i = 0; i < MovementBreaking; i++)
+			{
+				Move(0, YSpeed / MovementBreaking);
+				
+				boolean Collides = false;
+				
+				for (int j = 0; j < CollisionGroups.size(); j++)
+				{
+					if (CollidesWith(CollisionGroups.get(j)))
+					{
+						Move(0, -YSpeed / MovementBreaking);
+						Collides = true;
+						break;
+					}
+				}
+				
+				if (Collides)
+				{
+					Collision(Direction.South);
+					YSpeed = 0;
+					break;
+				}
+			}
+		}
+		
+		if (IsMovingLeft())
+		{
+			for (int i = 0; i < MovementBreaking; i++)
+			{
+				Move(XSpeed / MovementBreaking, 0);
+				
+				boolean Collides = false;
+				
+				for (int j = 0; j < CollisionGroups.size(); j++)
+				{
+					if (CollidesWith(CollisionGroups.get(j)))
+					{
+						Move(-XSpeed / MovementBreaking, 0);
+						Collides = true;
+						break;
+					}
+				}
+				
+				if (Collides)
+				{
+					Collision(Direction.West);
+					YSpeed = 0;
+					break;
+				}
+			}
+		}
+		
+		else if (IsMovingRight())
+		{
+			for (int i = 0; i < MovementBreaking; i++)
+			{
+				Move(XSpeed / MovementBreaking, 0);
+				
+				boolean Collides = false;
+				
+				for (int j = 0; j < CollisionGroups.size(); j++)
+				{
+					if (CollidesWith(CollisionGroups.get(j)))
+					{
+						Move(-Speed.GetX() / MovementBreaking, 0);
+						Collides = true;
+						break;
+					}
+				}
+				
+				if (Collides)
+				{
+					Collision(Direction.East);
+					YSpeed = 0;
+					break;
+				}
+			}
+		}
 	}
 	
 	public void ApplyForce(Force ActiveForce)

@@ -66,6 +66,8 @@ public class Texture
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Convert.getWidth(), Convert.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Buffer);
 			glGenerateMipmap(GL_TEXTURE_2D);
 
+			PreloadedImages.put(Convert, this);
+			
 		}
 	}
 	
