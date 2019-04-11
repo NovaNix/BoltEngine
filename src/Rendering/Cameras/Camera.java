@@ -132,8 +132,8 @@ public abstract class Camera extends JComponent implements Movable
 		Vector2f ZoomCollisionScale = CameraCollision.GetScale().Derive();
 		ZoomCollisionScale.Divide(new Vector2f(Zoom, Zoom));
 		
-		float XTranslation = (GetCameraScale().GetX() - ZoomCollisionScale.GetX()) / 2;
-		float YTranslation = (GetCameraScale().GetY() - ZoomCollisionScale.GetY()) / 2;
+		float XTranslation = (CameraCollision.GetScale().GetX() - ZoomCollisionScale.GetX()) / 2;
+		float YTranslation = (CameraCollision.GetScale().GetY() - ZoomCollisionScale.GetY()) / 2;
 		
 		this.ZoomOffset = new Vector2f(XTranslation, YTranslation);
 		
