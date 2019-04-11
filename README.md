@@ -1,4 +1,4 @@
-# Bolt Engine 
+# Bolt Engine (Read me is WIP)
 Bolt Engine is a simple 2D Videogame Engine built using Java  
 The engine seeks to reduce the code needed to do tasks such as Rendering, Collision Detection, Physics, Audio, and more
 ##Implemented Features
