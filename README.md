@@ -14,5 +14,7 @@ The engine seeks to reduce the code needed to do tasks such as Rendering, Collis
 	- Lighting
 	- Masking
 	- Physics
+	- Menus
+	- Animations
 ## Planned Features
 	- Networking
