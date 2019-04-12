@@ -2,13 +2,12 @@
 
 uniform sampler2D sampler;
 
-in vec2 TexCoord;
-
-in vec4 Hue;
+in vec2 TexCoords;
+in vec4 Hue = vec4(0, 0, 0, 1);
 
 out vec4 Color;
 
 void main()
 {
-		Color = texture(sampler, TexCoord) * Hue;
+	Color = texture(sampler, TexCoord) * Hue;
 }
