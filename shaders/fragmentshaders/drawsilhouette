@@ -3,13 +3,13 @@
 uniform sampler2D sampler;
 uniform vec3 SilhouetteColor = new vec3(0, 0, 0);
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 out vec4 Color;
 
 void main()
 {
-	vec4 TexColor = texture(sampler, TexCoord);
+	vec4 TexColor = texture(sampler, TexCoords);
 
 	if (TexColor.w == 0) discard;
 	
