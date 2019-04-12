@@ -17,11 +17,13 @@ public class CollisionGroup
 	public void AddCollision(PhysicsObject Collision)
 	{
 		CollisionList.add(Collision);
+		Collision.AddTo(this);
 	}
 	
 	public void RemoveCollision(PhysicsObject Collision)
 	{
 		CollisionList.remove(Collision);
+		Collision.RemoveFrom(this);
 	}
 	
 	public void UpdateCollisions()
@@ -39,5 +41,22 @@ public class CollisionGroup
 		 }
 	}
 	
+	public ArrayList<PhysicsObject> GetCollisionsWith(PhysicsObject Collision)
+	{
+		ArrayList<PhysicsObject> Collisions = new ArrayList<PhysicsObject>();
+		
+		for (int i = 0; i < CollisionList.size(); i++)
+		{
+			if (CollisionList.get(i).equals(Collision))
+			{
+				if (CollisionList.get(i).GetCollision().CollidesWith(Collision.GetCollision()))
+				{
+					Collisions.add(CollisionList.get(i));
+				}
+			}
+		}
+		
+		return Collisions;
+	}
 	
 }

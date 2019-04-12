@@ -1,6 +1,9 @@
 package Physics;
 
+import java.util.ArrayList;
+
 import Geometry.Shapes.Shape;
+import Physics.Collision.CollisionGroup;
 import Physics.Forces.Force;
 import Rendering.Renderable;
 import Utils.Followable;
@@ -18,6 +21,8 @@ public abstract class PhysicsObject implements Followable
 	protected float Mass;
 
 	protected Shape Collision;
+	
+	protected ArrayList<CollisionGroup> CollisionGroups = new ArrayList<CollisionGroup>();
 	
 	public PhysicsObject(float XSpeed, float YSpeed, float Mass)
 	{
@@ -97,15 +102,15 @@ public abstract class PhysicsObject implements Followable
 		{
 			for (int i = 0; i < MovementBreaking; i++)
 			{
-				Move(0, YSpeed / MovementBreaking);
+				Move(0, Speed.GetY() / MovementBreaking);
 				
 				boolean Collides = false;
 				
 				for (int j = 0; j < CollisionGroups.size(); j++)
 				{
-					if (CollidesWith(CollisionGroups.get(j)))
+					if (CollisionGroups.get(j).GetCollisionsWith(this).size() != 0)
 					{
-						Move(0, -YSpeed / MovementBreaking);
+						Move(0, -Speed.GetY() / MovementBreaking);
 						Collides = true;
 						break;
 					}
@@ -113,7 +118,7 @@ public abstract class PhysicsObject implements Followable
 				
 				if (Collides)
 				{
-					Collision(Direction.North);
+	//				Collision(Direction.North);
 					break;
 				}
 			}
@@ -123,15 +128,15 @@ public abstract class PhysicsObject implements Followable
 		{
 			for (int i = 0; i < MovementBreaking; i++)
 			{
-				Move(0, YSpeed / MovementBreaking);
+				Move(0, Speed.GetY() / MovementBreaking);
 				
 				boolean Collides = false;
 				
 				for (int j = 0; j < CollisionGroups.size(); j++)
 				{
-					if (CollidesWith(CollisionGroups.get(j)))
+					if (CollisionGroups.get(j).GetCollisionsWith(this).size() != 0)
 					{
-						Move(0, -YSpeed / MovementBreaking);
+						Move(0, -Speed.GetY() / MovementBreaking);
 						Collides = true;
 						break;
 					}
@@ -139,8 +144,8 @@ public abstract class PhysicsObject implements Followable
 				
 				if (Collides)
 				{
-					Collision(Direction.South);
-					YSpeed = 0;
+		//			Collision(Direction.South);
+					Speed.SetY(0);
 					break;
 				}
 			}
@@ -150,40 +155,13 @@ public abstract class PhysicsObject implements Followable
 		{
 			for (int i = 0; i < MovementBreaking; i++)
 			{
-				Move(XSpeed / MovementBreaking, 0);
+				Move(Speed.GetX() / MovementBreaking, 0);
 				
 				boolean Collides = false;
 				
 				for (int j = 0; j < CollisionGroups.size(); j++)
 				{
-					if (CollidesWith(CollisionGroups.get(j)))
-					{
-						Move(-XSpeed / MovementBreaking, 0);
-						Collides = true;
-						break;
-					}
-				}
-				
-				if (Collides)
-				{
-					Collision(Direction.West);
-					YSpeed = 0;
-					break;
-				}
-			}
-		}
-		
-		else if (IsMovingRight())
-		{
-			for (int i = 0; i < MovementBreaking; i++)
-			{
-				Move(XSpeed / MovementBreaking, 0);
-				
-				boolean Collides = false;
-				
-				for (int j = 0; j < CollisionGroups.size(); j++)
-				{
-					if (CollidesWith(CollisionGroups.get(j)))
+					if (CollisionGroups.get(j).GetCollisionsWith(this).size() != 0)
 					{
 						Move(-Speed.GetX() / MovementBreaking, 0);
 						Collides = true;
@@ -193,8 +171,35 @@ public abstract class PhysicsObject implements Followable
 				
 				if (Collides)
 				{
-					Collision(Direction.East);
-					YSpeed = 0;
+		//			Collision(Direction.West);
+					Speed.SetPosition(new Vector2f(0, 0));
+					break;
+				}
+			}
+		}
+		
+		else if (IsMovingRight())
+		{
+			for (int i = 0; i < MovementBreaking; i++)
+			{
+				Move(Speed.GetX() / MovementBreaking, 0);
+				
+				boolean Collides = false;
+				
+				for (int j = 0; j < CollisionGroups.size(); j++)
+				{
+					if (CollisionGroups.get(j).GetCollisionsWith(this).size() != 0)
+					{
+						Move(-Speed.GetX() / MovementBreaking, 0);
+						Collides = true;
+						break;
+					}
+				}
+				
+				if (Collides)
+				{
+	//				Collision(Direction.East);
+					Speed.SetPosition(new Vector2f(0, 0));
 					break;
 				}
 			}
@@ -240,6 +245,16 @@ public abstract class PhysicsObject implements Followable
 	public boolean IsStationary()
 	{
 		return Speed.equals(new Vector2f(0, 0));
+	}
+	
+	public void AddTo(CollisionGroup Group)
+	{
+		CollisionGroups.add(Group);
+	}
+	
+	public void RemoveFrom(CollisionGroup Group)
+	{
+		CollisionGroups.add(Group);
 	}
 
 }
