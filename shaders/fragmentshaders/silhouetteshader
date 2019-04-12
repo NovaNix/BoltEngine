@@ -1,0 +1,18 @@
+#version 330
+
+uniform sampler2D sampler;
+
+in vec2 TexCoord;
+in vec3 SilhouetteColor = new vec3(0, 0, 0);
+
+out vec4 Color;
+
+void main()
+{
+	vec4 TexColor = texture(sampler, TexCoord);
+
+	if (TexColor.w == 0) discard;
+	
+	Color = new Vec4(SilhouetteColor, TexColor.w);
+
+}
