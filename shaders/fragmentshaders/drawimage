@@ -1,9 +1,9 @@
 #version 330
 
 uniform sampler2D sampler;
+uniform vec4 Hue = vec4(0, 0, 0, 1);
 
 in vec2 TexCoords;
-in vec4 Hue = vec4(0, 0, 0, 1);
 
 out vec4 Color;
 
