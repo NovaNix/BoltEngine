@@ -1,5 +1,6 @@
 package Rendering.OpenGLTest;
 
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
 //import org.jogamp.glg2d.GLG2DCanvas;
@@ -24,6 +25,8 @@ public class Window implements GLFWWindowSizeCallbackI
 	
 	public Window(String Name, String IconPath)
 	{
+		GLFWErrorCallback.createPrint(System.err).set();
+		
 		glfwInit();
 		
 		WindowHandle = glfwCreateWindow(1000, 750, Name, NULL, NULL);

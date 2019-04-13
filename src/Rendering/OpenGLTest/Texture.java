@@ -76,6 +76,11 @@ public class Texture
 		
 	}
 	
+	public int GetID()
+	{
+		return TextureID;
+	}
+	
 	public ByteBuffer GetData()
 	{
 		return Data;
