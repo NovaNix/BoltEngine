@@ -168,5 +168,20 @@ public class Vector2fUtils
 		}
 	}
 	
+	public static float[] GetCoordList(Vector2f[] Vectors)
+	{
+		float[] Coords = new float[Vectors.length * 2];
+		
+		for (int i = 0, j = 0; i < Vectors.length; i++)
+		{
+			Coords[j] = Vectors[i].GetX();
+			j++;
+			Coords[j] = Vectors[i].GetY();
+			j++;
+		}
+		
+		return Coords;
+	}
+	
 	 
 }
