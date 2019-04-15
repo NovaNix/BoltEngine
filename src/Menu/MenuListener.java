@@ -9,7 +9,7 @@ import Messaging.MessageListener;
 public interface MenuListener extends MessageListener
 {
 	public void NewMenuEvent(MenuEvent Event);
-	
+
 	@Override
 	public default void MessageRecieved(Message Recieved)
 	{

@@ -13,7 +13,7 @@ public class SplitScreen extends WindowScreen
 	public SplitScreen(Window ConnectedWindow)
 	{
 		super(ConnectedWindow);
-		
+
 		SimulatedEnviroment.setLayout(new BorderLayout());
 	}
 
@@ -23,25 +23,25 @@ public class SplitScreen extends WindowScreen
 		if (Cameras.size() == 0)
 		{
 			Cameras.add(Cam);
-			
+
 			SimulatedEnviroment.add(Cam, BorderLayout.WEST);
-			
+
 			SimulatedEnviroment.pack();
-			
+
 			Update();
 		}
-		
+
 		else if (Cameras.size() == 1)
 		{
 			Cameras.add(Cam);
-			
+
 			SimulatedEnviroment.add(Cam, BorderLayout.EAST);
-			
+
 			SimulatedEnviroment.pack();
-			
+
 			Update();
 		}
-		
+
 		else
 		{
 			throw new ExcessCamerasException();

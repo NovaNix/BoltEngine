@@ -13,7 +13,7 @@ public class AnimationStarted extends FrameEvent
 	{
 		super("An animation is being started!", Type.Notification, Sender);
 	}
-	
+
 	@Override
 	public Object[] GetData()
 	{

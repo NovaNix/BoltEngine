@@ -10,11 +10,11 @@ import Vectors.Vector2f;
 
 public class SingleFollowCamera extends Camera
 {
-	
+
 	Followable Following = null;
-	
+
 	Shape FollowCollision;
-	
+
 	public SingleFollowCamera(String Name, Vector2f Position)
 	{
 		super(Name, Position);
@@ -29,9 +29,9 @@ public class SingleFollowCamera extends Camera
 				if (!FollowCollision.CollidesWith(Following.GetFollowingPosition()))
 				{
 					Segmant Path = new Segmant(FollowCollision.GetCenter(), Following.GetFollowingPosition());
-					
+
 					Vector2f[] Collisions = FollowCollision.GetCollisionPointsWith(Path);
-					
+
 					if (Collisions != null)
 					{
 						Vector2f MoveTo = Collisions[0];
@@ -39,7 +39,7 @@ public class SingleFollowCamera extends Camera
 					}
 				}
 			}
-			
+
 			else
 			{
 				Following = null;
@@ -47,7 +47,7 @@ public class SingleFollowCamera extends Camera
 			}
 		}
 	}
-	
+
 	public void UpdateFollowShape()
 	{
 		if (FollowCollision instanceof Circle)
@@ -61,58 +61,58 @@ public class SingleFollowCamera extends Camera
 			float YDistance = ((Rectangle) FollowCollision).GetScale().GetY() / 2;
 
 			Follow(Following, XDistance, YDistance);
-		} 
+		}
 	}
-	
+
 	public void Follow(Followable Focused, float Radius)
 	{
 		Following = Focused;
-		
+
 		FollowCollision = new Circle(CameraCollision.GetCenter(), Radius);
 	}
-	
+
 	public void Follow(Followable Focused, float XDistance, float YDistance)
 	{
 		Following = Focused;
 
 		ReferencedVector2f FollowPosition = new ReferencedVector2f(CameraCollision.GetCenter(), new Vector2f(-XDistance, -YDistance));
-		
-		FollowCollision = new Rectangle(FollowPosition, new Vector2f(XDistance*2, YDistance*2));
+
+		FollowCollision = new Rectangle(FollowPosition, new Vector2f(XDistance * 2, YDistance * 2));
 	}
-	
+
 	public void StopFollowing()
 	{
 		Following = null;
-		
+
 		FollowCollision = null;
 	}
-	
+
 	public boolean IsFollowing()
 	{
 		return Following != null;
 	}
-	
+
 	public boolean IsFollowing(Followable Tested)
 	{
 		return Tested == Following;
 	}
-	
+
 	@Override
 	public void Move(Vector2f Translation)
 	{
 		Position.Add(Translation);
-	//	this.FollowCollision.SetCenter(CameraCollision.GetCenter());
-	//	Update();
+		// this.FollowCollision.SetCenter(CameraCollision.GetCenter());
+		// Update();
 	}
-//
-//	@Override
-//	public void SetPosition(Vector2f Position)
-//	{
-//		this.Position = this.Position.Add(Position);
-//		CameraCollision.SetPosition(Position);
-//		ZoomCollision.SetPosition(Position);
-//		FollowCollision.SetPosition
-//	//	Update();
-//	}
-	
+	//
+	// @Override
+	// public void SetPosition(Vector2f Position)
+	// {
+	// this.Position = this.Position.Add(Position);
+	// CameraCollision.SetPosition(Position);
+	// ZoomCollision.SetPosition(Position);
+	// FollowCollision.SetPosition
+	// // Update();
+	// }
+
 }

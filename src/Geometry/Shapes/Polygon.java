@@ -14,59 +14,59 @@ import Vectors.Vector2fGroup;
 
 public class Polygon extends Shape
 {
-	
+
 	Vector2fGroup Corners;
 	Segmant[] Sides;
-	
+
 	Circle BoundingBubble;
-	
+
 	public Polygon(Vector2f[] Corners)
 	{
 		this.Position = new Vector2f(Vector2fUtils.GetFurthestWest(Corners).GetX(), Vector2fUtils.GetFurthestNorth(Corners).GetY());
-		
+
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
-		
-		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
-		
-		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
-		
-		this.Center = new ReferencedVector2f(Position);
-		this.Center.SetPosition(AVCenter);
-		
-		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, this.Corners.ToArray()));
-		
-		this.BoundingBubble = new Circle(Center, Radius);
-	}
-	
-	public Polygon(Vector2f Position, Vector2f[] Corners)
-	{
-		this.Position = Position;
-		
-		this.Corners = new Vector2fGroup(Corners);
-		this.Corners.ToRelative(Position);
-		
+
 		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
 
 		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
-		
+
 		this.Center = new ReferencedVector2f(Position);
 		this.Center.SetPosition(AVCenter);
-		
-		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
-		
+
+		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, this.Corners.ToArray()));
+
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
-	
+
+	public Polygon(Vector2f Position, Vector2f[] Corners)
+	{
+		this.Position = Position;
+
+		this.Corners = new Vector2fGroup(Corners);
+		this.Corners.ToRelative(Position);
+
+		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
+
+		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
+
+		this.Center = new ReferencedVector2f(Position);
+		this.Center.SetPosition(AVCenter);
+
+		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
+
+		this.BoundingBubble = new Circle(Center, Radius);
+	}
+
 	public void MergeWith(Polygon Merged)
 	{
 		ArrayList<Segmant> Edges = new ArrayList<Segmant>();
-		
+
 		for (int i = 0; i < Sides.length; i++)
 		{
-			
+
 		}
-		
+
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class Polygon extends Shape
 	public Vector2f[] GetCollisionPointsWith(Line Collision)
 	{
 		Vector2f[] Collisions = new Vector2f[Sides.length];
-		
+
 		for (int i = 0; i < Sides.length; i++)
 		{
 			Collisions[i] = Sides[i].GetIntersectionWith(Collision);
 		}
-		
+
 		return BoltUtils.RemoveNulls(Collisions);
 	}
 
@@ -108,7 +108,7 @@ public class Polygon extends Shape
 	public Segmant[] GetCollisionSegmantsWith(Line Collision)
 	{
 		Segmant[] Collisions = new Segmant[Sides.length];
-		
+
 		for (int i = 0; i < Sides.length; i++)
 		{
 			if (Sides[i].GetIntersectionWith(Collision) != null)
@@ -116,7 +116,7 @@ public class Polygon extends Shape
 				Collisions[i] = Sides[i];
 			}
 		}
-		
+
 		return (Segmant[]) BoltUtils.RemoveNulls(Collisions);
 	}
 
@@ -132,9 +132,9 @@ public class Polygon extends Shape
 	{
 		if (CollidesWith(Collision.GetPointOnLine()))
 		{
-			 return true;
+			return true;
 		}
-		
+
 		else
 		{
 			return Collision.GetIntersectionsWith(Sides) != null;
@@ -149,23 +149,23 @@ public class Polygon extends Shape
 		{
 			return CollidesWith((Polygon) Collision);
 		}
-		
+
 		else
 		{
 			if (CollidesWith(Collision.GetCenter()) || Collision.CollidesWith(Center))
 			{
 				return true;
 			}
-			
+
 			for (int i = 0; i < Sides.length; i++)
 			{
 				if (Collision.CollidesWith(Sides[i]))
 				{
 					return true;
 				}
-			} 
+			}
 		}
-		
+
 		return false;
 	}
 
@@ -177,50 +177,50 @@ public class Polygon extends Shape
 			{
 				return true;
 			}
-			
+
 			for (int i = 0; i < Sides.length; i++)
 			{
 				if (Collision.CollidesWith(Sides[i]))
 				{
 					return true;
 				}
-			} 
-		} 
-		
+			}
+		}
+
 		return false;
 	}
-	
+
 	@Override
 	public boolean CollidesWith(Vector2f Point)
 	{
 		Ray PointRay = new Ray(Point, 0f);
-		
+
 		Vector2f[] RayCollisions = new Vector2f[Sides.length];
-		
+
 		for (int i = 0; i < Sides.length; i++)
 		{
 			RayCollisions[i] = PointRay.GetIntersectionWith(Sides[i]);
 		}
-		
+
 		Vector2f[] Collisions = BoltUtils.RemoveNulls(RayCollisions);
-		
+
 		if (Collisions != null)
 		{
 			return (Collisions).length % 2 != 0;
 		}
-		
+
 		else
 		{
 			return false;
 		}
-		
+
 	}
 
 	@Override
 	public void Move(Vector2f Translation)
 	{
 		Position.Add(Translation);
-//		Corners.Add(Translation);
+		// Corners.Add(Translation);
 	}
 
 	@Override
@@ -228,17 +228,17 @@ public class Polygon extends Shape
 	{
 		this.Position.SetPosition(Position);
 	}
-	
+
 	public Circle GetBoundingBubble()
 	{
 		return BoundingBubble;
 	}
-	
+
 	public Vector2f[] GetCorners()
 	{
 		return Corners.ToArray();
 	}
-	
+
 	public Segmant[] GetSides()
 	{
 		return Sides;
@@ -249,29 +249,29 @@ public class Polygon extends Shape
 	{
 		float CurrentXScale = Math.abs(Vector2fUtils.GetFurthestEast(Corners.ToArray()).GetXDistanceTo(Vector2fUtils.GetFurthestWest(Corners.ToArray())));
 		float CurrentYScale = Math.abs(Vector2fUtils.GetFurthestNorth(Corners.ToArray()).GetXDistanceTo(Vector2fUtils.GetFurthestSouth(Corners.ToArray())));
-		
+
 		Vector2f MultiplyBy = new Vector2f(Scale.GetX() - CurrentXScale, Scale.GetY() - CurrentYScale);
-		
+
 		Corners.Multiply(MultiplyBy);
-		
-//		this.Sides = Segmant.GenerateSegmants(Corners.ToArray());
-		
+
+		// this.Sides = Segmant.GenerateSegmants(Corners.ToArray());
+
 		this.Center = new ReferencedVector2f(Position);
 		this.Center.SetPosition(Vector2fUtils.GetAverage(Corners.ToArray()));
-		
+
 	}
 
 	public void Rotate(float Rotation)
 	{
-		
+
 	}
-	
+
 	@Override
 	public void SetCenter(Vector2f Center)
 	{
 		Vector2f Translation = this.Center.Derive();
 		Translation.Subtract(Center);
 		Position.Add(Translation);
-//		Corners.Add(Translation);
+		// Corners.Add(Translation);
 	}
 }

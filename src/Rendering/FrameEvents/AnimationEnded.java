@@ -12,7 +12,7 @@ public class AnimationEnded extends FrameEvent
 	{
 		super("An animation just ended!", Type.Notification, Sender);
 	}
-	
+
 	@Override
 	public Object[] GetData()
 	{

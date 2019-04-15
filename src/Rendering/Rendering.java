@@ -326,7 +326,7 @@ public class Rendering
 		ReferencedShift();
 		RenderRSBox(Point1, Point2, Thickness, Hue);
 		UndoReferencedShift();
-		
+
 	}
 
 	public static void RenderReferencedLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
@@ -372,7 +372,7 @@ public class Rendering
 		Vector2f FlippedReference = ReferencePoint.Derive();
 
 		FlippedReference.Invert();
-		
+
 		TempXReferencedOffset = FlippedReference.GetX();
 		TempYReferencedOffset = FlippedReference.GetY();
 

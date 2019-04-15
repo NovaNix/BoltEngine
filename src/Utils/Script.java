@@ -5,5 +5,5 @@ package Utils;
 
 public interface Script
 {
-	public void Run();	
+	public void Run();
 }

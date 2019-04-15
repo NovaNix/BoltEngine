@@ -13,7 +13,7 @@ public class SingleCameraScreen extends WindowScreen
 	public SingleCameraScreen(Window ConnectedWindow)
 	{
 		super(ConnectedWindow);
-		
+
 		SimulatedEnviroment.setLayout(new BorderLayout());
 	}
 
@@ -23,19 +23,19 @@ public class SingleCameraScreen extends WindowScreen
 		if (Cameras.size() == 0)
 		{
 			Cameras.add(Cam);
-			
+
 			SimulatedEnviroment.add(Cam, BorderLayout.CENTER);
-			
+
 			SimulatedEnviroment.pack();
-			
+
 			Update();
 		}
-		
+
 		else
 		{
 			throw new ExcessCamerasException();
 		}
-		
+
 	}
 
 }

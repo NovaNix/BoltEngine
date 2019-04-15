@@ -13,7 +13,7 @@ public class BoltUtils
 	public static Vector2f[] RemoveNulls(Vector2f[] ToClear)
 	{
 		int NonNulls = 0;
-		
+
 		for (int i = 0; i < ToClear.length; i++)
 		{
 			if (ToClear[i] != null)
@@ -21,7 +21,7 @@ public class BoltUtils
 				NonNulls++;
 			}
 		}
-		
+
 		if (NonNulls != 0)
 		{
 			Vector2f[] NonNullArray = new Vector2f[NonNulls];
@@ -36,17 +36,17 @@ public class BoltUtils
 			}
 			return NonNullArray;
 		}
-		
+
 		else
 		{
 			return null;
 		}
 	}
-	
+
 	public static Line[] RemoveNulls(Line[] ToClear)
 	{
 		int NonNulls = 0;
-		
+
 		for (int i = 0; i < ToClear.length; i++)
 		{
 			if (ToClear[i] != null)
@@ -54,7 +54,7 @@ public class BoltUtils
 				NonNulls++;
 			}
 		}
-		
+
 		if (NonNulls != 0)
 		{
 			Line[] NonNullArray = new Line[NonNulls];
@@ -69,16 +69,16 @@ public class BoltUtils
 			}
 			return NonNullArray;
 		}
-		
+
 		else
 		{
 			return null;
 		}
 	}
-	
+
 	public static double Square(double Number)
 	{
 		return Math.pow(Number, 2);
 	}
-	
+
 }

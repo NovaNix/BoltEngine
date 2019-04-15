@@ -11,7 +11,7 @@ public class AmbientSound extends Sound
 	@Override
 	public void Update()
 	{
-		
+
 	}
-	
+
 }

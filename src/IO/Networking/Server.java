@@ -15,9 +15,9 @@ public class Server implements NetworkSide
 			Selector ServerSelector = Selector.open();
 			ServerSocketChannel ServerSocket = ServerSocketChannel.open();
 			InetSocketAddress Address = new InetSocketAddress("localhost", Port);
-			
+
 			ServerSocket.bind(Address);
-			
+
 			ServerSocket.configureBlocking(false);
 		} catch (IOException e)
 		{
@@ -31,14 +31,14 @@ public class Server implements NetworkSide
 	public void Update()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void PushMessage(byte[] Message) throws IOException
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

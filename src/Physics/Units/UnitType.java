@@ -3,6 +3,6 @@ package Physics.Units;
 public enum UnitType
 {
 
-	Length, Mass, Force, Time 
-	
+	Length, Mass, Force, Time
+
 }

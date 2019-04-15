@@ -12,16 +12,16 @@ public class FileManager
 {
 
 	String Directory;
-	
+
 	ArrayList<String> FileData = new ArrayList<String>();
-	
+
 	public FileManager(String Directory)
 	{
 		this.Directory = Directory;
-		
+
 		InitiateFile();
 	}
-	
+
 	private void InitiateFile()
 	{
 		File Location = new File(Directory);
@@ -30,7 +30,7 @@ public class FileManager
 		{
 			BufferedReader Reader;
 			int CurrentLine = 0;
-			
+
 			try
 			{
 
@@ -49,9 +49,9 @@ public class FileManager
 			{
 				System.out.println("Issue reading line " + CurrentLine + "!");
 				e.printStackTrace();
-			} 
+			}
 		}
-		
+
 		else if (!Location.exists())
 		{
 			try
@@ -62,24 +62,25 @@ public class FileManager
 				e.printStackTrace();
 			}
 		}
-		
+
 		else
 		{
 			// THROW ERROR
 		}
 	}
-	
+
 	public void Save()
 	{
 		SaveTo(Directory);
 	}
-	
+
 	public void SaveTo(String Directory)
 	{
 		BufferedWriter BufferedOutputStream;
-		
-		try {
-			
+
+		try
+		{
+
 			BufferedOutputStream = new BufferedWriter(new FileWriter(Directory + ".temp"));
 
 			for (int i = 0; i < FileData.size(); i++)
@@ -88,18 +89,19 @@ public class FileManager
 			}
 
 			BufferedOutputStream.close();
-			
-		} catch (IOException e) {
+
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
-		
-		File OriginalFile = new File(Directory);
-	    OriginalFile.delete();
 
-	    File NewFile = new File(Directory + ".temp");
-	    NewFile.renameTo(OriginalFile);
+		File OriginalFile = new File(Directory);
+		OriginalFile.delete();
+
+		File NewFile = new File(Directory + ".temp");
+		NewFile.renameTo(OriginalFile);
 	}
-	
+
 	public void WriteToLine(int Line, String Data)
 	{
 		if (HasLine(Line))
@@ -107,7 +109,7 @@ public class FileManager
 			FileData.set(Line, FileData.get(Line) + Data);
 		}
 	}
-	
+
 	public void ReplaceLine(int Line, String Data)
 	{
 		if (HasLine(Line))
@@ -115,7 +117,7 @@ public class FileManager
 			FileData.set(Line, Data);
 		}
 	}
-	
+
 	public void Write(String Line)
 	{
 		FileData.set(FileData.size(), FileData.get(FileData.size()) + Line);
@@ -125,7 +127,7 @@ public class FileManager
 	{
 		FileData.add(Line);
 	}
-	
+
 	public void WriteLines(String[] Lines)
 	{
 		for (int i = 0; i < Lines.length; i++)
@@ -140,72 +142,72 @@ public class FileManager
 		{
 			return FileData.get(Line);
 		}
-		
+
 		return null;
 	}
-	
+
 	public String[] GetLines(int Start, int Stop)
 	{
 		if (HasLine(Start) && HasLine(Stop))
 		{
 			String[] SelectedLines = new String[Stop - Start];
-			
+
 			for (int p = Start, i = 0; p <= Stop; p++, i++)
 			{
 				SelectedLines[i] = FileData.get(p);
-			} 
-			
+			}
+
 			return SelectedLines;
 		}
-		
+
 		else
 		{
 			return null;
 		}
 	}
-	
+
 	public String[] GetLines(int[] Lines)
 	{
 		String[] SelectedLines = new String[Lines.length];
-		
+
 		for (int i = 0; i < Lines.length; i++)
 		{
 			if (HasLine(Lines[i]))
 			{
 				SelectedLines[i] = FileData.get(Lines[i]);
 			}
-			
+
 			else
 			{
 				return null;
 			}
 		}
-		
+
 		return SelectedLines;
 	}
 
 	public String[] GetAllLines()
 	{
 		String[] Lines = new String[FileData.size()];
-		
+
 		Lines = FileData.toArray(Lines);
-		
+
 		return Lines;
 	}
-	
+
 	public boolean HasLine(int Line)
 	{
 		return 0 <= Line && Line < FileData.size();
 	}
-	
+
 	public int GetLineCount()
 	{
 		return FileData.size();
 	}
-	
+
 	public void Clear()
 	{
 		FileData.clear();
 	}
-	
+
 }

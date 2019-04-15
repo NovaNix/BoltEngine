@@ -23,15 +23,14 @@ public class StaticBody extends PhysicsObject
 	@Override
 	public void CollisionWith(PhysicsObject Collision)
 	{
-		
-		
+
 	}
 
 	@Override
 	public void Move(float X, float Y)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

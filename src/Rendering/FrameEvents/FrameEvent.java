@@ -7,8 +7,7 @@ import Messaging.Message;
 import Messaging.MessageSender;
 
 public abstract class FrameEvent extends Message
-{	
-
+{
 
 	public FrameEvent(String Name, Type Variation, MessageSender Sender)
 	{

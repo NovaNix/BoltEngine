@@ -10,5 +10,4 @@ public interface Followable
 
 	public Vector2f GetFollowingPosition();
 
-	
 }

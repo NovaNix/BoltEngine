@@ -10,7 +10,7 @@ import Algorithms.Algorithm;
 
 public abstract class SortingAlgorithm extends Algorithm
 {
-	
+
 	public abstract <H> ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing);
-	
+
 }

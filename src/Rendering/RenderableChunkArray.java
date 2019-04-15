@@ -18,13 +18,13 @@ public class RenderableChunkArray extends ChunkArray<Renderable> implements Rend
 	@Override
 	public void Render()
 	{
-		ArrayList<Renderable> Chunks = GetAllChunks(); 
-		
+		ArrayList<Renderable> Chunks = GetAllChunks();
+
 		for (int i = 0; i < Chunks.size(); i++)
 		{
 			Chunks.get(i).Render();
 		}
-		
+
 	}
 
 }

@@ -19,25 +19,29 @@ public class KeyboardKey extends Key implements KeyListener
 
 	/** The Key code. */
 	int KeyCode;
-	
+
 	/**
 	 * Instantiates a new keyboard key.
 	 *
-	 * @param KeyCode is the key code of the key
-	 * @param Part is the window the key is bound to
+	 * @param KeyCode
+	 *            is the key code of the key
+	 * @param Part
+	 *            is the window the key is bound to
 	 */
 	public KeyboardKey(int KeyCode, WindowScreen Part)
 	{
 		this.KeyCode = KeyCode;
-		
+
 		Part.addKeyListener(this);
-		
+
 		Part.setFocusable(true);
-		
+
 		Part.setFocusTraversalKeysEnabled(true);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	@Override
@@ -46,10 +50,12 @@ public class KeyboardKey extends Key implements KeyListener
 		if (arg0.getKeyCode() == KeyCode)
 		{
 			Down = true;
-		}	
+		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	@Override
@@ -62,15 +68,15 @@ public class KeyboardKey extends Key implements KeyListener
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override
 	public void keyTyped(KeyEvent arg0)
 	{
 
-		
-		
 	}
-	
+
 }

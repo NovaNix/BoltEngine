@@ -14,24 +14,24 @@ public class Shader
 {
 
 	int ShaderID;
-	
+
 	int VertexHandle;
 	int FragmentHandle;
-	
+
 	public Shader(String VertexPath, boolean VertexInternal, String FragmentPath, boolean FragmentInternal)
 	{
 		ShaderID = glCreateProgram();
-		
+
 		String VertexShader = ReadShaderFile(VertexPath, VertexInternal);
-		
+
 		String FragmentShader = ReadShaderFile(FragmentPath, FragmentInternal);
-		
+
 		VertexHandle = glCreateShader(GL_VERTEX_SHADER);
 		FragmentHandle = glCreateShader(GL_FRAGMENT_SHADER);
 
 		glShaderSource(VertexHandle, VertexShader);
 		glCompileShader(VertexHandle);
-		
+
 		if (glGetShaderi(VertexHandle, GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println(glGetShaderInfoLog(VertexHandle));
@@ -40,29 +40,29 @@ public class Shader
 
 		glShaderSource(FragmentHandle, FragmentShader);
 		glCompileShader(FragmentHandle);
-		
+
 		if (glGetShaderi(FragmentHandle, GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println(glGetShaderInfoLog(FragmentHandle));
 			System.exit(1);
 		}
-		
+
 		glAttachShader(ShaderID, VertexHandle);
 		glAttachShader(ShaderID, FragmentHandle);
-		
+
 		glBindAttribLocation(ShaderID, 0, "vertices");
 		glBindAttribLocation(ShaderID, 1, "textures");
-		
+
 		glLinkProgram(ShaderID);
-		
+
 		if (glGetProgrami(ShaderID, GL_LINK_STATUS) != 1)
 		{
 			System.err.println(glGetProgramInfoLog(ShaderID));
 			System.exit(1);
 		}
-		
+
 		glValidateProgram(ShaderID);
-		
+
 		if (glGetProgrami(ShaderID, GL_VALIDATE_STATUS) != 1)
 		{
 			System.err.println(glGetProgramInfoLog(ShaderID));
@@ -70,29 +70,29 @@ public class Shader
 		}
 
 	}
-	
+
 	protected String ReadShaderFile(String FilePath, boolean Internal)
 	{
 		BufferedReader Reader = null;
-		
+
 		if (Internal)
 		{
-			
+
 			ClassLoader Loader = Thread.currentThread().getContextClassLoader();
-			
+
 			InputStream Input = Loader.getResourceAsStream(FilePath);
-			
+
 			Reader InputReader = new InputStreamReader(Input);
 			Reader = new BufferedReader(InputReader);
 		}
-		
-		else 
+
+		else
 		{
 			FileReader FReader;
 			try
 			{
 				FReader = new FileReader(FilePath);
-	            Reader = new BufferedReader(FReader);
+				Reader = new BufferedReader(FReader);
 			} catch (FileNotFoundException e)
 			{
 				// TODO Auto-generated catch block
@@ -100,18 +100,18 @@ public class Shader
 			}
 
 		}
-		
+
 		StringBuilder ShaderText = new StringBuilder();
-		
+
 		String Line;
-		
+
 		try
 		{
 			while ((Line = Reader.readLine()) != null)
 			{
 				ShaderText.append(Line);
 				ShaderText.append("\n");
-				
+
 				Reader.close();
 			}
 		} catch (IOException e)
@@ -119,14 +119,14 @@ public class Shader
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return ShaderText.toString();
-		
+
 	}
-	
+
 	public int GetShaderID()
 	{
 		return ShaderID;
 	}
-	
+
 }

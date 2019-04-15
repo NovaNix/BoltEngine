@@ -6,5 +6,5 @@ public interface AudioObserver
 {
 
 	public Vector2f GetObserverPosition();
-	
+
 }

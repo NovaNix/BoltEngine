@@ -10,5 +10,5 @@ public class Meter extends Unit
 	{
 		super(UnitType.Length);
 	}
-	
+
 }

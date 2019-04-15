@@ -10,5 +10,5 @@ public class Pixel extends Unit
 	{
 		super(Size, UnitType.Length);
 	}
-	
+
 }

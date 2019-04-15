@@ -10,14 +10,14 @@ public class Rendering
 {
 
 	Shader CurrentShader;
-	
+
 	Shader DrawReferencedImage;
-	
+
 	public Rendering()
 	{
-		
+
 	}
-	
+
 	private void ApplyTexture(Texture Apply, int Sampler)
 	{
 		if (Sampler >= 0 && Sampler <= 31)
@@ -26,7 +26,7 @@ public class Rendering
 			glBindTexture(GL_TEXTURE_2D, Apply.GetID());
 		}
 	}
-	
+
 	private void ApplyShader(Shader Apply)
 	{
 		glUseProgram(Apply.GetShaderID());

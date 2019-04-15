@@ -12,14 +12,14 @@ public class MenuImage extends MenuElement
 {
 
 	Image Icon;
-	
+
 	float Rotation;
-	
+
 	public MenuImage(Vector2f Position, Vector2f Scale, Image Icon, float Rotation)
 	{
 		this.Position = Position;
 		this.Scale = Scale;
-		
+
 		this.Icon = Icon;
 		this.Rotation = Rotation;
 	}
@@ -27,14 +27,13 @@ public class MenuImage extends MenuElement
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRSImage(Icon, Position, Scale, (int) Rotation);	
+		Rendering.RenderRSImage(Icon, Position, Scale, (int) Rotation);
 	}
 
 	@Override
 	public void Update()
 	{
-		
-		
+
 	}
-	
+
 }

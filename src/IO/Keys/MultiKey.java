@@ -9,29 +9,29 @@ public class MultiKey extends Key
 {
 
 	ArrayList<Key> Keys = new ArrayList<>();
-	
+
 	boolean AllPress = false;
-	
+
 	public MultiKey(Key[] Keys, boolean AllPress)
 	{
 		this.AllPress = AllPress;
-		
+
 		for (int i = 0; i < Keys.length; i++)
 		{
 			this.Keys.add(Keys[i]);
 		}
 	}
-	
+
 	public void AddKey(Key New)
 	{
 		Keys.add(New);
 	}
-	
+
 	public void RemoveKey(Key ToRemove)
 	{
 		Keys.remove(ToRemove);
 	}
-	
+
 	@Override
 	public boolean IsDown()
 	{
@@ -46,7 +46,7 @@ public class MultiKey extends Key
 			}
 			return true;
 		}
-		
+
 		else
 		{
 			for (int i = 0; i < Keys.size(); i++)
@@ -59,7 +59,7 @@ public class MultiKey extends Key
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean IsTyped()
 	{
@@ -74,7 +74,7 @@ public class MultiKey extends Key
 			}
 			return true;
 		}
-		
+
 		else
 		{
 			for (int i = 0; i < Keys.size(); i++)
@@ -87,5 +87,5 @@ public class MultiKey extends Key
 			return false;
 		}
 	}
-	
+
 }

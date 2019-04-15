@@ -10,7 +10,7 @@ public class Point extends Shape
 {
 
 	Vector2f Position;
-	
+
 	@Override
 	public Vector2f GetFollowingPosition()
 	{
@@ -41,9 +41,9 @@ public class Point extends Shape
 	{
 		if (Collision.PointOnLine(Position))
 		{
-			return new Vector2f[] {Position};
+			return new Vector2f[] { Position };
 		}
-		
+
 		return null;
 	}
 
@@ -52,9 +52,9 @@ public class Point extends Shape
 	{
 		if (Collision.CollidesWith(Position))
 		{
-			return new Vector2f[] {Position};
+			return new Vector2f[] { Position };
 		}
-		
+
 		return null;
 	}
 
@@ -92,7 +92,7 @@ public class Point extends Shape
 	@Override
 	public void SetScale(Vector2f Scale)
 	{
-		
+
 	}
 
 	@Override

@@ -14,11 +14,11 @@ public class Circle extends Shape
 	{
 		this.Center = Center;
 		this.Radius = Radius;
-		
+
 		this.Position = new ReferencedVector2f(Center);
 		Position.Add(new Vector2f(-Radius, -Radius));
 	}
-	
+
 	@Override
 	public Vector2f[] GetCollisionPointsWith(Line Collision)
 	{
@@ -30,14 +30,15 @@ public class Circle extends Shape
 			float h = Center.GetX();
 			float k = Center.GetY();
 			float r = Radius;
-			
+
 			if (!Collision.IsVertical())
 			{
 
 				if (Math.pow(Collision.GetSlope(), 2) + 1 != 0)
 				{
 
-					//			Equasion: x = (h - b m + k m - sqrt(-b^2 + 2 b k - k^2 - 2 b h m + 2 h k m - h^2 m^2 + r^2 + m^2 r^2))/(1 + m^2);
+					// Equasion: x = (h - b m + k m - sqrt(-b^2 + 2 b k - k^2 - 2 b h m + 2 h k m -
+					// h^2 m^2 + r^2 + m^2 r^2))/(1 + m^2);
 
 					double E1 = h - (b * m) + k * m;
 					double E2 = Math.sqrt(-BoltUtils.Square(b) + 2 * b * k - BoltUtils.Square(k) - 2 * b * h * m + 2 * h * k * m - BoltUtils.Square(h) * BoltUtils.Square(m) + BoltUtils.Square(r) + BoltUtils.Square(m) * BoltUtils.Square(r));
@@ -88,22 +89,22 @@ public class Circle extends Shape
 				}
 
 				return BoltUtils.RemoveNulls(new Vector2f[] { Point1, Point2 });
-			} 
+			}
 		}
-		
+
 		else if (Radius == 0)
 		{
 			if (Collision.PointOnLine(Center))
 			{
-				return new Vector2f[] {Center.Derive()};
+				return new Vector2f[] { Center.Derive() };
 			}
-			
+
 			else
 			{
 				return null;
 			}
 		}
-		
+
 		else
 		{
 			return null;
@@ -144,7 +145,7 @@ public class Circle extends Shape
 		{
 			return Center.GetDistanceTo(Collision.GetCenter()) <= Radius + ((Circle) Collision).GetRadius();
 		}
-		
+
 		return false;
 	}
 
@@ -174,7 +175,7 @@ public class Circle extends Shape
 
 	@Override
 	public void SetPosition(Vector2f Position)
-	{	
+	{
 		Center.SetPosition(Position);
 		Center.Add(new Vector2f(Radius, Radius));
 	}
@@ -187,7 +188,7 @@ public class Circle extends Shape
 	@Override
 	public void SetScale(Vector2f Scale)
 	{
-		this.Radius = Scale.GetX()/2;
+		this.Radius = Scale.GetX() / 2;
 		this.Position.SetPosition(Center);
 		Position.Subtract(new Vector2f(Radius, Radius));
 	}
@@ -197,5 +198,5 @@ public class Circle extends Shape
 	{
 		this.Center.SetPosition(Center);
 	}
-	
+
 }

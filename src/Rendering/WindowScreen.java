@@ -24,13 +24,13 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 {
 
 	protected ArrayList<Camera> Cameras = new ArrayList<Camera>();
-	
+
 	protected Window ConnectedWindow;
-	
+
 	protected JFrame SimulatedEnviroment;
-	
+
 	protected Menu CurrentMenu;
-	
+
 	protected Vector2f MousePosition = new Vector2f(0, 0);
 
 	public WindowScreen(Window ConnectedWindow)
@@ -38,20 +38,20 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 		this.SimulatedEnviroment = new JFrame();
 
 		SimulatedEnviroment.setLayout(new BorderLayout());
-		
+
 		SimulatedEnviroment.setUndecorated(true);
-		
+
 		this.addMouseMotionListener(this);
 		this.ConnectedWindow = ConnectedWindow;
-		
-	//	this.SimulatedEnviroment.setLayout(new BorderLayout());
-		
+
+		// this.SimulatedEnviroment.setLayout(new BorderLayout());
+
 		ConnectedWindow.add(this, BorderLayout.CENTER);
-		
+
 		ConnectedWindow.pack();
 
 		createBufferStrategy(2);
-		
+
 		Update();
 	}
 
@@ -65,53 +65,55 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 			SimulatedEnviroment.pack();
 		}
 	}
-	
+
 	public abstract void AddCamera(Camera Cam) throws ExcessCamerasException;
 
 	Lock RenderLock = new ReentrantLock();
-	
-//	@Override
-//    public void paintComponent(Graphics g) 
-//	{
-//		
-//		
-////		RenderLock.lock();
-////		
-////        try
-////		{
-////        	BufferStrategy bs;
-////        	ConnectedWindow.createBufferStrategy(2);
-////        	bs = ConnectedWindow.getBufferStrategy();
-////        	
-////			super.paintComponent(g);
-////			for (int i = 0; i < Cameras.size(); i++)
-////			{
-////				g.drawImage(Cameras.get(i).Render(), Cameras.get(i).getX(), Cameras.get(i).getY(), Cameras.get(i).getWidth(), Cameras.get(i).getHeight(), Cameras.get(i));
-////			}
-////			if (CurrentMenu != null)
-////			{
-////				CurrentMenu.Render();
-////			} 
-////			
-////		} finally
-////		{
-////			RenderLock.unlock();
-////		}
-//			
-//    }
-	
+
+	// @Override
+	// public void paintComponent(Graphics g)
+	// {
+	//
+	//
+	//// RenderLock.lock();
+	////
+	//// try
+	//// {
+	//// BufferStrategy bs;
+	//// ConnectedWindow.createBufferStrategy(2);
+	//// bs = ConnectedWindow.getBufferStrategy();
+	////
+	//// super.paintComponent(g);
+	//// for (int i = 0; i < Cameras.size(); i++)
+	//// {
+	//// g.drawImage(Cameras.get(i).Render(), Cameras.get(i).getX(),
+	// Cameras.get(i).getY(), Cameras.get(i).getWidth(), Cameras.get(i).getHeight(),
+	// Cameras.get(i));
+	//// }
+	//// if (CurrentMenu != null)
+	//// {
+	//// CurrentMenu.Render();
+	//// }
+	////
+	//// } finally
+	//// {
+	//// RenderLock.unlock();
+	//// }
+	//
+	// }
+
 	public JFrame GetSimulatedWindow()
 	{
 		return SimulatedEnviroment;
 	}
-	
+
 	@Override
 	public void Render()
 	{
 		BufferStrategy Strat = getBufferStrategy();
 
-    	Graphics g = Strat.getDrawGraphics();
-    	
+		Graphics g = Strat.getDrawGraphics();
+
 		for (int i = 0; i < Cameras.size(); i++)
 		{
 			g.drawImage(Cameras.get(i).Render(), Cameras.get(i).getX(), Cameras.get(i).getY(), Cameras.get(i).getWidth(), Cameras.get(i).getHeight(), Cameras.get(i));
@@ -119,23 +121,23 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 		if (CurrentMenu != null)
 		{
 			CurrentMenu.Render();
-		} 
-		
+		}
+
 		g.dispose();
 		Strat.show();
-		
-//		synchronized (this)
-//		{
-//			repaint();
-//			
-//			try
-//			{
-//				RenderLock.lock();
-//			} finally
-//			{
-//				RenderLock.unlock();
-//			}
-//		}
+
+		// synchronized (this)
+		// {
+		// repaint();
+		//
+		// try
+		// {
+		// RenderLock.lock();
+		// } finally
+		// {
+		// RenderLock.unlock();
+		// }
+		// }
 	}
 
 	@Override
@@ -149,11 +151,10 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 	{
 		MousePosition = new Vector2f(e.getX(), e.getY());
 	}
-	
+
 	public Vector2f GetMousePosition()
 	{
 		return MousePosition;
 	}
-	
-	
+
 }

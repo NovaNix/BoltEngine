@@ -14,7 +14,7 @@ public class Chance
 		this.Amount = Amount;
 		this.Total = Total;
 	}
-	
+
 	public boolean Try()
 	{
 		return false;
