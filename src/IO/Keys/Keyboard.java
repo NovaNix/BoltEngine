@@ -1,36 +1,52 @@
 package IO.Keys;
 
-public class Keyboard
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+
+import java.util.HashMap;
+
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+
+public class Keyboard implements GLFWKeyCallbackI
 {
 
-	public Keyboard()
-	{
+	HashMap<Integer, Boolean> Keys = new HashMap<Integer, Boolean>();
 
+	public Keyboard(long WindowHandle)
+	{
+		glfwSetKeyCallback(WindowHandle, this);
 	}
 
-	public void Refresh()
+	public void Update()
 	{
-
-	}
-
-	public boolean KeyDown(char Key)
-	{
-		return false;
+		glfwPollEvents();
 	}
 
 	public boolean KeyDown(int Key)
 	{
+		if (Keys.containsKey(Key))
+		{
+			return Keys.get(Key);
+		}
+
 		return false;
 	}
 
-	public boolean KeyTyped(char Key)
+	@Override
+	public void invoke(long window, int key, int scancode, int action, int mods)
 	{
-		return false;
-	}
 
-	public boolean KeyTyped(int Key)
-	{
-		return false;
+		if (action == GLFW_RELEASE)
+		{
+			Keys.put(key, false);
+		}
+
+		else if (action == GLFW_PRESS)
+		{
+			Keys.put(key, true);
+		}
 	}
 
 }
