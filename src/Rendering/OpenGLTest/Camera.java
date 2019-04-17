@@ -30,6 +30,9 @@ public class Camera implements Movable
 
 	Vector2f AspectRatio;
 
+	int FBOHandle;
+	int FBOTexture;
+
 	public Camera(String Name, Vector2f Position)
 	{
 		this.Name = Name;
@@ -39,6 +42,18 @@ public class Camera implements Movable
 		this.CameraCollision = new Rectangle(Position, new Vector2f(0, 0));
 
 		this.AspectRatio = new Vector2f(0, 0);
+		
+		FBOHandle = glGenFramebuffers();
+	
+		FBOTexture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, FBOTexture);
+  	
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GetWidth(), GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
+		
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0); 
 	}
 
 	public void Update()
@@ -65,8 +80,10 @@ public class Camera implements Movable
 
 	}
 
-	public Image Render()
+	public int Render()
 	{
+		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle); 
+	
 		Rendering.Start(this.GetCameraScale(), this.Position, this.ZoomOffset, new Vector2f(this.Zoom, this.Zoom), this.CameraCollision);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
@@ -74,13 +91,9 @@ public class Camera implements Movable
 			this.Rendered.get(i).Render();
 		}
 
-		// CameraCollision.Render();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		Image Final = Rendering.GetProduct();
-
-		Rendering.Clear();
-
-		return Final;
+		return FBOTexture;
 	}
 
 	public void AddRenderable(Renderable ToRender)
