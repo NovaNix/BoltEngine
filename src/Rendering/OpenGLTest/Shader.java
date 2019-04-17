@@ -76,29 +76,12 @@ public class Shader
 
 	protected int GenerateShader(String FilePath, boolean Internal, int ShaderType)
 	{
+		
 		if (Internal)
 		{
 			if (Internal.containsKey(FilePath)
 			{
 				return Internal.get(FilePath);
-			}
-			    
-			else
-			{
-				String VertexShader = ReadShaderFile(FilePasth, Internal);
-	    			
-				int ID = glCreateShader(ShaderType);
-				
-				glShaderSource(VertexHandle, VertexShader);
-				glCompileShader(VertexHandle);
-	
-				if (glGetShaderi(VertexHandle, GL_COMPILE_STATUS) != 1)
-				{
-					System.err.println(glGetShaderInfoLog(VertexHandle));
-					System.exit(1);
-				}
-				
-				return ID;
 			}
 		}
 		
@@ -109,6 +92,20 @@ public class Shader
 				return External.get(FilePath);
 			}
 		}
+			    
+		int ID = glCreateShader(ShaderType);
+			
+		String ShaderCode = ReadShaderFile(FilePath, Internal);;
+		glShaderSource(ID, ShaderCode);
+		glCompileShader(ID);
+	
+		if (glGetShaderi(ID, GL_COMPILE_STATUS) != 1)
+		{
+			System.err.println(glGetShaderInfoLog(VertexHandle));
+			System.exit(1);
+		}
+				
+		return ID;	    
 	}
 	
 	protected String ReadShaderFile(String FilePath, boolean Internal)
