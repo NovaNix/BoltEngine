@@ -13,6 +13,9 @@ import java.io.Reader;
 public class Shader
 {
 
+	static HashMap<String, Integer> InternalShaders = new HashMap<String, Integer>();
+	static HashMap<String, Integer> ExternalShaders = new HashMap<String, Integer>();
+	
 	int ShaderID;
 
 	int VertexHandle;
@@ -71,6 +74,43 @@ public class Shader
 
 	}
 
+	protected int GenerateShader(String FilePath, boolean Internal, int ShaderType)
+	{
+		if (Internal)
+		{
+			if (Internal.containsKey(FilePath)
+			{
+				return Internal.get(FilePath);
+			}
+			    
+			else
+			{
+				String VertexShader = ReadShaderFile(FilePasth, Internal);
+	    			
+				int ID = glCreateShader(ShaderType);
+				
+				glShaderSource(VertexHandle, VertexShader);
+				glCompileShader(VertexHandle);
+	
+				if (glGetShaderi(VertexHandle, GL_COMPILE_STATUS) != 1)
+				{
+					System.err.println(glGetShaderInfoLog(VertexHandle));
+					System.exit(1);
+				}
+				
+				return ID;
+			}
+		}
+		
+		else 
+		{
+			if (External.containsKey(FilePath)
+			{
+				return External.get(FilePath);
+			}
+		}
+	}
+	
 	protected String ReadShaderFile(String FilePath, boolean Internal)
 	{
 		BufferedReader Reader = null;
