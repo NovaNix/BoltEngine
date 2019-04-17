@@ -10,7 +10,7 @@ public class Mouse
 
 	}
 
-	public void Refresh()
+	public void Update()
 	{
 
 	}
