@@ -1,6 +1,22 @@
 package Rendering.OpenGLTest;
 
-import java.awt.Image;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGB;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
+import static org.lwjgl.opengl.GL30.glGenFramebuffers;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
 import java.util.ArrayList;
 
 import Geometry.Shapes.Rectangle;
@@ -42,18 +58,18 @@ public class Camera implements Movable
 		this.CameraCollision = new Rectangle(Position, new Vector2f(0, 0));
 
 		this.AspectRatio = new Vector2f(0, 0);
-		
+
 		FBOHandle = glGenFramebuffers();
-	
+
 		FBOTexture = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, FBOTexture);
-  	
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GetWidth(), GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
-		
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
 	}
 
 	public void Update()
@@ -82,8 +98,8 @@ public class Camera implements Movable
 
 	public int Render()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle); 
-	
+		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+
 		Rendering.Start(this.GetCameraScale(), this.Position, this.ZoomOffset, new Vector2f(this.Zoom, this.Zoom), this.CameraCollision);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
@@ -129,12 +145,12 @@ public class Camera implements Movable
 		return new Vector2f(GetWidth(), GetHeight());
 	}
 
-	public float GetWidth()
+	public int GetWidth()
 	{
 		return 0;
 	}
 
-	public float GetHeight()
+	public int GetHeight()
 	{
 		return 0;
 	}
