@@ -1,6 +1,22 @@
 package Rendering.OpenGLTest;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glBindAttribLocation;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,13 +25,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 
 public class Shader
 {
 
 	static HashMap<String, Integer> InternalShaders = new HashMap<String, Integer>();
 	static HashMap<String, Integer> ExternalShaders = new HashMap<String, Integer>();
-	
+
 	int ShaderID;
 
 	int VertexHandle;
@@ -25,30 +42,8 @@ public class Shader
 	{
 		ShaderID = glCreateProgram();
 
-		String VertexShader = ReadShaderFile(VertexPath, VertexInternal);
-
-		String FragmentShader = ReadShaderFile(FragmentPath, FragmentInternal);
-
-		VertexHandle = glCreateShader(GL_VERTEX_SHADER);
-		FragmentHandle = glCreateShader(GL_FRAGMENT_SHADER);
-
-		glShaderSource(VertexHandle, VertexShader);
-		glCompileShader(VertexHandle);
-
-		if (glGetShaderi(VertexHandle, GL_COMPILE_STATUS) != 1)
-		{
-			System.err.println(glGetShaderInfoLog(VertexHandle));
-			System.exit(1);
-		}
-
-		glShaderSource(FragmentHandle, FragmentShader);
-		glCompileShader(FragmentHandle);
-
-		if (glGetShaderi(FragmentHandle, GL_COMPILE_STATUS) != 1)
-		{
-			System.err.println(glGetShaderInfoLog(FragmentHandle));
-			System.exit(1);
-		}
+		VertexHandle = GenerateShader(VertexPath, VertexInternal, GL_VERTEX_SHADER);
+		FragmentHandle = GenerateShader(FragmentPath, FragmentInternal, GL_FRAGMENT_SHADER);
 
 		glAttachShader(ShaderID, VertexHandle);
 		glAttachShader(ShaderID, FragmentHandle);
@@ -76,38 +71,47 @@ public class Shader
 
 	protected int GenerateShader(String FilePath, boolean Internal, int ShaderType)
 	{
-		
 		if (Internal)
 		{
-			if (Internal.containsKey(FilePath)
+			if (InternalShaders.containsKey(FilePath))
 			{
-				return Internal.get(FilePath);
+				return InternalShaders.get(FilePath);
 			}
 		}
-		
-		else 
+
+		else
 		{
-			if (External.containsKey(FilePath)
+			if (ExternalShaders.containsKey(FilePath))
 			{
-				return External.get(FilePath);
+				return ExternalShaders.get(FilePath);
 			}
 		}
-			    
+
 		int ID = glCreateShader(ShaderType);
-			
-		String ShaderCode = ReadShaderFile(FilePath, Internal);;
+
+		String ShaderCode = ReadShaderFile(FilePath, Internal);
 		glShaderSource(ID, ShaderCode);
 		glCompileShader(ID);
-	
+
 		if (glGetShaderi(ID, GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println(glGetShaderInfoLog(VertexHandle));
 			System.exit(1);
 		}
-				
-		return ID;	    
+
+		if (Internal)
+		{
+			InternalShaders.put(FilePath, ID);
+		}
+
+		else
+		{
+			ExternalShaders.put(FilePath, ID);
+		}
+
+		return ID;
 	}
-	
+
 	protected String ReadShaderFile(String FilePath, boolean Internal)
 	{
 		BufferedReader Reader = null;
