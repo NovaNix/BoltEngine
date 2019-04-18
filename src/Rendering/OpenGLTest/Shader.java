@@ -14,8 +14,18 @@ import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import static org.lwjgl.opengl.GL20.glGetProgrami;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform2i;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform3i;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniform4i;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
@@ -25,7 +35,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
+
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 
 public class Shader
 {
@@ -162,6 +176,126 @@ public class Shader
 		}
 
 		return ShaderText.toString();
+
+	}
+
+	public void SetUniform(String Name, Matrix4f Value)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		FloatBuffer Data = BufferUtils.createFloatBuffer(16);
+		Value.get(Data);
+
+		glUniformMatrix4fv(Location, false, Data);
+
+	}
+
+	public void SetUniform(String Name, int Value)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform1i(Location, Value);
+
+	}
+
+	public void SetUniform(String Name, int Value1, int Value2)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform2i(Location, Value1, Value2);
+
+	}
+
+	public void SetUniform(String Name, int Value1, int Value2, int Value3)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform3i(Location, Value1, Value2, Value3);
+
+	}
+
+	public void SetUniform(String Name, int Value1, int Value2, int Value3, int Value4)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform4i(Location, Value1, Value2, Value3, Value4);
+
+	}
+
+	public void SetUniform(String Name, float Value)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform1f(Location, Value);
+
+	}
+
+	public void SetUniform(String Name, float Value1, float Value2)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform2f(Location, Value1, Value2);
+
+	}
+
+	public void SetUniform(String Name, float Value1, float Value2, float Value3)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform3f(Location, Value1, Value2, Value3);
+
+	}
+
+	public void SetUniform(String Name, float Value1, float Value2, float Value3, float Value4)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist");
+		}
+
+		glUniform4f(Location, Value1, Value2, Value3, Value4);
 
 	}
 
