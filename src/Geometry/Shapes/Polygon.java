@@ -1,7 +1,6 @@
 package Geometry.Shapes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import Geometry.Line;
 import Geometry.Ray;
@@ -56,6 +55,37 @@ public class Polygon extends Shape
 		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
 
 		this.BoundingBubble = new Circle(Center, Radius);
+	}
+
+	public Vector2f[] GetCompressed()
+	{
+		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetFurthestWest(Corners.ToArray()).GetX(), Vector2fUtils.GetFurthestSouth(Corners.ToArray()).GetY());
+		Vector2f TopRight = new Vector2f(Vector2fUtils.GetFurthestEast(Corners.ToArray()).GetX(), Vector2fUtils.GetFurthestNorth(Corners.ToArray()).GetY());
+
+		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
+		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
+
+		Vector2f PCenter = BottemLeft.Derive();
+		PCenter.Add(new Vector2f(PolygonWidth / 2, PolygonHeight / 2));
+
+		Vector2fGroup Vectors = Corners.Clone();
+
+		Vectors.Subtract(PCenter);
+		Vectors.Divide(new Vector2f(PolygonWidth / 2, PolygonHeight / 2));
+
+		return Vectors.ToArray();
+
+	}
+
+	public Vector2f GetScale()
+	{
+		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetFurthestWest(Corners.ToArray()).GetX(), Vector2fUtils.GetFurthestSouth(Corners.ToArray()).GetY());
+		Vector2f TopRight = new Vector2f(Vector2fUtils.GetFurthestEast(Corners.ToArray()).GetX(), Vector2fUtils.GetFurthestNorth(Corners.ToArray()).GetY());
+
+		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
+		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
+
+		return new Vector2f(PolygonWidth, PolygonHeight);
 	}
 
 	public void MergeWith(Polygon Merged)

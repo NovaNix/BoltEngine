@@ -80,4 +80,16 @@ public class Vector2fGroup
 		return VectorArray;
 	}
 
+	public Vector2fGroup Clone()
+	{
+		Vector2fGroup Group = new Vector2fGroup();
+
+		for (int i = 0; i < Vectors.size(); i++)
+		{
+			Group.Add(Vectors.get(i).Derive());
+		}
+
+		return Group;
+	}
+
 }
