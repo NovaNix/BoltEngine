@@ -29,17 +29,8 @@ public class Polygon extends Shape
 
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
-
-		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
-
-		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
-
-		this.Center = new ReferencedVector2f(Position);
-		this.Center.SetPosition(AVCenter);
-
-		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, this.Corners.ToArray()));
-
-		this.BoundingBubble = new Circle(Center, Radius);
+		
+		Refresh();
 	}
 
 	public Polygon(Vector2f Position, Vector2f[] Corners)
@@ -49,6 +40,11 @@ public class Polygon extends Shape
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
 
+		Refresh();
+	}
+
+	public void Refresh()
+	{	
 		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
 
 		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
@@ -56,7 +52,7 @@ public class Polygon extends Shape
 		this.Center = new ReferencedVector2f(Position);
 		this.Center.SetPosition(AVCenter);
 
-		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, Corners));
+		this.Radius = Center.GetDistanceTo(Vector2fUtils.GetFurthestPointFrom(Center, this.Corners.ToArray()));
 
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
@@ -90,6 +86,8 @@ public class Polygon extends Shape
 		int Mid = GetMiddlePoint(C1, C2, C3);
 		
 		Corners.RemoveVector(Corners.ToArray()[Mid]);
+		
+		Refresh();
 	}
 	
 	private int GetMiddlePoint(int P1, int P2, int P3)
