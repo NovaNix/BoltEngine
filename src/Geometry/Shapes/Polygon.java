@@ -19,6 +19,8 @@ public class Polygon extends Shape
 	
 	Circle BoundingBubble;
 
+	float Rotation = 0f;
+
 	protected float[] CompressedCorners;
 	protected int[] Index;
 	protected int[] TextureCoords;
@@ -281,11 +283,11 @@ public class Polygon extends Shape
 	
 	public Vector2f GetScale()
 	{
-		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
-		Vector2f TopRight = new Vector2f(Vector2fUtils.GetMaxY(Corners.ToArray()).GetX(), Vector2fUtils.GetMaxY(Corners.ToArray()).GetY());
-
-		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
-		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
+		Vector2f BottemRight = new Vector2f(Vector2fUtils.GetMaxX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
+		Vector2f TopLeft = Position;
+		
+		float PolygonWidth = TopLeft.GetXDistanceTo(BottemRight);
+		float PolygonHeight = BottemRight.GetYDistanceTo(TopLeft);
 
 		return new Vector2f(PolygonWidth, PolygonHeight);
 	}
@@ -493,7 +495,14 @@ public class Polygon extends Shape
 
 	public void Rotate(float Rotation)
 	{
-
+		this.Rotation += Rotation;
+	
+		Vector2f[] CornerList = Corners.ToArray();
+		
+		for (int i = 0; i < CornerList.length; i++)
+		{
+			CornerList[i].Rotate(Rotation, Center);
+		}
 	}
 
 	@Override
