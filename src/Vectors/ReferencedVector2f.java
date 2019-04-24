@@ -111,8 +111,4 @@ public class ReferencedVector2f extends Vector2f
 		UpdateHashCode();
 	}
 
-	public Vector2f Derive()
-	{
-		return new ReferencedVector2f(ReferencePoint, Translation);
-	}
 }
