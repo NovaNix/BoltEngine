@@ -49,15 +49,15 @@ public class Vector2f extends Vector<Vector2f>
 
 	public Vector2f(int X, int Y)
 	{
-		this.X = (float) X;
-		this.Y = (float) Y;
+		this.X = X;
+		this.Y = Y;
 		UpdateHashCode();
 	}
 
 	public Vector2f(int[] Vars)
 	{
-		this.X = (float) Vars[0];
-		this.Y = (float) Vars[1];
+		this.X = Vars[0];
+		this.Y = Vars[1];
 		UpdateHashCode();
 	}
 
@@ -65,8 +65,8 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		this.Name = Name;
 
-		this.X = (float) X;
-		this.Y = (float) Y;
+		this.X = X;
+		this.Y = Y;
 		UpdateHashCode();
 	}
 
@@ -120,32 +120,32 @@ public class Vector2f extends Vector<Vector2f>
 	{
 		return GetDistanceTo(new Vector2f(0, 0));
 	}
-	
+
 	public float GetDirection()
 	{
-		return Math.toDegrees(Math.atan2(GetY() / GetX()));
+		return (float) Math.toDegrees(Math.atan2(GetY(), GetX()));
 	}
 
 	public float GetAngle()
 	{
-		float Angle = Math.toDegrees(Math.atan2(GetY() / GetX()); 
-	
+		float Angle = (float) Math.toDegrees(Math.atan2(GetY(), GetX()));
+
 		if (Angle < 0)
 		{
 			Angle = 360 + Angle;
 		}
-	
+
 		return Angle;
 	}
 
 	public void Rotate(float Angle, Vector2f Point)
 	{
-		float RadianAngle = Math.toRadians(Angle);
+		double RadianAngle = Math.toRadians(Angle);
 
-		float RotatedX = Math.cos(Angle) * (GetX() - Point.GetX()) - Math.sin(Angle) * (GetX() - Point.GetY()) + Point.GetX();
-		float RotatedY = Math.sin(Angle) * (GetX() - Point.GetX()) + Math.cos(Angle) * (GetY() - Point.GetY()) + Point.GetY();
-		
-		SetPosition(RotatedX, RotatedY);
+		double RotatedX = Math.cos(RadianAngle) * (GetX() - Point.GetX()) - Math.sin(RadianAngle) * (GetX() - Point.GetY()) + Point.GetX();
+		double RotatedY = Math.sin(RadianAngle) * (GetX() - Point.GetX()) + Math.cos(RadianAngle) * (GetY() - Point.GetY()) + Point.GetY();
+
+		SetPosition(new Vector2f((float) RotatedX, (float) RotatedY));
 	}
 
 	public float GetDistanceTo(Vector2f Point)
