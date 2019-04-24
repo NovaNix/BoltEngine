@@ -74,20 +74,20 @@
 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-opus</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-par</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-remotery</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-rpmalloc</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-sse</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-stb</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tinyexr</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tinyfd</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tootle</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-vma</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-vulkan</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives.vulkan}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-xxhash</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-yoga</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
-		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-zstd</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency>
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-rpmalloc</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-sse</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-stb</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tinyexr</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tinyfd</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-tootle</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-vma</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+ 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-vulkan</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives.vulkan}</classifier></dependency> 
+<!-- 		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-xxhash</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!--		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-yoga</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
+<!--		<dependency><groupId>org.lwjgl</groupId><artifactId>lwjgl-zstd</artifactId><version>${lwjgl.version}</version><classifier>${lwjgl.natives}</classifier></dependency> -->
 		<dependency><groupId>org.joml</groupId><artifactId>joml</artifactId><version>${joml.version}</version></dependency>
-		<dependency><groupId>com.code-disaster.steamworks4j</groupId><artifactId>steamworks4j</artifactId><version>${steamworks4j.version}</version></dependency>
-		<dependency><groupId>com.code-disaster.steamworks4j</groupId><artifactId>steamworks4j-server</artifactId><version>${steamworks4j-server.version}</version></dependency>
+		<dependency><groupId>com.code-disaster.steamworks4j</groupId><artifactId>steamworks4j</artifactId><version>${steamworks4j.version}</version></dependency> 
+		<dependency><groupId>com.code-disaster.steamworks4j</groupId><artifactId>steamworks4j-server</artifactId><version>${steamworks4j-server.version}</version></dependency> 
 	</dependencies>
   
   <build>
