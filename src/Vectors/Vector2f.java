@@ -140,7 +140,12 @@ public class Vector2f extends Vector<Vector2f>
 
 	public void Rotate(float Angle, Vector2f Point)
 	{
+		float RadianAngle = Math.toRadians(Angle);
+
+		float RotatedX = Math.cos(Angle) * (GetX() - Point.GetX()) - Math.sin(Angle) * (GetX() - Point.GetY()) + Point.GetX();
+		float RotatedY = Math.sin(Angle) * (GetX() - Point.GetX()) + Math.cos(Angle) * (GetY() - Point.GetY()) + Point.GetY();
 		
+		SetPosition(RotatedX, RotatedY);
 	}
 
 	public float GetDistanceTo(Vector2f Point)
