@@ -116,6 +116,33 @@ public class Vector2f extends Vector<Vector2f>
 		UpdateHashCode();
 	}
 
+	public float GetMagnitude()
+	{
+		return GetDistanceTo(new Vector2f(0, 0));
+	}
+	
+	public float GetDirection()
+	{
+		return Math.toDegrees(Math.atan2(GetY() / GetX()));
+	}
+
+	public float GetAngle()
+	{
+		float Angle = Math.toDegrees(Math.atan2(GetY() / GetX()); 
+	
+		if (Angle < 0)
+		{
+			Angle = 360 + Angle;
+		}
+	
+		return Angle;
+	}
+
+	public void Rotate(float Angle, Vector2f Point)
+	{
+		
+	}
+
 	public float GetDistanceTo(Vector2f Point)
 	{
 		float XDistance = Math.abs(Point.GetX() - GetX());
