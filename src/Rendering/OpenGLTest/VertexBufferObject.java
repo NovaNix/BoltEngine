@@ -20,6 +20,7 @@ public class VertexBufferObject implements Renderable
 
 	private void GenerateVBO(Polygon Poly)
 	{
+		this.Verticies = Vector2fUtils.GetCoordList(Poly.GetCompressed());
 		this.TextureVerticies = Vector2fUtils.GetCoordList(this.GenerateTexCoords(Poly));
 	}
 
@@ -28,8 +29,8 @@ public class VertexBufferObject implements Renderable
 
 		Vector2f[] PolygonCorners = Poly.GetCorners();
 
-		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetFurthestWest(PolygonCorners).GetX(), Vector2fUtils.GetFurthestSouth(PolygonCorners).GetY());
-		Vector2f TopRight = new Vector2f(Vector2fUtils.GetFurthestEast(PolygonCorners).GetX(), Vector2fUtils.GetFurthestNorth(PolygonCorners).GetY());
+		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(PolygonCorners).GetX(), Vector2fUtils.GetMinY(PolygonCorners).GetY());
+		Vector2f TopRight = new Vector2f(Vector2fUtils.GetMaxX(PolygonCorners).GetX(), Vector2fUtils.GetMaxY(PolygonCorners).GetY());
 
 		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
 		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
