@@ -7,7 +7,7 @@ import Vectors.Vector2f;
 public class Vector2fUtils
 {
 
-	public static Vector2f GetFurthestNorth(Vector2f[] Points)
+	public static Vector2f GetMaxY(Vector2f[] Points)
 	{
 		Vector2f Furthest = Points[0];
 
@@ -22,7 +22,7 @@ public class Vector2fUtils
 		return Furthest;
 	}
 
-	public static Vector2f GetFurthestSouth(Vector2f[] Points)
+	public static Vector2f GetMinY(Vector2f[] Points)
 	{
 		Vector2f Furthest = Points[0];
 
@@ -37,7 +37,7 @@ public class Vector2fUtils
 		return Furthest;
 	}
 
-	public static Vector2f GetFurthestEast(Vector2f[] Points)
+	public static Vector2f GetMaxX(Vector2f[] Points)
 	{
 		Vector2f Furthest = Points[0];
 
@@ -52,7 +52,7 @@ public class Vector2fUtils
 		return Furthest;
 	}
 
-	public static Vector2f GetFurthestWest(Vector2f[] Points)
+	public static Vector2f GetMinX(Vector2f[] Points)
 	{
 		Vector2f Furthest = Points[0];
 
@@ -87,10 +87,10 @@ public class Vector2fUtils
 
 	public static Vector2f GetCenter(Vector2f[] Points)
 	{
-		Vector2f Northern = GetFurthestNorth(Points);
-		Vector2f Southern = GetFurthestSouth(Points);
-		Vector2f Western = GetFurthestWest(Points);
-		Vector2f Eastern = GetFurthestEast(Points);
+		Vector2f Northern = GetMaxY(Points);
+		Vector2f Southern = GetMinY(Points);
+		Vector2f Western = GetMinX(Points);
+		Vector2f Eastern = GetMaxX(Points);
 
 		float XDistance = Western.GetXDistanceTo(Eastern) / 2;
 		float YDistance = Southern.GetYDistanceTo(Northern) / 2;
