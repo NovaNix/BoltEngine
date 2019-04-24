@@ -30,6 +30,11 @@ public class Vector2fGroup
 		Vectors.remove(Vector);
 	}
 
+	public int GetVectorPosition(Vector2f Vector)
+	{
+		return Vectors.indexOf(Vector);
+	}
+	
 	public void Add(Vector2f Vector)
 	{
 		for (int i = 0; i < Vectors.size(); i++)
