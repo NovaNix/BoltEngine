@@ -138,6 +138,11 @@ public class Vector2f extends Vector<Vector2f>
 		return Angle;
 	}
 
+	public float GetDotProduct(Vector2f Vector)
+	{
+		return (GetX() * Vector.GetX()) + (GetY() * Vector.GetY());
+	}
+
 	public void Rotate(float Angle, Vector2f Point)
 	{
 		float RadianAngle = Math.toRadians(Angle);
