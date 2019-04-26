@@ -11,6 +11,7 @@ To Optimize
 	Collisions
 	Sprite (Remove redundancy in saving raw data)
 	Color Pallete (Remove redundancy in saving raw data)
+	Merge Vector2f and ReferencedVector2f? (Vectors already have a tail and a head)
 
 To Write
 
@@ -45,3 +46,8 @@ To Remove
 
 	IO Keys
 	Old Window, Camera, and Window Screen
+
+Demos To Make
+
+	Polygon/Point Rotation
+	
