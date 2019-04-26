@@ -1,0 +1,47 @@
+	To-DO List
+	
+To Clean Up
+
+	Polygon Splitting
+	Easy Loader
+	Bolt Utils Remove Nulls
+
+To Optimize
+
+	Collisions
+	Sprite (Remove redundancy in saving raw data)
+	Color Pallete (Remove redundancy in saving raw data)
+
+To Write
+
+	Class Saving and Loading
+	Directory Manager
+	Polygon Merging
+	Debugging Console
+	Cashing
+	LWJGL Camera, Window Screen, and Window
+	LWJGL Rendering
+	Netty Networking Engine
+	Tile World Support
+	Sprite and Color Pallete Saving and Loading
+	Multi-Layer Sprites
+	Native Sprite Rendering Shader (Takes sprite data and color pallete data and merges them)
+	Rendering Layer Depth and Parallax
+
+To Re-write
+
+	VBO
+	Menus
+	Algorithms
+	Random
+	Physics Engine
+
+To Fix
+	
+	Messanging Engine
+	Chunk Array
+
+To Remove
+
+	IO Keys
+	Old Window, Camera, and Window Screen
