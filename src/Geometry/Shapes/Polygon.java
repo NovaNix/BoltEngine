@@ -16,7 +16,7 @@ public class Polygon extends Shape
 
 	Vector2fGroup Corners;
 	Segmant[] Sides;
-	
+
 	Circle BoundingBubble;
 
 	float Rotation = 0f;
@@ -24,14 +24,14 @@ public class Polygon extends Shape
 	protected float[] CompressedCorners;
 	protected int[] Index;
 	protected int[] TextureCoords;
-	
+
 	public Polygon(Vector2f[] Corners)
 	{
 		this.Position = new Vector2f(Vector2fUtils.GetMinX(Corners).GetX(), Vector2fUtils.GetMaxY(Corners).GetY());
 
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
-		
+
 		Refresh();
 	}
 
@@ -46,7 +46,7 @@ public class Polygon extends Shape
 	}
 
 	public void Refresh()
-	{	
+	{
 		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
 
 		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
@@ -84,90 +84,110 @@ public class Polygon extends Shape
 		int C1 = Corners.GetVectorPosition(Tri.GetCorner1());
 		int C2 = Corners.GetVectorPosition(Tri.GetCorner2());
 		int C3 = Corners.GetVectorPosition(Tri.GetCorner3());
-		
+
 		int Mid = GetMiddlePoint(C1, C2, C3);
-		
+
 		Corners.RemoveVector(Corners.ToArray()[Mid]);
-		
+
 		Refresh();
 	}
-	
+
 	private int GetMiddlePoint(int P1, int P2, int P3)
 	{
-		int[] Points = {P1, P2, P3};
-		
-		for (int i = 0; i < 3; i++)
+		int ListEnd = GetCornerCount() - 1;
+
+		int[] Corners = { P1, P2, P3 };
+
+		for (int i = 0; i < Corners.length; i++)
 		{
-			int PreviousCorner;
-			int NextCorner;
-			
-			int SelectedPoint = Points[i];
-			
-			if (SelectedPoint == 0) 
+			int SelectedCorner = Corners[i];
+
+			int Corner1;
+			int Corner2;
+
+			switch (i)
 			{
-				PreviousCorner = Corners.ToArray().length - 1;
-				NextCorner = 1;
+				case 0:
+
+					Corner1 = P2;
+					Corner2 = P3;
+
+					break;
+				case 1:
+
+					Corner1 = P1;
+					Corner2 = P3;
+
+					break;
+				case 2:
+
+					Corner1 = P2;
+					Corner2 = P1;
+
+					break;
+				default:
+					System.out.println("BIG ERROR!");
+					return -1;
 			}
 
-			else if (SelectedPoint == Corners.ToArray().length - 1) 
+			int Next;
+			int Last;
+
+			if (SelectedCorner == 0)
 			{
-				PreviousCorner = SelectedPoint - 1;
-				NextCorner = 0;
+				Next = 1;
+				Last = ListEnd;
 			}
 
-			else 
+			else if (SelectedCorner == ListEnd)
 			{
-				PreviousCorner = SelectedPoint - 1;
-				NextCorner = SelectedPoint + 1;
+				Next = 0;
+				Last = ListEnd - 1;
 			}
-			
-			if (i == 0)
+
+			else
 			{
-				if (Math.max(P2, P3) == Math.max(PreviousCorner, NextCorner) && Math.min(P2, P3) == Math.min(PreviousCorner, NextCorner))
-				{
-					return P1;
-				}
+				Next = SelectedCorner + 1;
+				Last = SelectedCorner - 1;
 			}
-			
-			else if (i == 1)
+
+			if ((Corner1 == Next || Corner2 == Next) && (Corner1 == Last || Corner2 == Last))
 			{
-				if (Math.max(P1, P3) == Math.max(PreviousCorner, NextCorner) && Math.min(P1, P3) == Math.min(PreviousCorner, NextCorner))
-				{
-					return P2;
-				}
-			}
-			
-			else if (i == 2)
-			{
-				if (Math.max(P2, P1) == Math.max(PreviousCorner, NextCorner) && Math.min(P2, P1) == Math.min(PreviousCorner, NextCorner))
-				{
-					return P3;
-				}
+				return SelectedCorner;
 			}
 		}
-		
-		System.out.println("Point not on polygon!");
-		
-		return 0;
+
+		System.out.println("The corner was not on the polygon!");
+		System.out.println("The corners were " + P1 + ", " + P2 + ", " + P3);
+
+		return -1;
 	}
-	
+
 	public Triangle[] ExtractTriangles()
 	{
 		Polygon Clone = Copy();
-		
-		ArrayList<Triangle> Triangles = new ArrayList<Triangle>(); 
-		
+
+		ArrayList<Triangle> Triangles = new ArrayList<Triangle>();
+
+		ArrayList<Triangle> NewTriangles = new ArrayList<Triangle>();
+
 		boolean Done = false;
-		
+
 		System.out.println("Extracting Triangles from Polygon");
-		
-		while (!Done) 
+
+		int Iteration = 0;
+
+		while (!Done)
 		{
-			
+
+			System.out.println("Iteration " + Iteration);
+
+			Iteration++;
+
 			ArrayList<Integer> ConcavePoints = new ArrayList<Integer>();
-			
-			Vector2f[] CornerList = Corners.ToArray();
-			
+
+			Vector2f[] CornerList = Clone.GetCorners();
+
 			for (int i = 0; i < CornerList.length; i++)
 			{
 				if (PointConcave(i))
@@ -178,114 +198,183 @@ public class Polygon extends Shape
 			}
 
 			boolean[] UsedList = new boolean[CornerList.length];
-			
-			for (int i = 0; i < CornerList.length; i++) 
+
+			for (int i = 0; i < CornerList.length; i++)
 			{
 				if (UsedList[i] == false && !ConcavePoints.contains(i))
 				{
 					int PreviousCorner;
 					int NextCorner;
 
-					if (i == 0) 
+					if (i == 0)
 					{
-						PreviousCorner = Corners.ToArray().length - 1;
+						PreviousCorner = CornerList.length - 1;
 						NextCorner = 1;
 					}
 
-					else if (i == Corners.ToArray().length - 1) 
+					else if (i == CornerList.length - 1)
 					{
 						PreviousCorner = i - 1;
 						NextCorner = 0;
 					}
 
-					else 
+					else
 					{
 						PreviousCorner = i - 1;
 						NextCorner = i + 1;
 					}
 
-					Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
+					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
 
-					System.out.println("Triangle made!");
-					
-					Triangles.add(Tri);
+					boolean LineGood = true;
 
-					if (Clone.GetCornerCount() == 3)
+					for (int j = 0; j < Sides.length; j++)
 					{
-						Done = true;
+						Vector2f Collision = TriLine.GetIntersectionWith(Sides[j]);
 
-						Triangle[] TriangleArray = new Triangle[Triangles.size()];
-						TriangleArray = Triangles.toArray(TriangleArray);
-						
-						System.out.println("Finished extracting triangles! We had " + TriangleArray.length + " triangles!");
-						
-						return TriangleArray;
+						if (Collision != null)
+						{
+							if (Collision.equals(CornerList[PreviousCorner]) || Collision.equals(CornerList[NextCorner]))
+							{
+								Collision = null;
+							}
+
+							else
+							{
+								LineGood = false;
+								System.out.println("Line is not good");
+							}
+						}
 					}
-					
-					Clone.Cut(Tri);
-					
-					UsedList[PreviousCorner] = true;
-					UsedList[i] = true;
-					UsedList[NextCorner] = true;
+
+					if (LineGood)
+					{
+						Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
+						System.out.println("Triangle made from " + PreviousCorner + ", " + i + ", " + NextCorner);
+						Triangles.add(Tri);
+						NewTriangles.add(Tri);
+						UsedList[PreviousCorner] = true;
+						UsedList[i] = true;
+						UsedList[NextCorner] = true;
+					}
 				}
-			} 
+			}
+
+			for (int i = 0; i < NewTriangles.size(); i++)
+			{
+				if (Clone.GetCornerCount() == 3)
+				{
+					Done = true;
+
+					Triangle[] TriangleArray = new Triangle[Triangles.size()];
+					TriangleArray = Triangles.toArray(TriangleArray);
+
+					System.out.println("Finished extracting triangles! We had " + TriangleArray.length + " triangles!");
+
+					return TriangleArray;
+				}
+
+				Clone.Cut(NewTriangles.get(i));
+			}
+
+			NewTriangles.clear();
+
+			if (Clone.GetCornerCount() == 3)
+			{
+				Done = true;
+
+				Triangle[] TriangleArray = new Triangle[Triangles.size()];
+				TriangleArray = Triangles.toArray(TriangleArray);
+
+				System.out.println("Finished extracting triangles! We had " + TriangleArray.length + " triangles!");
+
+				return TriangleArray;
+			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public int GetCornerCount()
 	{
 		return Corners.ToArray().length;
 	}
-	
+
 	private boolean PointConcave(int Corner)
 	{
-		
+
 		int PreviousCorner;
 		int NextCorner;
-		
+
 		if (Corner == 0)
 		{
 			PreviousCorner = Corners.ToArray().length - 1;
 			NextCorner = 1;
 		}
-		
+
 		else if (Corner == Corners.ToArray().length - 1)
 		{
 			PreviousCorner = Corner - 1;
 			NextCorner = 0;
 		}
-		
+
 		else
 		{
 			PreviousCorner = Corner - 1;
 			NextCorner = Corner + 1;
 		}
-		
+
 		Vector2f[] CornerArray = Corners.ToArray();
-		
+
 		Vector2f AB = CornerArray[Corner].Derive();
 		AB.Subtract(CornerArray[PreviousCorner]);
-		AB = new Vector2f(-AB.GetY(), AB.GetX());
+		// AB = new Vector2f(-AB.GetY(), AB.GetX());
 		Vector2f BC = CornerArray[NextCorner].Derive();
 		BC.Subtract(CornerArray[Corner]);
-		
-		float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
+		//
+		// float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
+		// float Determinant = (AB.GetX() * BC.GetY()) + (AB.GetY() * BC.GetX());
+		//
+		// float Magnitudes =
+		// CornerArray[Corner].GetDistanceTo(CornerArray[PreviousCorner]) *
+		// CornerArray[Corner].GetDistanceTo(CornerArray[NextCorner]);
 
-		System.out.println("AB = " + AB.ToString());
-		System.out.println("BC = " + BC.ToString());
-		
-		System.out.println("The dot product was " + DotProduct);
-		
-		return (DotProduct) < 0;
+		// float Angle = (float) Math.toDegrees(Math.atan2(Determinant, DotProduct));
+		//
+		// if (Angle < 0)
+		// {
+		// Angle = 360 + Angle;
+		// }
+
+		Vector2f MidPoint = CornerArray[Corner];
+		Vector2f Point1 = CornerArray[PreviousCorner];
+		Vector2f Point2 = CornerArray[NextCorner];
+
+		double result = Math.atan2(Point2.GetY() - MidPoint.GetY(), Point2.GetX() - MidPoint.GetX()) - Math.atan2(Point1.GetY() - MidPoint.GetY(), Point1.GetX() - MidPoint.GetX());
+
+		result = Math.toDegrees(result);
+
+		if (result < 0)
+		{
+			result = 360 + result;
+		}
+
+		// System.out.println("Result = " + result);
+		//
+		// System.out.println("Point " + (Corner + 1));
+		//
+		// System.out.println("Magnitude was " + Magnitudes);
+		//
+		// System.out.println("Angle was " + Angle);
+
+		return result > 180;
 	}
-	
+
 	public Vector2f GetScale()
 	{
 		Vector2f BottemRight = new Vector2f(Vector2fUtils.GetMaxX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
 		Vector2f TopLeft = Position;
-		
+
 		float PolygonWidth = TopLeft.GetXDistanceTo(BottemRight);
 		float PolygonHeight = BottemRight.GetYDistanceTo(TopLeft);
 
@@ -496,9 +585,9 @@ public class Polygon extends Shape
 	public void Rotate(float Rotation)
 	{
 		this.Rotation += Rotation;
-	
+
 		Vector2f[] CornerList = Corners.ToArray();
-		
+
 		for (int i = 0; i < CornerList.length; i++)
 		{
 			CornerList[i].Rotate(Rotation, Center);
