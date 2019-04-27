@@ -18,3 +18,5 @@ The engine seeks to reduce the code needed to do tasks such as Rendering, Collis
 	- Animations
 ## Planned Features
 	- Networking
+## Note
+This is my first project that uses Github (and git in general). Keep this in mind for any potential weirdness.

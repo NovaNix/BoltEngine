@@ -69,19 +69,16 @@ public class Vector2fUtils
 
 	public static Vector2f GetAverage(Vector2f[] Points)
 	{
-		float AverageX = 0;
-		float AverageY = 0;
-
+		Vector2f Average = new Vector2f();
+		
 		for (int i = 0; i < Points.length; i++)
 		{
-			AverageX += Points[i].GetX();
-			AverageY += Points[i].GetY();
+			Average.Add(Points[i]);
 		}
 
-		AverageX /= Points.length;
-		AverageY /= Points.length;
+		Average.Divide(new Vector2f(Points.length, Points.length));
 
-		return new Vector2f(AverageX, AverageY);
+		return Average;
 
 	}
 
