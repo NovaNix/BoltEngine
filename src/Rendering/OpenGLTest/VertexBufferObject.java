@@ -29,11 +29,12 @@ public class VertexBufferObject implements Renderable
 
 		Vector2f[] PolygonCorners = Poly.GetCorners();
 
-		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(PolygonCorners).GetX(), Vector2fUtils.GetMinY(PolygonCorners).GetY());
-		Vector2f TopRight = new Vector2f(Vector2fUtils.GetMaxX(PolygonCorners).GetX(), Vector2fUtils.GetMaxY(PolygonCorners).GetY());
+		Vector2f PolygonScale = Poly.GetScale();
 
-		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
-		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
+		float PolygonWidth = PolygonScale.GetX();
+		float PolygonHeight = PolygonScale.GetY();
+
+		Vector2f Translation = PolygonScale.Derive().Divide(new Vector2f(2, 2));
 
 		Vector2f[] TexCoords = new Vector2f[PolygonCorners.length];
 
@@ -41,9 +42,9 @@ public class VertexBufferObject implements Renderable
 		{
 			Vector2f Point = PolygonCorners[i].Derive();
 
-			Point.Subtract(BottemLeft);
+			Point.Subtract(Translation);
 
-			Point.Divide(new Vector2f(PolygonWidth, PolygonHeight));
+			Point.Divide(PolygonScale);
 
 			TexCoords[i] = Point;
 		}
