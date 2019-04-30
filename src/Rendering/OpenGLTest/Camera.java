@@ -19,6 +19,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
+
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
 import Rendering.Renderable;
