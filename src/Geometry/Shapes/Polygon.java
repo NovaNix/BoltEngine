@@ -59,6 +59,26 @@ public class Polygon extends Shape
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
 
+	public VertexBufferObject GenerateVBO()
+	{
+		float[] v = Vector2fUtils.GetCoordList(ToCorners.ToArray());
+		
+		float[] t = Vector2fUtils.GetCoordList(GetCompressed());
+		
+		Triangle[] Tris = ExtractTriangles();
+		
+		int[] index = new int[Tris.length * 3];
+		
+		for (int i = 0; i < Tris.length; i++)
+		{
+			index[i * 3] = Corners.GetVectorPosition(Tris[i].GetCorner1());
+			index[(i * 3) + 1] = Corners.GetVectorPosition(Tris[i].GetCorner2());
+			index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
+		}
+		
+		return new VertexBufferObject(v, t, index);
+	}
+
 	public Vector2f[] GetCompressed()
 	{
 		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
