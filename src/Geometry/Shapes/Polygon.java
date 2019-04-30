@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segmant;
+import Rendering.OpenGLTest.VertexBufferObject;
 import Utils.BoltUtils;
 import Utils.Vector2fUtils;
 import Vectors.ReferencedVector2f;
@@ -61,7 +62,7 @@ public class Polygon extends Shape
 
 	public VertexBufferObject GenerateVBO()
 	{
-		float[] v = Vector2fUtils.GetCoordList(ToCorners.ToArray());
+		float[] v = Vector2fUtils.GetCoordList(Corners.ToArray());
 		
 		float[] t = Vector2fUtils.GetCoordList(GetCompressed());
 		
