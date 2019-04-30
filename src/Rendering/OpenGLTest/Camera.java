@@ -26,7 +26,7 @@ import Rendering.Rendering;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-public class Camera implements Movable
+public class Camera extends JComponent implements Movable
 {
 
 	String Name = "Unnamed Camera";
@@ -64,7 +64,7 @@ public class Camera implements Movable
 		FBOTexture = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, FBOTexture);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GetWidth(), GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -74,11 +74,18 @@ public class Camera implements Movable
 
 	public void Update()
 	{
-		this.AspectRatio = new Vector2f(1, GetHeight() / GetWidth());
+		this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
 
 		if (!this.CameraCollision.GetScale().equals(this.GetCameraScale()))
 		{
 			this.CameraCollision.SetScale(this.GetCameraScale());
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
 
 			this.SetZoom(this.Zoom);
 		}
@@ -142,17 +149,7 @@ public class Camera implements Movable
 
 	public Vector2f GetCameraScale()
 	{
-		return new Vector2f(GetWidth(), GetHeight());
-	}
-
-	public int GetWidth()
-	{
-		return 0;
-	}
-
-	public int GetHeight()
-	{
-		return 0;
+		return new Vector2f(getWidth(), getHeight());
 	}
 
 	public float GetZoom()
