@@ -29,7 +29,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwInit();
 
-		WindowHandle = glfwCreateWindow(1000, 750, Name, NULL, NULL);
+		WindowHandle = glfwCreateWindow(1280, 750, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_SAMPLES, 4);
@@ -62,7 +62,7 @@ public class Window implements GLFWWindowSizeCallbackI
 	{
 		glfwInit();
 
-		WindowHandle = glfwCreateWindow(1000, 750, Name, NULL, NULL);
+		WindowHandle = glfwCreateWindow(1280, 750, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_SAMPLES, 4);
