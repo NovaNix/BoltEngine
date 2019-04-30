@@ -5,7 +5,7 @@ import Rendering.Renderable;
 import Utils.Vector2fUtils;
 import Vectors.Vector2f;
 
-public class VertexBufferObject implements Renderable
+public class VertexBufferObject
 {
 
 	float[] Verticies;
@@ -13,9 +13,11 @@ public class VertexBufferObject implements Renderable
 
 	int[] Indicies;
 
-	public VertexBufferObject(Polygon Poly)
+	public VertexBufferObject(float[] V, float[] T, int[] I)
 	{
-		this.GenerateVBO(Poly);
+		this.Verticies = V;
+		this.TextureVerticies = T;
+		this.Indicies = I;
 	}
 
 	private void GenerateVBO(Polygon Poly)
@@ -65,12 +67,6 @@ public class VertexBufferObject implements Renderable
 	public int[] GetIndicies()
 	{
 		return this.Indicies;
-	}
-
-	@Override
-	public void Render()
-	{
-
 	}
 
 }
