@@ -380,6 +380,8 @@ public class Polygon extends Shape
 			result = 360 + result;
 		}
 
+		System.out.println("Point's Angle: " + result);
+		
 		// System.out.println("Result = " + result);
 		//
 		// System.out.println("Point " + (Corner + 1));
