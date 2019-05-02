@@ -81,74 +81,9 @@ public class Segmant extends Line implements Renderable
 
 		else
 		{
-			// boolean Touching = ((Point.GetX() == Point1.GetX()) &&
-			// (Point.InRange(GetRange()[0], GetRange()[1])));
-			//
-			// System.out.println("Point on line, vertical:" + Touching);
-			// System.out.println("Slope: " + Slope);
-			// System.out.println("In Range: " + (GetRange()[0] <= Point.GetY() &&
-			// Point.GetY() <= GetRange()[1]));
-			// Point1.Print();
-			// Point2.Print();
-			//
-			// Point.Print();
 			return Point.GetX() == Point1.GetX() && (GetRange()[0] <= Point.GetY() && Point.GetY() <= GetRange()[1]);
 		}
 	}
-
-	// @Override
-	// public Vector2f GetIntersectionWith(Line Tested)
-	// {
-	// Vector2f Collision;
-	//
-	// if (!LinesAreParallel(Tested))
-	// {
-	// if (!IsVertical() && !Tested.IsVertical())
-	// {
-	// float XCollision = (Tested.GetYIntercept() - YIntercept) / (Slope -
-	// Tested.GetSlope());
-	// float YCollision = (Slope * XCollision) + YIntercept;
-	//
-	// Collision = new Vector2f(XCollision, YCollision);
-	// }
-	//
-	// else if (IsVertical() && !Tested.IsVertical())
-	// {
-	// float XCollision = PointOnLine.GetX();
-	// float YCollision = (Tested.GetSlope() * XCollision) + Tested.GetYIntercept();
-	//
-	// Collision = new Vector2f(XCollision, YCollision);
-	// }
-	//
-	// else if (!IsVertical() && Tested.IsVertical())
-	// {
-	// float XCollision = Tested.GetPointOnLine().GetX();
-	// float YCollision = (Slope * XCollision) + YIntercept;
-	//
-	// Collision = new Vector2f(XCollision, YCollision);
-	// }
-	//
-	// else
-	// {
-	// return null;
-	// }
-	// }
-	//
-	// else
-	// {
-	// return null;
-	// }
-	//
-	// if (PointOnLine(Collision) && Tested.PointOnLine(Collision))
-	// {
-	// return Collision;
-	// }
-	//
-	// else
-	// {
-	// return null;
-	// }
-	// }
 
 	public boolean InDomain(float X1, float X2)
 	{
