@@ -70,6 +70,15 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 
 	Lock RenderLock = new ReentrantLock();
 
+	public byte[] TakeScreenShot()
+	{
+		byte[] pixels = new byte[3 * width * height];
+
+		glReadPixels(0, 0, getWidth(), getHeight(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
+		
+		return pixels;
+	}
+
 	// @Override
 	// public void paintComponent(Graphics g)
 	// {
