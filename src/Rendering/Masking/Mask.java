@@ -12,124 +12,66 @@ import javax.swing.ImageIcon;
 
 import Vectors.Vector2f;
 
-public class Mask
+public class Mask extends Texture
 {
 
 	boolean Inverted = false;
 
-	Image MaskTexture;
+	BufferedImage MaskTexture;
 
-	public Mask(Image MaskingTexture)
+	public Mask(BufferedImage MaskingTexture)
 	{
-		this.MaskTexture = MaskingTexture;
+		super(GenerateMask(MaskingTexture, false), new Vector2f(MaskingTexture.getWidth(), MaskingTexture.getHeight());
+		
+		this.MaskingTexture = MaskingTexture;
 	}
 
-	public Mask(Image MaskingTexture, boolean Inverted)
+	public Mask(BufferedImage MaskingTexture, boolean Inverted)
 	{
+		super(GenerateMask(MaskingTexture, Inverted), new Vector2f(MaskingTexture.getWidth(), MaskingTexture.getHeight());
+		
 		this.MaskTexture = MaskingTexture;
 		this.Inverted = Inverted;
 	}
 
-	public Image ApplyMask(Image Original)
+	public ByteBuffer GenerateMask(BufferedImage Mask, boolean Inverted)
 	{
-		BufferedImage NewImage = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		ByteBuffer Buffer = BufferUtils.createByteBuffer(Extract.getWidth() * Extract.getHeight() * 4);
 
-		BufferedImage BufferedOriginal = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		if (Original instanceof BufferedImage)
+		for (int y = 0; y < Mask.getHeight(); y++)
 		{
-			BufferedOriginal = (BufferedImage) Original;
-		}
-
-		else
-		{
-			BufferedOriginal = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-			// Draw the image on to the buffered image
-			Graphics2D bGr = BufferedOriginal.createGraphics();
-			bGr.drawImage(Original, 0, 0, null);
-			bGr.dispose();
-		}
-
-		for (int x = 0; x < NewImage.getWidth(); x++)
-		{
-			for (int y = 0; y < NewImage.getHeight(); y++)
+			for (int x = 0; x < Mask.getWidth(); x++)
 			{
-				Color NewColor = new Color(BufferedOriginal.getRGB(x, y));
-
-				byte Value = (byte) Math.sqrt(NewColor.getRed() * NewColor.getRed() * .241 + NewColor.getGreen() * NewColor.getGreen() * .691 + NewColor.getBlue() * NewColor.getBlue() * .068);
-
-				int Transparency = Value + NewColor.getAlpha();
-
-				if (Transparency > 255)
-				{
-					Transparency = 255;
-				}
+				Color PixelColor = new Color(Mask.getRGB(x, y));
 
 				if (Inverted)
 				{
-					Transparency = 255 - Transparency;
+					// Put all red because R, G, and B should all be the same
+					
+					// The "255 - " is there to invert the colors
+					
+					Buffer.put((byte) 255 - PixelColor.getRed());
+					Buffer.put((byte) 255 - PixelColor.getRed());
+					Buffer.put((byte) 255 - PixelColor.getRed());
+					Buffer.put(255);
 				}
 
-				Color MaskedColor = new Color(NewColor.getRed(), NewColor.getGreen(), NewColor.getBlue(), Transparency);
-
-				NewImage.setRGB(x, y, MaskedColor.getRGB());
+				else
+				{
+					// Put all red because R, G, and B should all be the same
+	
+					Buffer.put((byte) PixelColor.getRed());
+					Buffer.put((byte) PixelColor.getRed());
+					Buffer.put((byte) PixelColor.getRed());
+					Buffer.put(255);
+				}
 			}
 		}
 
-		return NewImage;
+		Buffer.flip();
+		
+		return Buffer;
 	}
 
-	public Image ApplyMask(Image Original, Vector2f Position, Vector2f Scale)
-	{
-		BufferedImage NewImage = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		BufferedImage BufferedOriginal = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		if (Original instanceof BufferedImage)
-		{
-			BufferedOriginal = (BufferedImage) Original;
-		}
-
-		else
-		{
-			BufferedOriginal = new BufferedImage(Original.getWidth(null), Original.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-			// Draw the image on to the buffered image
-			Graphics2D bGr = BufferedOriginal.createGraphics();
-			bGr.drawImage(Original, 0, 0, null);
-			bGr.dispose();
-		}
-
-		for (int x = 0; x < NewImage.getWidth(); x++)
-		{
-			for (int y = 0; y < NewImage.getHeight(); y++)
-			{
-				Color NewColor = new Color(BufferedOriginal.getRGB(x, y));
-
-				// Color MaskColor = new Color();
-
-				byte Value = (byte) Math.sqrt(NewColor.getRed() * NewColor.getRed() * .241 + NewColor.getGreen() * NewColor.getGreen() * .691 + NewColor.getBlue() * NewColor.getBlue() * .068);
-
-				int Transparency = Value + NewColor.getAlpha();
-
-				if (Transparency > 255)
-				{
-					Transparency = 255;
-				}
-
-				if (Inverted)
-				{
-					Transparency = 255 - Transparency;
-				}
-
-				Color MaskedColor = new Color(NewColor.getRed(), NewColor.getGreen(), NewColor.getBlue(), Transparency);
-
-				NewImage.setRGB(x, y, MaskedColor.getRGB());
-			}
-		}
-
-		return NewImage;
-	}
 
 }
