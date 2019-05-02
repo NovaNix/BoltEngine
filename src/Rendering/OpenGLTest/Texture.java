@@ -35,47 +35,71 @@ public class Texture
 
 		else
 		{
-			ByteBuffer Buffer = BufferUtils.createByteBuffer(Convert.getWidth() * Convert.getHeight() * 4);
-
 			this.Size = new Vector2f(Convert.getWidth(), Convert.getHeight());
 
-			for (int y = 0; y < Convert.getHeight(); y++)
-			{
-				for (int x = 0; x < Convert.getWidth(); x++)
-				{
-					Color PixelColor = new Color(Convert.getRGB(x, y));
-
-					Buffer.put((byte) PixelColor.getRed());
-					Buffer.put((byte) PixelColor.getGreen());
-					Buffer.put((byte) PixelColor.getBlue());
-					Buffer.put((byte) PixelColor.getAlpha());
-				}
-			}
-
-			Buffer.flip();
+			ByteBuffer ColorData = ExtractColorData(Convert);
 
 			TextureID = glGenTextures();
 
-			glBindTexture(GL_TEXTURE_2D, TextureID);
+			GenerateTexture(ColorData, Size, TextureID);
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Convert.getWidth(), Convert.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Buffer);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
+			Data = ColorData;
+			
 			PreloadedImages.put(Convert, this);
-
 		}
 	}
 
 	public Texture(Sprite Convert)
 	{
-
+		
 	}
 
+	public Texture(ByteBuffer Data, Vector2f Size)
+	{
+		this.Size = Size;
+
+		TextureID = glGenTextures();
+
+		GenerateTexture(Data, Size, TextureID);
+
+		this.Data = Data;
+	}
+	
+	private void GenerateTexture(ByteBuffer Data, Vector2f Size, int ID)
+	{
+		glBindTexture(GL_TEXTURE_2D, ID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Size.GetX(), Size.GetY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	
+	private ByteBuffer ExtractColorData(BufferedImage Extract)
+	{
+		ByteBuffer Buffer = BufferUtils.createByteBuffer(Extract.getWidth() * Extract.getHeight() * 4);
+
+		for (int y = 0; y < Extract.getHeight(); y++)
+		{
+			for (int x = 0; x < Extract.getWidth(); x++)
+			{
+				Color PixelColor = new Color(Extract.getRGB(x, y));
+
+				Buffer.put((byte) PixelColor.getRed());
+				Buffer.put((byte) PixelColor.getGreen());
+				Buffer.put((byte) PixelColor.getBlue());
+				Buffer.put((byte) PixelColor.getAlpha());
+			}
+		}
+
+		Buffer.flip();
+		
+		return Buffer;
+	}
+	
 	public int GetID()
 	{
 		return TextureID;
