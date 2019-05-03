@@ -190,41 +190,17 @@ public class Polygon extends Shape
 
 		ArrayList<Triangle> Triangles = new ArrayList<Triangle>();
 
-		ArrayList<Triangle> NewTriangles = new ArrayList<Triangle>();
-
 		boolean Done = false;
 
 		System.out.println("Extracting Triangles from Polygon");
 
-		int Iteration = 0;
-
 		while (!Done)
 		{
-
-			// System.out.println("Iteration " + Iteration);
-
-			// Iteration++;
-
-			ArrayList<Integer> ConcavePoints = new ArrayList<Integer>();
-
 			Vector2f[] CornerList = Clone.GetCorners();
 
 			for (int i = 0; i < CornerList.length; i++)
 			{
-				if (Clone.PointConcave(i))
-				{
-					System.out.println("Found a concave point! It was at " + i);
-					ConcavePoints.add(i);
-				}
-			}
-
-			System.out.println("Remaining Corners, " + CornerList.length);
-
-			boolean[] UsedList = new boolean[CornerList.length];
-
-			for (int i = 0; i < CornerList.length; i++)
-			{
-				if (UsedList[i] == false && !ConcavePoints.contains(i))
+				if (!Clone.PointConcave(i))
 				{
 					int PreviousCorner;
 					int NextCorner;
@@ -249,8 +225,6 @@ public class Polygon extends Shape
 
 					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
 
-					System.out.println("Potential Triangle made from " + PreviousCorner + ", " + i + ", " + NextCorner);
-
 					boolean LineGood = true;
 
 					for (int j = 0; j < GetSides().length; j++)
@@ -261,15 +235,12 @@ public class Polygon extends Shape
 						{
 							if (Collision.equals(CornerList[PreviousCorner]) || Collision.equals(CornerList[NextCorner]))
 							{
-								System.out.println("False Collision");
-
 								Collision = null;
 							}
 
 							else
 							{
 								LineGood = false;
-								System.out.println("Line is not good, collided with line " + j);
 								break;
 							}
 						}
@@ -278,37 +249,12 @@ public class Polygon extends Shape
 					if (LineGood)
 					{
 						Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
-						System.out.println("Triangle made from " + PreviousCorner + ", " + i + ", " + NextCorner);
 						Triangles.add(Tri);
-						NewTriangles.add(Tri);
-						UsedList[PreviousCorner] = true;
-						UsedList[i] = true;
-						UsedList[NextCorner] = true;
+						Clone.Cut(Tri);
+						break;
 					}
 				}
-
 			}
-
-			for (int i = 0; i < NewTriangles.size(); i++)
-			{
-				if (Clone.GetCornerCount() == 3)
-				{
-					Done = true;
-
-					Triangle[] TriangleArray = new Triangle[Triangles.size()];
-					TriangleArray = Triangles.toArray(TriangleArray);
-
-					System.out.println("Finished extracting triangles! We had " + TriangleArray.length + " triangles!");
-
-					return TriangleArray;
-				}
-
-				Clone.Cut(NewTriangles.get(i));
-			}
-
-			NewTriangles.clear();
-
-			ConcavePoints.clear();
 
 			if (Clone.GetCornerCount() == 3)
 			{
