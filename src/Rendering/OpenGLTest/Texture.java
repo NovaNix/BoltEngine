@@ -113,6 +113,21 @@ public class Texture
 		return Buffer;
 	}
 
+	public int GetWidth()
+	{
+		return (int) Size.GetX();
+	}
+
+	public int GetHeight()
+	{
+		return (int) Size.GetY();
+	}
+
+	public Vector2f GetSize()
+	{
+		return Size;
+	}
+
 	public int GetID()
 	{
 		return TextureID;
