@@ -46,15 +46,13 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 
-		// ImageIcon Icon = EasyLoader.LoadLocalImageIcon(IconPath);
-		//
-		// GLFWImage.Buffer gb = GLFWImage.create(1);
-		// GLFWImage iconGI = GLFWImage.create().set(Icon.getIconWidth(),
-		// Icon.getIconHeight(), Icon);
-		// gb.put(0, iconGI);
-		//
-		// ImageIcon[] IconArray = new ImageIcon[1];
-		// glfwSetWindowIcon(WindowHandle, 1, IconArray);
+		Texture Icon = new Texture(IconPath);
+
+		GLFWImage.Buffer GLFWBuffer = GLFWImage.create(1);
+		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.GetWidth(), Icon.GetHeight(), Icon.GetData());
+		GLFWBuffer.put(0, GLFWIcon);
+		
+		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
 
 	}
 
