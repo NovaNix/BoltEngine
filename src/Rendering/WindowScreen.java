@@ -1,19 +1,23 @@
 package Rendering;
 
+import static org.lwjgl.opengl.GL11.GL_RGB;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glReadPixels;
+
+import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+import org.lwjgl.BufferUtils;
 
 import Menu.Menu;
 import Rendering.Cameras.Camera;
@@ -57,7 +61,7 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 
 	public void Update()
 	{
-		if (!(getSize().getWidth() == SimulatedEnviroment.getWidth() && getSize().getHeight() == SimulatedEnviroment.getHeight()))
+		if (!(getWidth() == SimulatedEnviroment.getWidth() && getHeight() == SimulatedEnviroment.getHeight()))
 		{
 			SimulatedEnviroment.setMinimumSize(getSize());
 			SimulatedEnviroment.setPreferredSize(getSize());
@@ -70,12 +74,14 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 
 	Lock RenderLock = new ReentrantLock();
 
-	public byte[] TakeScreenShot()
+	public ByteBuffer TakeScreenShot()
 	{
-		byte[] pixels = new byte[3 * width * height];
+		// byte[] pixels = new byte[3 * getWidth() * getHeight()];
+
+		ByteBuffer pixels = BufferUtils.createByteBuffer(getWidth() * getHeight() * 3);
 
 		glReadPixels(0, 0, getWidth(), getHeight(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
-		
+
 		return pixels;
 	}
 

@@ -53,10 +53,10 @@ public class Line
 	public Vector2f GetIntersectionWith(Line Tested)
 	{
 		Vector2f Collision = null;
-		
-		float XCollision;
-		float YCollision;
-		
+
+		float XCollision = 0;
+		float YCollision = 0;
+
 		if (!LinesAreParallel(Tested))
 		{
 			if (!IsVertical() && !Tested.IsVertical())
@@ -76,14 +76,14 @@ public class Line
 				XCollision = Tested.GetPointOnLine().GetX();
 				YCollision = (Slope * XCollision) + YIntercept;
 			}
-			
+
 			Collision = new Vector2f(XCollision, YCollision);
 
 			if (!PointOnLine(Collision) || !Tested.PointOnLine(Collision))
 			{
 				return null;
 			}
-			
+
 		}
 
 		return Collision;
@@ -149,7 +149,7 @@ public class Line
 			return Point.GetY() <= (Slope * Point.GetX()) + YIntercept;
 		}
 
-		else 
+		else
 		{
 			return PointOnLine.GetX() >= Point.GetX();
 		}

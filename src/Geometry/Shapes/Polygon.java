@@ -63,20 +63,20 @@ public class Polygon extends Shape
 	public VertexBufferObject GenerateVBO()
 	{
 		float[] v = Vector2fUtils.GetCoordList(Corners.ToArray());
-		
+
 		float[] t = Vector2fUtils.GetCoordList(GetCompressed());
-		
+
 		Triangle[] Tris = ExtractTriangles();
-		
+
 		int[] index = new int[Tris.length * 3];
-		
+
 		for (int i = 0; i < Tris.length; i++)
 		{
 			index[i * 3] = Corners.GetVectorPosition(Tris[i].GetCorner1());
 			index[(i * 3) + 1] = Corners.GetVectorPosition(Tris[i].GetCorner2());
 			index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
 		}
-		
+
 		return new VertexBufferObject(v, t, index);
 	}
 
@@ -201,9 +201,9 @@ public class Polygon extends Shape
 		while (!Done)
 		{
 
-			System.out.println("Iteration " + Iteration);
+			// System.out.println("Iteration " + Iteration);
 
-			Iteration++;
+			// Iteration++;
 
 			ArrayList<Integer> ConcavePoints = new ArrayList<Integer>();
 
@@ -211,12 +211,14 @@ public class Polygon extends Shape
 
 			for (int i = 0; i < CornerList.length; i++)
 			{
-				if (PointConcave(i))
+				if (Clone.PointConcave(i))
 				{
 					System.out.println("Found a concave point! It was at " + i);
 					ConcavePoints.add(i);
 				}
 			}
+
+			System.out.println("Remaining Corners, " + CornerList.length);
 
 			boolean[] UsedList = new boolean[CornerList.length];
 
@@ -247,23 +249,28 @@ public class Polygon extends Shape
 
 					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
 
+					System.out.println("Potential Triangle made from " + PreviousCorner + ", " + i + ", " + NextCorner);
+
 					boolean LineGood = true;
 
-					for (int j = 0; j < Sides.length; j++)
+					for (int j = 0; j < GetSides().length; j++)
 					{
-						Vector2f Collision = TriLine.GetIntersectionWith(Sides[j]);
+						Vector2f Collision = TriLine.GetIntersectionWith(GetSides()[j]);
 
 						if (Collision != null)
 						{
 							if (Collision.equals(CornerList[PreviousCorner]) || Collision.equals(CornerList[NextCorner]))
 							{
+								System.out.println("False Collision");
+
 								Collision = null;
 							}
 
 							else
 							{
 								LineGood = false;
-								System.out.println("Line is not good");
+								System.out.println("Line is not good, collided with line " + j);
+								break;
 							}
 						}
 					}
@@ -279,6 +286,7 @@ public class Polygon extends Shape
 						UsedList[NextCorner] = true;
 					}
 				}
+
 			}
 
 			for (int i = 0; i < NewTriangles.size(); i++)
@@ -299,6 +307,8 @@ public class Polygon extends Shape
 			}
 
 			NewTriangles.clear();
+
+			ConcavePoints.clear();
 
 			if (Clone.GetCornerCount() == 3)
 			{
@@ -352,9 +362,9 @@ public class Polygon extends Shape
 		// AB = new Vector2f(-AB.GetY(), AB.GetX());
 		Vector2f BC = CornerArray[NextCorner].Derive();
 		BC.Subtract(CornerArray[Corner]);
-		//
-		// float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
-		// float Determinant = (AB.GetX() * BC.GetY()) + (AB.GetY() * BC.GetX());
+
+		float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
+		float Determinant = (AB.GetX() * BC.GetY()) + (AB.GetY() * BC.GetX());
 		//
 		// float Magnitudes =
 		// CornerArray[Corner].GetDistanceTo(CornerArray[PreviousCorner]) *
@@ -366,6 +376,10 @@ public class Polygon extends Shape
 		// {
 		// Angle = 360 + Angle;
 		// }
+
+		float angle = (float) Math.atan2(Determinant, DotProduct);
+
+		angle = (float) Math.toDegrees(angle);
 
 		Vector2f MidPoint = CornerArray[Corner];
 		Vector2f Point1 = CornerArray[PreviousCorner];
@@ -380,8 +394,16 @@ public class Polygon extends Shape
 			result = 360 + result;
 		}
 
+		// if (angle < 0)
+		// {
+		// angle = 360 + angle;
+		// }
+
+		angle = Math.abs(angle);
+
 		System.out.println("Point's Angle: " + result);
-		
+		System.out.println("Angle: " + angle);
+
 		// System.out.println("Result = " + result);
 		//
 		// System.out.println("Point " + (Corner + 1));
@@ -390,7 +412,7 @@ public class Polygon extends Shape
 		//
 		// System.out.println("Angle was " + Angle);
 
-		return result > 180;
+		return angle > 180;
 	}
 
 	public Vector2f GetScale()

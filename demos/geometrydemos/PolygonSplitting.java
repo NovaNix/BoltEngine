@@ -3,7 +3,6 @@ package geometrydemos;
 import java.awt.image.BufferedImage;
 
 import Geometry.Shapes.Polygon;
-import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Triangle;
 import Rendering.Rendering;
 import Rendering.Window;
@@ -19,9 +18,13 @@ public class PolygonSplitting
 
 	static Camera Cam = new SingleFollowCamera("Default Perspective", new Vector2f(0, 0));
 
-//	static Polygon Poly = new Polygon(new Vector2f[] { new Vector2f(30, 20), new Vector2f(20, 90), new Vector2f(40, 130), new Vector2f(50, 70), new Vector2f(70, 120), new Vector2f(90, 140), new Vector2f(110, 110), new Vector2f(80, 60), new Vector2f(90, 40), new Vector2f(110, 50), new Vector2f(150, 60), new Vector2f(130, 20) });
+	static Polygon Poly = new Polygon(new Vector2f[] { new Vector2f(30, 20), new Vector2f(20, 90), new Vector2f(40, 130), new Vector2f(50, 70), new Vector2f(70, 120), new Vector2f(90, 140), new Vector2f(110, 110), new Vector2f(80, 60), new Vector2f(90, 40), new Vector2f(110, 50), new Vector2f(150, 60), new Vector2f(130, 20) });
 
-	static Rectangle Poly = new Rectangle(new Vector2f(50, 50), new Vector2f(500, 200));
+	// new Vector2f(30, 20), new Vector2f(40, 130) new Vector2f(70, 120), new
+	// Vector2f(110, 110)
+
+	// static Rectangle Poly = new Rectangle(new Vector2f(50, 50), new Vector2f(500,
+	// 200));
 
 	static Triangle[] Split;
 

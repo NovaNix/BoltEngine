@@ -1,10 +1,23 @@
 package Rendering.OpenGLTest;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGB;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -44,14 +57,14 @@ public class Texture
 			GenerateTexture(ColorData, Size, TextureID);
 
 			Data = ColorData;
-			
+
 			PreloadedImages.put(Convert, this);
 		}
 	}
 
 	public Texture(Sprite Convert)
 	{
-		
+
 	}
 
 	public Texture(ByteBuffer Data, Vector2f Size)
@@ -64,7 +77,7 @@ public class Texture
 
 		this.Data = Data;
 	}
-	
+
 	private void GenerateTexture(ByteBuffer Data, Vector2f Size, int ID)
 	{
 		glBindTexture(GL_TEXTURE_2D, ID);
@@ -74,10 +87,10 @@ public class Texture
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Size.GetX(), Size.GetY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (int) Size.GetX(), (int) Size.GetY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	
+
 	private ByteBuffer ExtractColorData(BufferedImage Extract)
 	{
 		ByteBuffer Buffer = BufferUtils.createByteBuffer(Extract.getWidth() * Extract.getHeight() * 4);
@@ -96,10 +109,10 @@ public class Texture
 		}
 
 		Buffer.flip();
-		
+
 		return Buffer;
 	}
-	
+
 	public int GetID()
 	{
 		return TextureID;
