@@ -311,17 +311,6 @@ public class Polygon extends Shape
 
 		float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
 		float Determinant = (AB.GetX() * BC.GetY()) + (AB.GetY() * BC.GetX());
-		//
-		// float Magnitudes =
-		// CornerArray[Corner].GetDistanceTo(CornerArray[PreviousCorner]) *
-		// CornerArray[Corner].GetDistanceTo(CornerArray[NextCorner]);
-
-		// float Angle = (float) Math.toDegrees(Math.atan2(Determinant, DotProduct));
-		//
-		// if (Angle < 0)
-		// {
-		// Angle = 360 + Angle;
-		// }
 
 		float angle = (float) Math.atan2(Determinant, DotProduct);
 
