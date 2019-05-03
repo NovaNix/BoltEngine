@@ -46,7 +46,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 
-		Texture Icon = new Texture(IconPath);
+		Texture Icon = new Texture(EasyLoader.LoadLocalImage(IconPath));
 
 		GLFWImage.Buffer GLFWBuffer = GLFWImage.create(1);
 		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.GetWidth(), Icon.GetHeight(), Icon.GetData());
