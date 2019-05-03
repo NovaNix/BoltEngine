@@ -51,7 +51,7 @@ public class EasyLoader
 		}
 	}
 
-	public static Image LoadLocalImage(String Path)
+	public static BufferedImage LoadLocalImage(String Path)
 	{
 		if (IsAdded(Images, Path))
 		{
@@ -74,7 +74,7 @@ public class EasyLoader
 		}
 	}
 
-	public static Image LoadExternalImage(String Path)
+	public static BufferedImage LoadExternalImage(String Path)
 	{
 		Image Icon;
 		try
