@@ -16,9 +16,32 @@ public class RenderingPlane implements Renderable, Sortable
 
 	String Name;
 
+	// Used to decide what gets rendered
+	float Depth = 0;
+
+	float XParallax = 1;
+	float YParallax = 1;
+	
+	Vector2f FocalPoint = new Vector2f(0, 0);
+
 	ArrayList<Renderable> ToRender = new ArrayList<Renderable>();
 
 	public RenderingPlane(String Name)
+	{
+		this.Name = Name;
+	}
+	
+	public RenderingPlane(String Name, float Depth, float XParallax, float YParallax, Vector2f FocalPoint)
+	{
+		this.Name = Name;
+	}
+	
+	public RenderingPlane(String Name, float XParallax, float YParallax, Vector2f FocalPoint)
+	{
+		this.Name = Name;
+	}
+	
+	public RenderingPlane(String Name, float XParallax, float YParallax)
 	{
 		this.Name = Name;
 	}
