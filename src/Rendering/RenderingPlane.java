@@ -56,12 +56,21 @@ public class RenderingPlane implements Renderable, Sortable
 		ToRender.remove(Rendered);
 	}
 
+	@Override
 	public void Render()
 	{
 		for (int i = 0; i < ToRender.size(); i++)
 		{
 			ToRender.get(i).Render();
 		}
+	}
+
+	public Vector2f GetParallaxTranslation(Vector2f CameraCenter)
+	{
+		float XTranslation = CameraCenter.GetXDistanceTo(FocalPoint) * XParallax;
+		float YTranslation = CameraCenter.GetYDistanceTo(FocalPoint) * YParallax;
+		
+		return new Vector2f(XTranslation, YTranslation);
 	}
 
 	@SuppressWarnings({ "hiding", "unchecked" })
