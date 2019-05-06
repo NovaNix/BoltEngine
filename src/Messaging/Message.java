@@ -8,9 +8,9 @@ public abstract class Message
 
 	Type Variation;
 
-	MessageSender Sender;
+	Object Sender;
 
-	public Message(String Name, Type Variation, MessageSender Sender)
+	public Message(String Name, Type Variation, Object Sender)
 	{
 		this.Name = Name;
 
@@ -34,7 +34,7 @@ public abstract class Message
 		return Variation;
 	}
 
-	public MessageSender GetSender()
+	public Object GetSender()
 	{
 		return Sender;
 	}

@@ -114,6 +114,24 @@ public class Sprite
 		return ImageOffset;
 	}
 
+	public int[] GetPixelData()
+	{
+		int[] PixelData = new int[Size.GetX() * Size.GetY() * 4];
+		
+		int Pointer = 0;
+		
+		for (int y = 0; y < (int) Size.GetY(); y++)
+		{
+			for (int x = 0; x < (int) Size.GetX(); x++)
+			{
+				PixelData[Pointer] = Pixels[x][y];
+				Pointer++
+			}
+		}
+		
+		return PixelData;
+	}
+	
 	public void Print()
 	{
 		for (int x = 0; x < (int) Size.GetX(); x++)

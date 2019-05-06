@@ -334,6 +334,26 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
+	public void Draw(VertexBufferObject VBO, Shader Shaders)
+	{
+		ApplyShader(Shaders);
+		
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetVBufferID());
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetTBufferID());
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+				
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIBufferID());
+
+ 		glDrawElements(GL_TRIANGLES, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
+		
+		glDisableVertexAttribArray(0);	
+		glDisableVertexAttribArray(1);
+	}
+	
 	private void EnableRaw()
 	{
 
@@ -348,7 +368,7 @@ public class Rendering
 	{
 
 	}
-
+	
 	private void ApplyTexture(Texture Apply, int Sampler)
 	{
 		if ((Sampler >= 0) && (Sampler <= 31))
