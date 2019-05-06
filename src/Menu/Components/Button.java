@@ -132,4 +132,39 @@ public class Button extends MenuElement implements Triggerable
 	{
 		return Body;
 	}
+
+	@Override
+	public void LeftClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void RightClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void MiddleClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void Hover()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void Dehover()
+	{
+		// TODO Auto-generated method stub
+
+	}
 }

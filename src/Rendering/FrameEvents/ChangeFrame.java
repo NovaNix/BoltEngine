@@ -1,19 +1,16 @@
 /*
- * 
+ *
  */
 package Rendering.FrameEvents;
 
 import java.awt.Image;
-
-import Messaging.Message.Type;
-import Messaging.MessageSender;
 
 public class ChangeFrame extends FrameEvent
 {
 
 	Image Frame;
 
-	public ChangeFrame(Image NewFrame, MessageSender Sender)
+	public ChangeFrame(Image NewFrame, Object Sender)
 	{
 		super("The animation frame is being changed!", Type.Notification, Sender);
 

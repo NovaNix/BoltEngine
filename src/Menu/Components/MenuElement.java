@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package Menu.Components;
 
@@ -9,7 +9,6 @@ import Engine.BoltEngine;
 import Menu.MenuEvent;
 import Menu.MenuListener;
 import Messaging.Message;
-import Messaging.MessageSender;
 import Rendering.Renderable;
 import Vectors.Vector2f;
 
@@ -26,12 +25,15 @@ public abstract class MenuElement implements Renderable
 	public abstract void Update();
 
 	public abstract void LeftClick();
+
 	public abstract void RightClick();
+
 	public abstract void MiddleClick();
-	
+
 	public abstract void Hover();
+
 	public abstract void Dehover();
-	
+
 	public void PushEvent(String Name, String Info)
 	{
 		MenuEvent Event = new MenuEvent(Name, Info, this);

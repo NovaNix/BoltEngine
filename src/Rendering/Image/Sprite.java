@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package Rendering.Image;
 
@@ -116,22 +116,22 @@ public class Sprite
 
 	public int[] GetPixelData()
 	{
-		int[] PixelData = new int[Size.GetX() * Size.GetY() * 4];
-		
+		int[] PixelData = new int[(int) Size.GetX() * (int) Size.GetY() * 4];
+
 		int Pointer = 0;
-		
+
 		for (int y = 0; y < (int) Size.GetY(); y++)
 		{
 			for (int x = 0; x < (int) Size.GetX(); x++)
 			{
 				PixelData[Pointer] = Pixels[x][y];
-				Pointer++
+				Pointer++;
 			}
 		}
-		
+
 		return PixelData;
 	}
-	
+
 	public void Print()
 	{
 		for (int x = 0; x < (int) Size.GetX(); x++)

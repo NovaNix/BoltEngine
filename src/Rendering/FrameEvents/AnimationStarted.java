@@ -1,15 +1,12 @@
 /*
- * 
+ *
  */
 package Rendering.FrameEvents;
-
-import Messaging.Message.Type;
-import Messaging.MessageSender;
 
 public class AnimationStarted extends FrameEvent
 {
 
-	public AnimationStarted(MessageSender Sender)
+	public AnimationStarted(Object Sender)
 	{
 		super("An animation is being started!", Type.Notification, Sender);
 	}

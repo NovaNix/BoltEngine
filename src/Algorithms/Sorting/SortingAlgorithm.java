@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package Algorithms.Sorting;
 
@@ -13,7 +13,7 @@ public abstract class SortingAlgorithm implements Algorithm
 
 	public Object[] Execute(Object[] Parameters)
 	{
-		return new Object[] {Sort(Parameters[0], Parameters[1])};
+		return new Object[] {};
 	}
 
 	public abstract <H> ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing);

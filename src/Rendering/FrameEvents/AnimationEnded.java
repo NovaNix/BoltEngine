@@ -1,14 +1,11 @@
 /*
- * 
+ *
  */
 package Rendering.FrameEvents;
 
-import Messaging.MessageSender;
-import Messaging.Message.Type;
-
 public class AnimationEnded extends FrameEvent
 {
-	public AnimationEnded(MessageSender Sender)
+	public AnimationEnded(Object Sender)
 	{
 		super("An animation just ended!", Type.Notification, Sender);
 	}
