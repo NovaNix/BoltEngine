@@ -3,7 +3,10 @@
  */
 package Algorithms;
 
-public abstract class Algorithm
+public interface Algorithm
 {
 
+	public Object[] Execute(Object[] Parameters);
+
+  
 }
