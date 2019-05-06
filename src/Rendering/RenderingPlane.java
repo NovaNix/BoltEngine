@@ -1,15 +1,14 @@
 /*
- * 
+ *
  */
 package Rendering;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import Rendering.Renderable;
-
 import Algorithms.Sorting.Sortable;
 import Algorithms.Sorting.SortingAlgorithm;
+import Vectors.Vector2f;
 
 public class RenderingPlane implements Renderable, Sortable
 {
@@ -21,7 +20,7 @@ public class RenderingPlane implements Renderable, Sortable
 
 	float XParallax = 1;
 	float YParallax = 1;
-	
+
 	Vector2f FocalPoint = new Vector2f(0, 0);
 
 	ArrayList<Renderable> ToRender = new ArrayList<Renderable>();
@@ -30,17 +29,17 @@ public class RenderingPlane implements Renderable, Sortable
 	{
 		this.Name = Name;
 	}
-	
+
 	public RenderingPlane(String Name, float Depth, float XParallax, float YParallax, Vector2f FocalPoint)
 	{
 		this.Name = Name;
 	}
-	
+
 	public RenderingPlane(String Name, float XParallax, float YParallax, Vector2f FocalPoint)
 	{
 		this.Name = Name;
 	}
-	
+
 	public RenderingPlane(String Name, float XParallax, float YParallax)
 	{
 		this.Name = Name;

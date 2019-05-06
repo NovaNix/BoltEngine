@@ -194,6 +194,8 @@ public class Polygon extends Shape
 
 		System.out.println("Extracting Triangles from Polygon");
 
+		Vector2f[] AllCorners = Corners.ToArray();
+
 		while (!Done)
 		{
 			Vector2f[] CornerList = Clone.GetCorners();
@@ -225,11 +227,13 @@ public class Polygon extends Shape
 
 					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
 
+					Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
+
 					boolean LineGood = true;
 
-					for (int j = 0; j < GetSides().length; j++)
+					for (int j = 0; j < Clone.GetSides().length; j++)
 					{
-						Vector2f Collision = TriLine.GetIntersectionWith(GetSides()[j]);
+						Vector2f Collision = TriLine.GetIntersectionWith(Clone.GetSides()[j]);
 
 						if (Collision != null)
 						{
@@ -244,14 +248,34 @@ public class Polygon extends Shape
 								break;
 							}
 						}
+
 					}
 
 					if (LineGood)
 					{
-						Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
-						Triangles.add(Tri);
-						Clone.Cut(Tri);
-						break;
+						boolean TriGood = true;
+
+						for (int j = 0; j < AllCorners.length; j++)
+						{
+							if (!AllCorners[j].equals(Tri.GetCorner1()) && !AllCorners[j].equals(Tri.GetCorner2()) && !AllCorners[j].equals(Tri.GetCorner3()))
+							{
+								if (Tri.CollidesWith(AllCorners[j]))
+								{
+									TriGood = false;
+									System.out.println("Tri Bad");
+									break;
+								}
+							}
+						}
+
+						if (TriGood)
+						{
+							System.out.println("Tri made from " + PreviousCorner + ", " + i + ", " + NextCorner);
+
+							Triangles.add(Tri);
+							Clone.Cut(Tri);
+							break;
+						}
 					}
 				}
 			}
@@ -259,6 +283,8 @@ public class Polygon extends Shape
 			if (Clone.GetCornerCount() == 3)
 			{
 				Done = true;
+
+				Triangles.add(new Triangle(CornerList[0], CornerList[1], CornerList[2]));
 
 				Triangle[] TriangleArray = new Triangle[Triangles.size()];
 				TriangleArray = Triangles.toArray(TriangleArray);
@@ -280,74 +306,62 @@ public class Polygon extends Shape
 	private boolean PointConcave(int Corner)
 	{
 
+		return GetInternalAngle(Corner) > 180;
+	}
+
+	public float GetInternalAngle(int Point)
+	{
 		int PreviousCorner;
 		int NextCorner;
 
-		if (Corner == 0)
+		if (Point == 0)
 		{
 			PreviousCorner = Corners.ToArray().length - 1;
 			NextCorner = 1;
 		}
 
-		else if (Corner == Corners.ToArray().length - 1)
+		else if (Point == Corners.ToArray().length - 1)
 		{
-			PreviousCorner = Corner - 1;
+			PreviousCorner = Point - 1;
 			NextCorner = 0;
 		}
 
 		else
 		{
-			PreviousCorner = Corner - 1;
-			NextCorner = Corner + 1;
+			PreviousCorner = Point - 1;
+			NextCorner = Point + 1;
 		}
 
-		Vector2f[] CornerArray = Corners.ToArray();
+		Vector2f MiddlePoint = GetCorners()[Point];
 
-		Vector2f AB = CornerArray[Corner].Derive();
-		AB.Subtract(CornerArray[PreviousCorner]);
-		// AB = new Vector2f(-AB.GetY(), AB.GetX());
-		Vector2f BC = CornerArray[NextCorner].Derive();
-		BC.Subtract(CornerArray[Corner]);
+		Vector2f Point1 = GetCorners()[PreviousCorner];
+		Vector2f Point2 = GetCorners()[NextCorner];
 
-		float DotProduct = (AB.GetX() * BC.GetX()) + (AB.GetY() * BC.GetY());
-		float Determinant = (AB.GetX() * BC.GetY()) + (AB.GetY() * BC.GetX());
+		Triangle Tri = new Triangle(Point1, Point2, MiddlePoint);
 
-		float angle = (float) Math.atan2(Determinant, DotProduct);
+		float Angle = AngleBetween(Point1, MiddlePoint, Point2);
 
-		angle = (float) Math.toDegrees(angle);
-
-		Vector2f MidPoint = CornerArray[Corner];
-		Vector2f Point1 = CornerArray[PreviousCorner];
-		Vector2f Point2 = CornerArray[NextCorner];
-
-		double result = Math.atan2(Point2.GetY() - MidPoint.GetY(), Point2.GetX() - MidPoint.GetX()) - Math.atan2(Point1.GetY() - MidPoint.GetY(), Point1.GetX() - MidPoint.GetX());
-
-		result = Math.toDegrees(result);
-
-		if (result < 0)
+		if (!CollidesWith(Tri.GetCenter()))
 		{
-			result = 360 + result;
+			Angle = 360 - Angle;
 		}
 
-		// if (angle < 0)
-		// {
-		// angle = 360 + angle;
-		// }
+		return Angle;
+	}
 
-		angle = Math.abs(angle);
+	protected float AngleBetween(Vector2f Point1, Vector2f Intersection, Vector2f Point2)
+	{
+		Vector2f AB = Intersection.Derive();
 
-		System.out.println("Point's Angle: " + result);
-		System.out.println("Angle: " + angle);
+		AB.Subtract(Point1);
 
-		// System.out.println("Result = " + result);
-		//
-		// System.out.println("Point " + (Corner + 1));
-		//
-		// System.out.println("Magnitude was " + Magnitudes);
-		//
-		// System.out.println("Angle was " + Angle);
+		Vector2f BC = Point2;
 
-		return angle > 180;
+		BC.Subtract(Intersection);
+
+		float DotProduct = AB.GetDotProduct(BC);
+
+		return (float) Math.toDegrees(Math.acos(DotProduct));
 	}
 
 	public Vector2f GetScale()

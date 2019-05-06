@@ -1,11 +1,10 @@
 /*
- * 
+ *
  */
 package IO;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class EasyLoader
 {
 
 	static HashMap<String, Font> Fonts = new HashMap<String, Font>();
-	static HashMap<String, Image> Images = new HashMap<String, Image>();
+	static HashMap<String, BufferedImage> Images = new HashMap<String, BufferedImage>();
 	static HashMap<String, ImageIcon> Icons = new HashMap<String, ImageIcon>();
 	static HashMap<String, BufferedImage> BufferedImages = new HashMap<String, BufferedImage>();
 	static HashMap<String, File> Files = new HashMap<String, File>();
@@ -61,7 +60,7 @@ public class EasyLoader
 		else
 		{
 			URL Location = EasyLoader.class.getResource(Path);
-			Image Icon;
+			BufferedImage Icon;
 			try
 			{
 				Icon = ImageIO.read(Location);
@@ -76,7 +75,7 @@ public class EasyLoader
 
 	public static BufferedImage LoadExternalImage(String Path)
 	{
-		Image Icon;
+		BufferedImage Icon;
 		try
 		{
 			Icon = ImageIO.read(new URL(Path));
