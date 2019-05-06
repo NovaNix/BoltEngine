@@ -13,7 +13,7 @@ import Messaging.MessageSender;
 import Rendering.Renderable;
 import Vectors.Vector2f;
 
-public abstract class MenuElement implements Renderable, MessageSender
+public abstract class MenuElement implements Renderable
 {
 
 	String ComponentName;
@@ -25,6 +25,13 @@ public abstract class MenuElement implements Renderable, MessageSender
 
 	public abstract void Update();
 
+	public abstract void LeftClick();
+	public abstract void RightClick();
+	public abstract void MiddleClick();
+	
+	public abstract void Hover();
+	public abstract void Dehover();
+	
 	public void PushEvent(String Name, String Info)
 	{
 		MenuEvent Event = new MenuEvent(Name, Info, this);
@@ -35,7 +42,6 @@ public abstract class MenuElement implements Renderable, MessageSender
 		}
 	}
 
-	@Override
 	public void PushMessage(Message Pushed)
 	{
 		MenuListener[] ListenerArray = new MenuListener[Listeners.size()];
