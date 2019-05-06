@@ -147,6 +147,27 @@ public class ColorPalette
 		return -1;
 	}
 
+	public int[] ToList()
+	{
+		int Size = Colors.keySet().size();
+		
+		int[] ColorList = new int[Size * 4];
+		
+		for (int i = 0; i < Size; i++)
+		{
+			Color Hue = Colors.get(i);
+			
+			int Position = i * 4;
+			
+			ColorList[Position] = Hue.getRed();
+			ColorList[Position + 1] = Hue.getGreen();
+			ColorList[Position + 2] = Hue.getBlue();
+			ColorList[Position + 3] = Hue.getAlpha();
+		}	
+		
+		return ColorList;
+	}
+	
 	public void Print()
 	{
 		System.out.println("Color Palette Table:" + System.lineSeparator());
