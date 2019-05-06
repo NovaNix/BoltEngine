@@ -1,9 +1,17 @@
 package Rendering.OpenGLTest;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.awt.Color;
@@ -337,23 +345,23 @@ public class Rendering
 	public void Draw(VertexBufferObject VBO, Shader Shaders)
 	{
 		ApplyShader(Shaders);
-		
+
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetVBufferID());
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-		
+		// glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetTBufferID());
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-				
+		// glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIBufferID());
 
- 		glDrawElements(GL_TRIANGLES, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
-		
-		glDisableVertexAttribArray(0);	
+		glDrawElements(GL_TRIANGLES, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
+
+		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 	}
-	
+
 	private void EnableRaw()
 	{
 
@@ -368,7 +376,7 @@ public class Rendering
 	{
 
 	}
-	
+
 	private void ApplyTexture(Texture Apply, int Sampler)
 	{
 		if ((Sampler >= 0) && (Sampler <= 31))
