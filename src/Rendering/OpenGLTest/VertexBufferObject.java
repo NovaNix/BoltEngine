@@ -46,6 +46,20 @@ public class VertexBufferObject
  		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indicies.length, Indicies, GL_STATIC_DRAW);
 	}
 	
+	public long GetVBufferID()
+	{
+		return VBufferID;
+	}
+	public long GetTBufferID()
+	{
+		return TBufferID;
+	}
+	
+	public long GetIBufferID()
+	{
+		return IBufferID;
+	}
+	
 	public float[] GetVerticies()
 	{
 		return this.Verticies;
