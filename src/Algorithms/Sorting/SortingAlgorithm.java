@@ -18,10 +18,20 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 
 	ArrayList<H> Sorted;
 
+	Sortable Sorting = null;
+
 	public SortingAlgorithm(ArrayList<H> ToSort, Comparator<H> Testing)
 	{
 		this.ToSort = ToSort;
 		this.Testing = Testing;
+	}
+
+	public SortingAlgorithm(Sortable<H> Sort)
+	{
+		this.ToSort = Sort.GetToSort();
+		this.Testing = Sort.GetTester();
+	
+		this.Sorting = Sort;
 	}
 
 	@Override
@@ -39,6 +49,11 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 	public void run()
 	{
 		Sorted = Sort(ToSort, Testing);
+		
+		if (Sorting != null)
+		{
+			SetSorted(Sorted);
+		}
 		
 		Done = true;
 	}
