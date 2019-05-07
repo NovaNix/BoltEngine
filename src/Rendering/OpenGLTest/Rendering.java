@@ -342,7 +342,7 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
-	public void Draw(VertexBufferObject VBO, Shader Shaders)
+	public void Draw(VertexBufferObject VBO, Shader Shaders, int Type)
 	{
 		ApplyShader(Shaders);
 
@@ -356,7 +356,11 @@ public class Rendering
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIBufferID());
 
-		glDrawElements(GL_TRIANGLES, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
+		// Type for images and shapes should be GL_TRIANGLES
+		// Type for lines should be GL_LINES
+		// Type for points should be GL_POINTS
+		
+		glDrawElements(Type, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
