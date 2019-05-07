@@ -1,12 +1,11 @@
 /*
- * 
+ *
  */
 package Algorithms;
 
 public abstract class Algorithm implements Runnable
 {
 
-	public Object[] GetResult();
+	public abstract Object[] GetResult();
 
-  
 }

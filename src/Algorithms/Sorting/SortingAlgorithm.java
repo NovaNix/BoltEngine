@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 import Algorithms.Algorithm;
 
-public abstract class SortingAlgorithm <H> extends Algorithm
+public abstract class SortingAlgorithm<H> extends Algorithm
 {
 
 	boolean Done = false;
@@ -18,7 +18,7 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 
 	ArrayList<H> Sorted;
 
-	Sortable Sorting = null;
+	Sortable<H> Sorting = null;
 
 	public SortingAlgorithm(ArrayList<H> ToSort, Comparator<H> Testing)
 	{
@@ -30,7 +30,7 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 	{
 		this.ToSort = Sort.GetToSort();
 		this.Testing = Sort.GetTester();
-	
+
 		this.Sorting = Sort;
 	}
 
@@ -39,9 +39,9 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 	{
 		if (Done)
 		{
-			return new Object[] {Sorted};
+			return new Object[] { Sorted };
 		}
-		
+
 		return null;
 	}
 
@@ -49,15 +49,15 @@ public abstract class SortingAlgorithm <H> extends Algorithm
 	public void run()
 	{
 		Sorted = Sort(ToSort, Testing);
-		
+
 		if (Sorting != null)
 		{
-			SetSorted(Sorted);
+			Sorting.SetSorted(Sorted);
 		}
-		
+
 		Done = true;
 	}
 
-	public abstract <H> ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing);
+	public abstract ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing);
 
 }

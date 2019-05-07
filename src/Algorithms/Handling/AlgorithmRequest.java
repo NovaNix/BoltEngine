@@ -1,39 +1,28 @@
 /*
- * 
+ *
  */
 package Algorithms.Handling;
 
-import Utils.Script;
+import Algorithms.Algorithm;
+import Threading.Task;
 
-public class AlgorithmRequest extends Task implements Runnable
+public class AlgorithmRequest extends Task
 {
 
-	boolean IsDone = false;
+	// boolean IsDone = false;
 
 	Algorithm Alg;
-	
+
 	public AlgorithmRequest(Algorithm Alg)
 	{
-		super("Algorithm Request", this);
-	
-		this.Alg = Alg;
-	}
-	
-	@Override
-	public void run()
-	{
-		Alg.run();
-		IsDone = true;
-	}
+		super("Algorithm Request", Alg);
 
-	protected void Finish()
-	{
-		IsDone = true;
+		this.Alg = Alg;
 	}
 
 	public Object[] GetResult()
 	{
-		return Alg.GetResut();
+		return Alg.GetResult();
 	}
 
 	public boolean IsDone()

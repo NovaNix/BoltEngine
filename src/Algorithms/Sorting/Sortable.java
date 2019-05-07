@@ -1,14 +1,16 @@
 /*
- * 
+ *
  */
 package Algorithms.Sorting;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
-public interface Sortable <H>
+public interface Sortable<H>
 {
-	public ArrayList<H> GetToSort();
-	public Comparator<H> GetTester();
-		
-	public void SetSorted(ArrayList<H> Sorted);
+	ArrayList<H> GetToSort();
+
+	Comparator<H> GetTester();
+
+	void SetSorted(ArrayList<H> Sorted);
 }

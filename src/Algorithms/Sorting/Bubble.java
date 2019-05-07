@@ -3,10 +3,15 @@ package Algorithms.Sorting;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Bubble extends SortingAlgorithm
+public class Bubble<H> extends SortingAlgorithm<H>
 {
+	public Bubble(ArrayList<H> ToSort, Comparator<H> Testing)
+	{
+		super(ToSort, Testing);
+	}
+
 	@Override
-	public <H> ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing)
+	public ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing)
 	{
 		boolean Sorted = false;
 

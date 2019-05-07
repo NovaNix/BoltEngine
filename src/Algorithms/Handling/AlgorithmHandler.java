@@ -1,9 +1,11 @@
 /*
- * 
+ *
  */
 package Algorithms.Handling;
 
 import java.util.ArrayList;
+
+import Threading.TaskExecuter;
 
 public class AlgorithmHandler implements Runnable
 {
@@ -19,7 +21,7 @@ public class AlgorithmHandler implements Runnable
 	public AlgorithmHandler(int MaxRunning)
 	{
 		AlgorithmRunner = new TaskExecuter(MaxRunning);
-		
+
 		HandlerThread = new Thread(this);
 		HandlerThread.start();
 	}
@@ -31,15 +33,15 @@ public class AlgorithmHandler implements Runnable
 
 		while (Alive)
 		{
-			
+
 			AlgorithmRequest[] Requests = new AlgorithmRequest[PendingRequests.size()];
 			Requests = PendingRequests.toArray(Requests);
-			
+
 			if (Requests.length != 0)
 			{
 				AlgorithmRunner.ExecuteTasks(Requests, false);
 			}
-			
+
 			CleanFinishedRequests();
 
 			if (PendingRequests.size() == 0)
@@ -59,11 +61,6 @@ public class AlgorithmHandler implements Runnable
 	{
 		PendingRequests.add(Request);
 		notifyAll();
-	}
-
-	private void ProcessRequest(AlgorithmRequest Request)
-	{
-		Request.Run();
 	}
 
 	private void CleanFinishedRequests()
@@ -96,7 +93,7 @@ public class AlgorithmHandler implements Runnable
 	{
 		FinishedRequests = new ArrayList<AlgorithmRequest>();
 	}
-	
+
 	public void Kill()
 	{
 		Alive = false;

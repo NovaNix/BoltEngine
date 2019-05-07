@@ -3,11 +3,16 @@ package Algorithms.Sorting;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Merge extends SortingAlgorithm
+public class Merge<H> extends SortingAlgorithm<H>
 {
 
+	public Merge(ArrayList<H> ToSort, Comparator<H> Testing)
+	{
+		super(ToSort, Testing);
+	}
+
 	@Override
-	public <H> ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing)
+	public ArrayList<H> Sort(ArrayList<H> ToSort, Comparator<H> Testing)
 	{
 		ArrayList<ArrayList<H>> Groups = BreakUp(ToSort);
 

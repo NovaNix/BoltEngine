@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import Algorithms.Sorting.Sortable;
-import Algorithms.Sorting.SortingAlgorithm;
 import Vectors.Vector2f;
 
-public class RenderingPlane implements Renderable, Sortable
+public class RenderingPlane implements Renderable, Sortable<Renderable>
 {
 
 	String Name;
@@ -87,12 +86,30 @@ public class RenderingPlane implements Renderable, Sortable
 		return new Vector2f(XTranslation, YTranslation);
 	}
 
-	@SuppressWarnings({ "hiding", "unchecked" })
 	@Override
-	public <Renderable> void Sort(SortingAlgorithm Algorithm, Comparator<Renderable> Testing)
+	public ArrayList<Renderable> GetToSort()
 	{
+		return ToRender;
+	}
 
-		// ToRender = Algorithm.Sort(ToRender, Testing);
+	@Override
+	public Comparator<Renderable> GetTester()
+	{
+		return new Comparator<Renderable>()
+		{
+
+			@Override
+			public int compare(Renderable o1, Renderable o2)
+			{
+				return 0;
+			}
+		};
+	}
+
+	@Override
+	public void SetSorted(ArrayList<Renderable> Sorted)
+	{
+		ToRender = Sorted;
 	}
 
 }
