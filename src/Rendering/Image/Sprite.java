@@ -41,6 +41,27 @@ public class Sprite
 		this.ImageOffset = Offset;
 	}
 
+	public Sprite(Vector2f Size, int[] PixelData, ColorPalette Colors)
+	{
+		this.Size = Size;
+
+		int Pointer = 0;
+
+		for (int y = 0; y < (int) Size.GetY(); y++)
+		{
+			for (int x = 0; x < (int) Size.GetX(); x++)
+			{
+				Pixels[x][y] = PixelData[Pointer];
+				Pointer++;
+			}
+		}
+
+		this.Colors = Colors;
+
+		CompileImage();
+
+	}
+
 	public static int[][] GenerateCompressedPixels(Image Template, ColorPalette Colors)
 	{
 		BufferedImage ReadableImage = (BufferedImage) Template;
