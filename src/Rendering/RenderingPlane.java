@@ -33,16 +33,31 @@ public class RenderingPlane implements Renderable, Sortable
 	public RenderingPlane(String Name, float Depth, float XParallax, float YParallax, Vector2f FocalPoint)
 	{
 		this.Name = Name;
+
+		this.Depth = Depth;
+
+		this.XParallax = XParallax;
+		this.YParallax = YParallax;
+
+		this.FocalPoint = FocalPoint;
 	}
 
 	public RenderingPlane(String Name, float XParallax, float YParallax, Vector2f FocalPoint)
 	{
 		this.Name = Name;
+
+		this.XParallax = XParallax;
+		this.YParallax = YParallax;
+
+		this.FocalPoint = FocalPoint;
 	}
 
 	public RenderingPlane(String Name, float XParallax, float YParallax)
 	{
 		this.Name = Name;
+
+		this.XParallax = XParallax;
+		this.YParallax = YParallax;
 	}
 
 	public void AddRenderable(Renderable Rendered)
@@ -68,7 +83,7 @@ public class RenderingPlane implements Renderable, Sortable
 	{
 		float XTranslation = CameraCenter.GetXDistanceTo(FocalPoint) * XParallax;
 		float YTranslation = CameraCenter.GetYDistanceTo(FocalPoint) * YParallax;
-		
+
 		return new Vector2f(XTranslation, YTranslation);
 	}
 
