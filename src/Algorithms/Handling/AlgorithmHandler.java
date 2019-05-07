@@ -12,6 +12,18 @@ public class AlgorithmHandler implements Runnable
 	ArrayList<AlgorithmRequest> PendingRequests = new ArrayList<AlgorithmRequest>();
 	ArrayList<AlgorithmRequest> FinishedRequests = new ArrayList<AlgorithmRequest>();
 
+	TaskExecuter AlgorithmRunner;
+
+	Thread HandlerThread;
+
+	public AlgorithmHandler(int MaxRunning)
+	{
+		AlgorithmRunner = new TaskExecuter(MaxRunning);
+		
+		HandlerThread = new Thread(this);
+		HandlerThread.start();
+	}
+
 	@Override
 	public void run()
 	{
@@ -19,11 +31,12 @@ public class AlgorithmHandler implements Runnable
 
 		while (Alive)
 		{
-			for (AlgorithmRequest Request : PendingRequests)
-			{
-				ProcessRequest(Request);
-			}
-
+			
+			AlgorithmRequest[] Requests = new AlgorithmRequest[PendingRequests.size()];
+			Requests = PendingRequests.toArray(Requests);
+			
+			AlgorithmRunner.ExecuteTasks(Requests);
+			
 			CleanFinishedRequests();
 
 			if (PendingRequests.size() == 0)
@@ -42,7 +55,7 @@ public class AlgorithmHandler implements Runnable
 	public void PushRequest(AlgorithmRequest Request)
 	{
 		PendingRequests.add(Request);
-		notify();
+		notifyAll();
 	}
 
 	private void ProcessRequest(AlgorithmRequest Request)
@@ -79,6 +92,12 @@ public class AlgorithmHandler implements Runnable
 	public void DumpFinishedRequests()
 	{
 		FinishedRequests = new ArrayList<AlgorithmRequest>();
+	}
+	
+	public void Kill()
+	{
+		Alive = false;
+		notifyAll();
 	}
 
 }
