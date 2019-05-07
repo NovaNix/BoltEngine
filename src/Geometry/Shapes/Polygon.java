@@ -205,26 +205,9 @@ public class Polygon extends Shape
 
 				if (!(Angles[i] >= 180))
 				{
-					int PreviousCorner;
-					int NextCorner;
 
-					if (i == 0)
-					{
-						PreviousCorner = CornerList.length - 1;
-						NextCorner = 1;
-					}
-
-					else if (i == CornerList.length - 1)
-					{
-						PreviousCorner = i - 1;
-						NextCorner = 0;
-					}
-
-					else
-					{
-						PreviousCorner = i - 1;
-						NextCorner = i + 1;
-					}
+					int PreviousCorner = (i - 1) % CornerList.length;
+					int NextCorner = (i + 1) % CornerList.length;
 
 					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
 
@@ -303,26 +286,8 @@ public class Polygon extends Shape
 
 	public float GetInternalAngle(int Point)
 	{
-		int PreviousCorner;
-		int NextCorner;
-
-		if (Point == 0)
-		{
-			PreviousCorner = Corners.ToArray().length - 1;
-			NextCorner = 1;
-		}
-
-		else if (Point == Corners.ToArray().length - 1)
-		{
-			PreviousCorner = Point - 1;
-			NextCorner = 0;
-		}
-
-		else
-		{
-			PreviousCorner = Point - 1;
-			NextCorner = Point + 1;
-		}
+		int PreviousCorner = (Point - 1) % GetCornerCount();
+		int NextCorner = (Point + 1) % GetCornerCount();
 
 		Vector2f MiddlePoint = GetCorners()[Point];
 
@@ -332,8 +297,6 @@ public class Polygon extends Shape
 		Triangle Tri = new Triangle(Point1, Point2, MiddlePoint);
 
 		float Angle = AngleBetween(Point1, MiddlePoint, Point2);
-
-		System.out.println("Angle: " + Angle);
 
 		if (!CollidesWith(Tri.GetCenter()))
 		{
