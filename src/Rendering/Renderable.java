@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package Rendering;
 
@@ -9,9 +9,14 @@ import Rendering.Rendering.RenderingType;
 
 public interface Renderable
 {
-	public void Render();
+	void Render();
 
-	public default void Render(Color Hue, RenderingType Type)
+	default void Render(Color Hue)
+	{
+		Render();
+	}
+
+	default void Render(Color Hue, RenderingType Type)
 	{
 		Render();
 	}
