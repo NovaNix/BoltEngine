@@ -5,15 +5,10 @@ package Algorithms.Sorting;
 
 import java.util.Comparator;
 
-public interface Sortable
+public interface Sortable <H>
 {
-
-	public <H> void Sort(Algorithm Alg)
-	{
+	public ArrayList<H> GetToSort();
+	public Comparator<H> GetTester();
 		
-	}
-		
-	
-	public <H> void Sort(SortingAlgorithm Algorithm, Comparator<H> Tester);
-
+	public void SetSorted(ArrayList<H> Sorted);
 }
