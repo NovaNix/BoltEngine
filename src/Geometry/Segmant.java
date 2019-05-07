@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import Rendering.Renderable;
 import Rendering.Rendering;
+import Rendering.Rendering.RenderingType;
 import Vectors.Vector2f;
 
 public class Segmant extends Line implements Renderable
@@ -154,5 +155,11 @@ public class Segmant extends Line implements Renderable
 	public void Render()
 	{
 		Rendering.RenderReferencedLine(Point1, Point2, 1f, new Color(255, 255, 255));
+	}
+
+	@Override
+	public void Render(Color Hue, RenderingType Type)
+	{
+		Rendering.RenderReferencedLine(Point1, Point2, 1f, Hue);
 	}
 }
