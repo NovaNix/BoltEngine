@@ -35,7 +35,10 @@ public class AlgorithmHandler implements Runnable
 			AlgorithmRequest[] Requests = new AlgorithmRequest[PendingRequests.size()];
 			Requests = PendingRequests.toArray(Requests);
 			
-			AlgorithmRunner.ExecuteTasks(Requests);
+			if (Requests.length != 0)
+			{
+				AlgorithmRunner.ExecuteTasks(Requests, false);
+			}
 			
 			CleanFinishedRequests();
 
