@@ -181,9 +181,6 @@ public class Polygon extends Shape
 			}
 		}
 
-		System.out.println("The corner was not on the polygon!");
-		System.out.println("The corners were " + P1 + ", " + P2 + ", " + P3);
-
 		return -1;
 	}
 
@@ -195,8 +192,6 @@ public class Polygon extends Shape
 
 		boolean Done = false;
 
-		System.out.println("Extracting Triangles from Polygon");
-
 		Vector2f[] AllCorners = Corners.ToArray();
 
 		while (!Done)
@@ -207,10 +202,6 @@ public class Polygon extends Shape
 
 			for (int i = 0; i < CornerList.length; i++)
 			{
-				System.out.println(i);
-
-				System.out.println("Bolt Math: " + Angles[i]);
-				System.out.println("Internal: " + Clone.GetInternalAngle(i));
 
 				if (!(Angles[i] >= 180))
 				{
@@ -272,7 +263,6 @@ public class Polygon extends Shape
 								if (Tri.CollidesWith(AllCorners[j]))
 								{
 									TriGood = false;
-									System.out.println("Tri Bad");
 									break;
 								}
 							}
@@ -280,8 +270,6 @@ public class Polygon extends Shape
 
 						if (TriGood)
 						{
-							System.out.println("Tri made from " + PreviousCorner + ", " + i + ", " + NextCorner);
-
 							Triangles.add(Tri);
 							Clone.Cut(Tri);
 							break;
