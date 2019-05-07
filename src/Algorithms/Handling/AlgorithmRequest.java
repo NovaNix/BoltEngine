@@ -5,12 +5,19 @@ package Algorithms.Handling;
 
 import Utils.Script;
 
-public class AlgorithmRequest implements Runnable
+public class AlgorithmRequest extends Task implements Runnable
 {
 
 	boolean IsDone = false;
 
 	Algorithm Alg;
+	
+	public AlgorithmRequest(Algorithm Alg)
+	{
+		super("Algorithm Request", this);
+	
+		this.Alg = Alg;
+	}
 	
 	@Override
 	public void run()
