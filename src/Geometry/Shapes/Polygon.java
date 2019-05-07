@@ -315,12 +315,6 @@ public class Polygon extends Shape
 		return Corners.ToArray().length;
 	}
 
-	private boolean PointConcave(int Corner)
-	{
-
-		return GetInternalAngle(Corner) > 180;
-	}
-
 	public float GetInternalAngle(int Point)
 	{
 		int PreviousCorner;
