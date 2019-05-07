@@ -3,10 +3,10 @@
  */
 package Algorithms;
 
-public interface Algorithm
+public abstract class Algorithm implements Runnable
 {
 
-	public Object[] Execute(Object[] Parameters);
+	public Object[] GetResult();
 
   
 }
