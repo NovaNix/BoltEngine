@@ -279,6 +279,26 @@ public class Polygon extends Shape
 		return null;
 	}
 
+	public void RemoveCorner(int Corner)
+	{
+
+		int Prev = (Corner - 1) % GetCornerCount();
+		int Next = (Corner + 1) % GetCornerCount();
+
+		int OldCornerCount = GetCornerCount();
+	
+		Vector2f PrevPoint = Corners.ToArray()[Prev];
+		Vector2f NextPoint = Corners.ToArray()[Next];
+	
+		Corners.RemoveVector(Corners.ToArray()[Corner]);
+		
+		Sides[Prev] = new Segmant(PrevPoint, NextPoint);
+		Sides[Corner] = null;
+		
+		Sides = (Segmant[]) BoltUtils.RemoveNulls(Sides);
+		
+	}
+
 	public int GetCornerCount()
 	{
 		return Corners.ToArray().length;
