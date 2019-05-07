@@ -47,6 +47,25 @@ public class TaskExecuter
 		}
 	}
 
+	public synchronized void ExecuteTasks(Task[] Jobs, boolean Blocking)
+	{
+		if (Blocking == true)
+		{
+			ExecuteTasks(Jobs);	
+		}
+		
+		else
+		{
+			for (int i = 0; i < Jobs.length; i++)
+			{
+				Jobs[i].SetExecuter(this);
+
+				Pool.execute(Jobs[i]);
+			}
+
+		}
+	}
+	
 	public synchronized void TaskUpdate()
 	{
 		notifyAll();
