@@ -91,7 +91,7 @@ public class Texture
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
-	private ByteBuffer ExtractColorData(BufferedImage Extract)
+	public static ByteBuffer ExtractColorData(BufferedImage Extract)
 	{
 		ByteBuffer Buffer = BufferUtils.createByteBuffer(Extract.getWidth() * Extract.getHeight() * 4);
 
