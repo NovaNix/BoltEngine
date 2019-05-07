@@ -11,6 +11,18 @@ public class BoltEngine
 
 	public static Thread MessageManagerThread;
 
+	private static Game CurrentGame;
+	private static Thread GameThread;
+
+	public static void StartGame(Game Start)
+	{
+		CurrentGame = Start;
+
+		GameThread = new Thread(CurrentGame);
+
+		GameThread.start();
+	}
+
 	public static void Initiate()
 	{
 		MessagingEngineManager = new MessageManager();
