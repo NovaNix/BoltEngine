@@ -59,6 +59,7 @@ public abstract class Game implements Runnable
 
 			if (TickHandler.TickTime())
 			{
+				UpdateInput();
 				Tick();
 
 				TPS++;
