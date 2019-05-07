@@ -289,8 +289,6 @@ public class Polygon extends Shape
 				Triangle[] TriangleArray = new Triangle[Triangles.size()];
 				TriangleArray = Triangles.toArray(TriangleArray);
 
-				System.out.println("Finished extracting triangles! We had " + TriangleArray.length + " triangles!");
-
 				return TriangleArray;
 			}
 		}
