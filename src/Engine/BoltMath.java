@@ -41,20 +41,48 @@ public class BoltMath
 			Vector2f CurrentPoint = Corners[i];
 			Vector2f NextPoint = Corners[NextCorner];
 
-			double A1 = Math.atan2(LastPoint.GetY() - CurrentPoint.GetY(), LastPoint.GetX() - CurrentPoint.GetX());
-			double A2 = Math.atan2(NextPoint.GetY() - CurrentPoint.GetY(), NextPoint.GetX() - CurrentPoint.GetX());
+			double aAngle = Math.toDegrees(theta(CurrentPoint, LastPoint));
+			double cAngle = Math.toDegrees(theta(CurrentPoint, NextPoint));
+			double degs;
 
-			if (A1 > A2)
+			double firstAngle;
+			double secondAngle;
+
+			if (aAngle < cAngle)
 			{
-				A2 += 2 * Math.PI;
+				firstAngle = aAngle;
+				secondAngle = cAngle;
+			}
+			else
+			{
+				firstAngle = cAngle;
+				secondAngle = aAngle;
+			}
+			if (secondAngle - firstAngle < 180)
+			{
+				// startAngle = firstAngle;
+				degs = secondAngle - firstAngle;
+			}
+			else
+			{
+				// startAngle = secondAngle;
+				degs = firstAngle + (360 - secondAngle);
 			}
 
-			float Angle = (float) Math.toDegrees(A2 - A1);
+			Angles[i] = (float) degs;
 
-			Angles[i] = Angle;
 		}
 
 		return Angles;
+	}
+
+	public static double theta(Vector2f a, Vector2f b)
+	{
+		double ang = Math.atan2(a.GetY() - b.GetY(), b.GetX() - a.GetX());
+		if (ang < 0)
+			ang += (Math.PI * 2);
+
+		return ang;
 	}
 
 }

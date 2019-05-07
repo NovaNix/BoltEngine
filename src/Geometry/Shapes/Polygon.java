@@ -1,10 +1,13 @@
 package Geometry.Shapes;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
+import Engine.BoltMath;
 import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segmant;
+import Rendering.Rendering.RenderingType;
 import Rendering.OpenGLTest.VertexBufferObject;
 import Utils.BoltUtils;
 import Utils.Vector2fUtils;
@@ -200,9 +203,16 @@ public class Polygon extends Shape
 		{
 			Vector2f[] CornerList = Clone.GetCorners();
 
+			float[] Angles = BoltMath.GetAngles(Clone);
+
 			for (int i = 0; i < CornerList.length; i++)
 			{
-				if (!Clone.PointConcave(i))
+				System.out.println(i);
+
+				System.out.println("Bolt Math: " + Angles[i]);
+				System.out.println("Internal: " + Clone.GetInternalAngle(i));
+
+				if (!(Angles[i] >= 180))
 				{
 					int PreviousCorner;
 					int NextCorner;
@@ -284,7 +294,9 @@ public class Polygon extends Shape
 			{
 				Done = true;
 
-				Triangles.add(new Triangle(CornerList[0], CornerList[1], CornerList[2]));
+				Vector2f[] FinalCorners = Clone.GetCorners();
+
+				Triangles.add(new Triangle(FinalCorners[0], FinalCorners[1], FinalCorners[2]));
 
 				Triangle[] TriangleArray = new Triangle[Triangles.size()];
 				TriangleArray = Triangles.toArray(TriangleArray);
@@ -341,6 +353,8 @@ public class Polygon extends Shape
 
 		float Angle = AngleBetween(Point1, MiddlePoint, Point2);
 
+		System.out.println("Angle: " + Angle);
+
 		if (!CollidesWith(Tri.GetCenter()))
 		{
 			Angle = 360 - Angle;
@@ -355,13 +369,13 @@ public class Polygon extends Shape
 
 		AB.Subtract(Point1);
 
-		Vector2f BC = Point2;
+		Vector2f BC = Point2.Derive();
 
 		BC.Subtract(Intersection);
 
 		float DotProduct = AB.GetDotProduct(BC);
 
-		return (float) Math.toDegrees(Math.acos(DotProduct));
+		return (float) Math.toDegrees(Math.acos(DotProduct / (AB.GetMagnitude() * BC.GetMagnitude())));
 	}
 
 	public Vector2f GetScale()
@@ -397,7 +411,16 @@ public class Polygon extends Shape
 	{
 		for (int i = 0; i < Sides.length; i++)
 		{
-			Sides[i].Render();
+			Sides[i].Render(new Color(255, 0, 0), RenderingType.Referenced);
+		}
+	}
+
+	@Override
+	public void Render(Color Hue, RenderingType Type)
+	{
+		for (int i = 0; i < Sides.length; i++)
+		{
+			Sides[i].Render(Hue, Type);
 		}
 	}
 
