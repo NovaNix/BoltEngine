@@ -5,28 +5,29 @@ package Algorithms.Handling;
 
 import Utils.Script;
 
-public abstract class AlgorithmRequest
+public class AlgorithmRequest implements Runnable
 {
-
-	Script FinishScript;
-
-	public AlgorithmRequest(Script FinishScript)
-	{
-		this.FinishScript = FinishScript;
-	}
 
 	boolean IsDone = false;
 
-	public abstract void Run();
-
-	protected void Finish()
+	Algorithm Alg;
+	
+	@Override
+	public void run()
 	{
-		FinishScript.Run();
-
+		Alg.run();
 		IsDone = true;
 	}
 
-	public abstract Object GetResult();
+	protected void Finish()
+	{
+		IsDone = true;
+	}
+
+	public Object[] GetResult()
+	{
+		return Alg.GetResut();
+	}
 
 	public boolean IsDone()
 	{
