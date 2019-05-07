@@ -26,6 +26,9 @@ import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
@@ -68,10 +71,12 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 
-		Texture Icon = new Texture(EasyLoader.LoadLocalImage(IconPath));
+		BufferedImage Icon = EasyLoader.LoadLocalImage(IconPath);
+
+		ByteBuffer Data = Texture.ExtractColorData(Icon);
 
 		GLFWImage.Buffer GLFWBuffer = GLFWImage.create(1);
-		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.GetWidth(), Icon.GetHeight(), Icon.GetData());
+		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.getWidth(), Icon.getHeight(), Data);
 		GLFWBuffer.put(0, GLFWIcon);
 
 		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
