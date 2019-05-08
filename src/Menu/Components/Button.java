@@ -5,11 +5,9 @@ import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
 import IO.Keys.Key;
 import IO.Keys.MouseKey;
-import Utils.Script;
-import Utils.Triggerable;
 import Vectors.Vector2f;
 
-public class Button extends MenuElement implements Triggerable
+public class Button extends MenuElement
 {
 
 	MenuText Text;
@@ -22,8 +20,6 @@ public class Button extends MenuElement implements Triggerable
 	MouseKey Mouse;
 
 	boolean Clicked = false;
-
-	Script TriggerScript;
 
 	public Button(Vector2f Position, Vector2f Scale, MenuText Text, Key TriggerKey)
 	{
@@ -63,16 +59,6 @@ public class Button extends MenuElement implements Triggerable
 	}
 
 	@Override
-	public void Trigger()
-	{
-		if (TriggerScript != null)
-		{
-			TriggerScript.Run();
-		}
-		Clicked = true;
-	}
-
-	@Override
 	public void Render()
 	{
 		if (Icon != null)
@@ -95,7 +81,7 @@ public class Button extends MenuElement implements Triggerable
 			Mouse.ResetTypedState();
 
 			this.PushEvent("Button Pressed", "A button has been pressed.");
-			Trigger();
+
 		}
 
 		else if (Mouse.IsTyped(false) && Body.CollidesWith(Mouse.GetLastClickLocation()))
@@ -103,7 +89,7 @@ public class Button extends MenuElement implements Triggerable
 			Mouse.ResetTypedState();
 
 			this.PushEvent("Button Pressed", "A button has been pressed.");
-			Trigger();
+
 		}
 
 	}
@@ -120,12 +106,6 @@ public class Button extends MenuElement implements Triggerable
 		Clicked = false;
 
 		return WasClicked;
-	}
-
-	@Override
-	public void SetTriggerScript(Script TriggerScript)
-	{
-		this.TriggerScript = TriggerScript;
 	}
 
 	public Shape GetBody()

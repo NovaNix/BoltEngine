@@ -1,7 +1,7 @@
 package Rendering.OpenGLTest;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -348,18 +349,18 @@ public class Rendering
 
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetVBufferID());
-		// glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
 
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetTBufferID());
-		// glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIBufferID());
 
 		// Type for images and shapes should be GL_TRIANGLES
 		// Type for lines should be GL_LINES
 		// Type for points should be GL_POINTS
-		
+
 		glDrawElements(Type, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
