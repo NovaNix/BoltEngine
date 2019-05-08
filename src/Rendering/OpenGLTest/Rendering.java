@@ -24,19 +24,19 @@ import Vectors.Vector2f;
 public class Rendering
 {
 
-	Shader CurrentShader;
+	static Shader CurrentShader;
 
-	Shader DrawImage;
-	Shader DrawOval;
-	Shader DrawShape;
-	Shader DrawPoint;
+	static Shader DrawImage;
+	static Shader DrawOval;
+	static Shader DrawShape;
+	static Shader DrawPoint;
 
-	private Vector2f ReferencePoint;
+	private static Vector2f ReferencePoint;
 
-	private Vector2f RSOffset;
-	private Vector2f RSScale;
+	private static Vector2f RSOffset;
+	private static Vector2f RSScale;
 
-	private Rectangle CameraCollision;
+	private static Rectangle CameraCollision;
 
 	public void Start(Vector2f Size, Vector2f Reference, Vector2f Offset, Vector2f Scale, Rectangle CameraPOV)
 	{
@@ -48,12 +48,12 @@ public class Rendering
 		CameraCollision = CameraPOV;
 	}
 
-	public void SetReferencePoint(Vector2f Point)
+	public static void SetReferencePoint(Vector2f Point)
 	{
 		ReferencePoint = Point;
 	}
 
-	public Vector2f GetReferencePoint()
+	public static Vector2f GetReferencePoint()
 	{
 		return ReferencePoint;
 	}
@@ -76,7 +76,7 @@ public class Rendering
 
 	// Dynamic
 
-	public void RenderImage(RenderingType Type, Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderImage(RenderingType Type, Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		switch (Type)
 		{
@@ -92,7 +92,7 @@ public class Rendering
 		}
 	}
 
-	public void RenderBox(RenderingType Type, Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderBox(RenderingType Type, Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		switch (Type)
 		{
@@ -108,7 +108,7 @@ public class Rendering
 		}
 	}
 
-	public void RenderLine(RenderingType Type, Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderLine(RenderingType Type, Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		switch (Type)
 		{
@@ -124,7 +124,7 @@ public class Rendering
 		}
 	}
 
-	public void RenderOval(RenderingType Type, Vector2f Position, Vector2f Scale)
+	public static void RenderOval(RenderingType Type, Vector2f Position, Vector2f Scale)
 	{
 		switch (Type)
 		{
@@ -140,7 +140,7 @@ public class Rendering
 		}
 	}
 
-	public void RenderPoint(RenderingType Type, Vector2f Point, Color Hue)
+	public static void RenderPoint(RenderingType Type, Vector2f Point, Color Hue)
 	{
 		switch (Type)
 		{
@@ -156,7 +156,7 @@ public class Rendering
 		}
 	}
 
-	public void RenderText(RenderingType Type, Vector2f Position, String Text, Font Style, Color Hue)
+	public static void RenderText(RenderingType Type, Vector2f Position, String Text, Font Style, Color Hue)
 	{
 		switch (Type)
 		{
@@ -174,21 +174,28 @@ public class Rendering
 
 	// RAW RENDERING
 
-	public void RenderRawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		EnableRaw();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public void RenderRawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderRawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	{
+		EnableRaw();
+
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
+
+	public static void RenderRawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableRaw();
 
 		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
-	public void RenderRawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderRawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableRaw();
 
@@ -196,21 +203,21 @@ public class Rendering
 
 	}
 
-	public void RenderRawOval(Vector2f Position, Vector2f Scale)
+	public static void RenderRawOval(Vector2f Position, Vector2f Scale)
 	{
 		EnableRaw();
 
 		DrawOval(Position, Scale);
 	}
 
-	public void RenderRawPoint(Vector2f Point, Color Hue)
+	public static void RenderRawPoint(Vector2f Point, Color Hue)
 	{
 		EnableRaw();
 
 		DrawPoint(Point, Hue);
 	}
 
-	public void RenderRawText(Vector2f Position, String Text, Font Style, Color Hue)
+	public static void RenderRawText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
 		EnableRaw();
 
@@ -219,21 +226,28 @@ public class Rendering
 
 	// Rendering Supported Rendering
 
-	public void RenderRSImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRSImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		EnableRS();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public void RenderRSBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderRSImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	{
+		EnableRS();
+
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
+
+	public static void RenderRSBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableRS();
 
 		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
-	public void RenderRSLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderRSLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableRS();
 
@@ -241,21 +255,21 @@ public class Rendering
 
 	}
 
-	public void RenderRSOval(Vector2f Position, Vector2f Scale)
+	public static void RenderRSOval(Vector2f Position, Vector2f Scale)
 	{
 		EnableRS();
 
 		DrawOval(Position, Scale);
 	}
 
-	public void RenderRSPoint(Vector2f Point, Color Hue)
+	public static void RenderRSPoint(Vector2f Point, Color Hue)
 	{
 		EnableRS();
 
 		DrawPoint(Point, Hue);
 	}
 
-	public void RenderRSText(Vector2f Position, String Text, Font Style, Color Hue)
+	public static void RenderRSText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
 		EnableRS();
 
@@ -264,21 +278,28 @@ public class Rendering
 
 	// Referenced Rendering
 
-	public void RenderReferencedImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderReferencedImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		EnableReferenced();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public void RenderReferencedBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderReferencedImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	{
+		EnableReferenced();
+
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
+
+	public static void RenderReferencedBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableReferenced();
 
 		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
-	public void RenderReferencedLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	public static void RenderReferencedLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		EnableReferenced();
 
@@ -286,54 +307,60 @@ public class Rendering
 
 	}
 
-	public void RenderReferencedOval(Vector2f Position, Vector2f Scale)
+	public static void RenderReferencedOval(Vector2f Position, Vector2f Scale)
 	{
 		EnableReferenced();
 
 		DrawOval(Position, Scale);
 	}
 
-	public void RenderReferencedPoint(Vector2f Point, Color Hue)
+	public static void RenderReferencedPoint(Vector2f Point, Color Hue)
 	{
 		EnableReferenced();
 
 		DrawPoint(Point, Hue);
 	}
 
-	public void RenderReferencedText(Vector2f Position, String Text, Font Style, Color Hue)
+	public static void RenderReferencedText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
 		EnableReferenced();
 
 		DrawText(Position, Text, Style, Hue);
 	}
 
-	private void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
 	}
 
-	private void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	{
+		ApplyShader(DrawImage);
+		ApplyTexture(Sprite, 0);
+	}
+
+	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		ApplyShader(DrawShape);
 	}
 
-	private void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	private static void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
 		ApplyShader(DrawShape);
 	}
 
-	private void DrawOval(Vector2f Position, Vector2f Scale)
+	private static void DrawOval(Vector2f Position, Vector2f Scale)
 	{
 		ApplyShader(DrawOval);
 	}
 
-	private void DrawPoint(Vector2f Point, Color Hue)
+	private static void DrawPoint(Vector2f Point, Color Hue)
 	{
 		ApplyShader(DrawPoint);
 	}
 
-	private void DrawText(Vector2f Position, String Text, Font Style, Color Hue)
+	private static void DrawText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
 
 	}
@@ -343,7 +370,7 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
-	public void Draw(VertexBufferObject VBO, Shader Shaders, int Type)
+	public static void Draw(VertexBufferObject VBO, Shader Shaders, int Type)
 	{
 		ApplyShader(Shaders);
 
@@ -367,22 +394,22 @@ public class Rendering
 		glDisableVertexAttribArray(1);
 	}
 
-	private void EnableRaw()
+	private static void EnableRaw()
 	{
 
 	}
 
-	private void EnableRS()
+	private static void EnableRS()
 	{
 
 	}
 
-	private void EnableReferenced()
+	private static void EnableReferenced()
 	{
 
 	}
 
-	private void ApplyTexture(Texture Apply, int Sampler)
+	private static void ApplyTexture(Texture Apply, int Sampler)
 	{
 		if ((Sampler >= 0) && (Sampler <= 31))
 		{
@@ -391,13 +418,22 @@ public class Rendering
 		}
 	}
 
-	private void ApplyShader(Shader Apply)
+	private static void ApplyTexture(int Apply, int Sampler)
 	{
-		glUseProgram(Apply.GetShaderID());
-		this.CurrentShader = Apply;
+		if ((Sampler >= 0) && (Sampler <= 31))
+		{
+			glActiveTexture(GL_TEXTURE0 + Sampler);
+			glBindTexture(GL_TEXTURE_2D, Apply);
+		}
 	}
 
-	private void ClearTexture()
+	private static void ApplyShader(Shader Apply)
+	{
+		glUseProgram(Apply.GetShaderID());
+		CurrentShader = Apply;
+	}
+
+	private static void ClearTexture()
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
