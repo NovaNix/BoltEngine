@@ -126,7 +126,9 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glClearColor(0.211f, 0.211f, 0.211f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		Screen.Render();
 
 		glfwSwapBuffers(WindowHandle);
 
