@@ -82,7 +82,7 @@ public abstract class WindowScreen
 	{
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			Rendering.RenderRawImage(Cameras.get(i).Render(), new Vector2f(), new Vector2f(), 0);
+			Rendering.RenderRawImage(Cameras.get(i).Render(), new Vector2f(Cameras.get(i).getX(), Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(), Cameras.get(i).getHeight()), 0);
 		}
 	}
 
