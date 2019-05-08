@@ -20,9 +20,46 @@ public class EasyLoader
 	static HashMap<String, Font> Fonts = new HashMap<String, Font>();
 	static HashMap<String, BufferedImage> Images = new HashMap<String, BufferedImage>();
 	static HashMap<String, ImageIcon> Icons = new HashMap<String, ImageIcon>();
-	static HashMap<String, BufferedImage> BufferedImages = new HashMap<String, BufferedImage>();
 	static HashMap<String, File> Files = new HashMap<String, File>();
 
+	public static BufferedImage LoadImage(String Path, boolean Internal)
+	{
+		if (IsAdded(Images, Path))
+		{
+			return Images.get(Path);
+		}
+		
+		else
+		{
+			if (Internal)
+			{
+				return LoadLocalImage(Path);	
+			}
+			
+			else
+			{
+				return LoadExternalImage(Path);
+			}
+		}
+	
+	}
+	
+	public static ImageIcon LoadIcon(String Path, boolean Internal)
+	{
+		
+		
+		
+		return null;	
+	}
+	
+	public static Font LoadFont(String Path, boolean Internal)
+	{
+		
+		
+		
+		return null;
+	}
+	
 	public static Font LoadLocalFont(String Path)
 	{
 		if (IsAdded(Fonts, Path))
@@ -107,58 +144,6 @@ public class EasyLoader
 			Icons.put(Path, Icon);
 			return Icon;
 		}
-	}
-
-	public static BufferedImage LoadLocalBufferedImage(String Path)
-	{
-		if (IsAdded(BufferedImages, Path))
-		{
-			return BufferedImages.get(Path);
-		}
-
-		else
-		{
-			URL Location = EasyLoader.class.getResource(Path);
-			BufferedImage Icon;
-			try
-			{
-				Icon = ImageIO.read(Location);
-				BufferedImages.put(Path, Icon);
-				return Icon;
-			} catch (IOException e)
-			{
-				return null;
-			}
-		}
-	}
-
-	public static File LoadLocalFile(String Path)
-	{
-		if (IsAdded(Files, Path))
-		{
-			return Files.get(Path);
-		}
-
-		else
-		{
-			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-
-			File file = new File(classLoader.getResource(Path).getFile());
-
-			// String Location =
-			// EasyLoader.class.getResource(Path).getFile().replaceAll("%20", " ");
-			// File SavedFile = new File(Location);
-
-			return file;
-		}
-	}
-
-	public static File LoadExternalFile(String Path)
-	{
-		File SavedFile;
-		SavedFile = new File(Path);
-		Files.put(Path, SavedFile);
-		return SavedFile;
 	}
 
 	@SuppressWarnings("rawtypes")
