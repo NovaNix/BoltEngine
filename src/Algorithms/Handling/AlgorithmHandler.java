@@ -67,6 +67,8 @@ public class AlgorithmHandler implements Runnable
 	{
 		boolean Done = false;
 
+		ArrayList<AlgorithmRequest> ToRemove = new ArrayList<AlgorithmRequest>();
+
 		while (!Done)
 		{
 			boolean Changed = false;
@@ -75,8 +77,7 @@ public class AlgorithmHandler implements Runnable
 			{
 				if (PendingRequests.get(i).IsDone())
 				{
-					FinishedRequests.add(PendingRequests.get(i));
-					i--;
+					ToRemove.add(PendingRequests.get(i));
 
 					Changed = true;
 				}
@@ -85,6 +86,15 @@ public class AlgorithmHandler implements Runnable
 			if (!Changed)
 			{
 				Done = true;
+			}
+
+			else
+			{
+				for (int i = 0; i < ToRemove.size(); i++)
+				{
+					FinishedRequests.add(ToRemove.get(i));
+					PendingRequests.remove(ToRemove.get(i));
+				}
 			}
 		}
 	}
