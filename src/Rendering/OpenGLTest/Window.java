@@ -18,12 +18,14 @@ import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowIcon;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.image.BufferedImage;
@@ -32,8 +34,10 @@ import java.nio.ByteBuffer;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
+import org.lwjgl.opengl.GL;
 
 import IO.EasyLoader;
+import Rendering.Exceptions.ExcessCamerasException;
 
 //import org.jogamp.glg2d.GLG2DCanvas;
 
@@ -47,6 +51,8 @@ public class Window implements GLFWWindowSizeCallbackI
 	Vector2f CurrentSize = new Vector2f(0, 0);
 
 	boolean IsVisable = false;
+
+	WindowScreen Screen;
 
 	public Window(String Name, String IconPath)
 	{
@@ -81,6 +87,8 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
 
+		// SetScreen(new SingleCameraScreen(this));
+
 	}
 
 	public Window(String Name)
@@ -103,17 +111,40 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwSwapInterval(0);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
+
+		// SetScreen(new SingleCameraScreen(this));
 	}
 
 	public void Update()
 	{
-
+		Screen.Update();
 	}
 
 	public void Render()
 	{
+		GL.createCapabilities();
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glClearColor(0.211f, 0.211f, 0.211f, 1.0f);
+
+		glfwSwapBuffers(WindowHandle);
+
+	}
+
+	public void SetScreen(WindowScreen Screen)
+	{
+		this.Screen = Screen;
+	}
+
+	public int GetWidth()
+	{
+		return (int) CurrentSize.GetX();
+	}
+
+	public int GetHeight()
+	{
+		return (int) CurrentSize.GetY();
 	}
 
 	public Vector2f GetSize()
@@ -121,18 +152,18 @@ public class Window implements GLFWWindowSizeCallbackI
 		return CurrentSize.Derive();
 	}
 
-	// public void AddCamera(Camera Cam)
-	// {
-	// try
-	// {
-	// WinScreen.AddCamera(Cam);
-	// Cam.Update();
-	// } catch (ExcessCamerasException e)
-	// {
-	// e.printStackTrace();
-	// }
-	// }
-	//
+	public void AddCamera(Camera Cam)
+	{
+		try
+		{
+			Screen.AddCamera(Cam);
+			Cam.Update();
+		} catch (ExcessCamerasException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	public void Show()
 	{
 		glfwShowWindow(WindowHandle);
