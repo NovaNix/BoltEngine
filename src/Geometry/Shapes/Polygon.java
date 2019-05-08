@@ -36,7 +36,7 @@ public class Polygon extends Shape
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
 
-		Refresh();
+		Clean();
 	}
 
 	public Polygon(Vector2f Position, Vector2f[] Corners)
@@ -46,7 +46,43 @@ public class Polygon extends Shape
 		this.Corners = new Vector2fGroup(Corners);
 		this.Corners.ToRelative(Position);
 
+		Clean();
+	}
+
+	public void Clean()
+	{
+		boolean Done = false;
+	
+		while (!Done)
+		{
+			Vector2f[] CornerArray = GetCorners();
+			float[] Angles = BoltMath.GetAngles(this);
+		
+			boolean CornerRemoved = false;
+		
+			for (int i = 0; i < GetCornerCount(); i++)
+			{
+				Vector2f PreviousCorner = CornerArray[(i - 1) % CornerArray.length];
+				
+				Vector2f CurrentCorner = CornerArray[i];
+				
+				if (CurrentCorner == PreviousCorner || Angles[i] == 180)
+				{
+					RemoveCorner(i);
+					CornerRemoved = true;
+					break;
+				}
+			}
+			
+			if (!CornerRemoved)
+			{
+				Done = true;
+			}
+		
+		}
+		
 		Refresh();
+	
 	}
 
 	public void Refresh()
