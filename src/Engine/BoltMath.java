@@ -16,64 +16,57 @@ public class BoltMath
 		for (int i = 0; i < Corners.length; i++)
 		{
 
-			int PreviousCorner;
-			int NextCorner;
-
-			if (i == 0)
-			{
-				PreviousCorner = Corners.length - 1;
-				NextCorner = 1;
-			}
-
-			else if (i == Corners.length - 1)
-			{
-				PreviousCorner = i - 1;
-				NextCorner = 0;
-			}
-
-			else
-			{
-				PreviousCorner = i - 1;
-				NextCorner = i + 1;
-			}
+			int PreviousCorner = (i - 1) % Corners.length;
+			int NextCorner = (i + 1) % Corners.length;
 
 			Vector2f LastPoint = Corners[PreviousCorner];
 			Vector2f CurrentPoint = Corners[i];
 			Vector2f NextPoint = Corners[NextCorner];
 
-			double aAngle = Math.toDegrees(theta(CurrentPoint, LastPoint));
-			double cAngle = Math.toDegrees(theta(CurrentPoint, NextPoint));
-			double degs;
-
-			double firstAngle;
-			double secondAngle;
-
-			if (aAngle < cAngle)
-			{
-				firstAngle = aAngle;
-				secondAngle = cAngle;
-			}
-			else
-			{
-				firstAngle = cAngle;
-				secondAngle = aAngle;
-			}
-			if (secondAngle - firstAngle < 180)
-			{
-				// startAngle = firstAngle;
-				degs = secondAngle - firstAngle;
-			}
-			else
-			{
-				// startAngle = secondAngle;
-				degs = firstAngle + (360 - secondAngle);
-			}
-
-			Angles[i] = (float) degs;
+			Angles[i] = GetAngle(LastPoint, CurrentPoint, NextPoint, true);
 
 		}
 
 		return Angles;
+	}
+
+	public static float GetAngle(Vector2f Point1, Vector2f Middle, Vector2f Point2, boolean Clockwise)
+	{
+		double aAngle = Math.toDegrees(theta(Middle, Point1));
+		double cAngle = Math.toDegrees(theta(Middle, Point2));
+		double degs;
+
+		double firstAngle;
+		double secondAngle;
+
+		if (aAngle < cAngle)
+		{
+			firstAngle = aAngle;
+			secondAngle = cAngle;
+		}
+
+		else
+		{
+			firstAngle = cAngle;
+			secondAngle = aAngle;
+		}
+
+		if (secondAngle - firstAngle < 180)
+		{
+			degs = secondAngle - firstAngle;
+		}
+
+		else
+		{
+			degs = firstAngle + (360 - secondAngle);
+		}
+
+		if (!Clockwise)
+		{
+			degs = 360 - degs;
+		}
+
+		return (float) degs;
 	}
 
 	public static double theta(Vector2f a, Vector2f b)
