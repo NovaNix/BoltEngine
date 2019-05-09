@@ -370,28 +370,36 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
-	public static void Draw(VertexBufferObject VBO, Shader Shaders, int Type)
+	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
 	{
-		ApplyShader(Shaders);
+		ApplyShader(S);
+		
+		Draw(VBO, Type);
+	}
+	
+	public static void Draw(VertexBufferObject VBO, int Type)
+	{
+		VertexBuffer[] Buffers = VBO.GetBuffers();
+		
+		for (int i = 0; i < Buffers.length; i++)
+		{
+			glEnableVertexAttribArray(i);
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
+			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);	
+		}
 
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetVBufferID());
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
-
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO.GetTBufferID());
-		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIBufferID());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIndexID());
 
 		// Type for images and shapes should be GL_TRIANGLES
 		// Type for lines should be GL_LINES
 		// Type for points should be GL_POINTS
 
-		glDrawElements(Type, VBO.GetIndicies().length, GL_UNSIGNED_INT, 0);
+		glDrawElements(Type, VBO.GetIndex().length, GL_UNSIGNED_INT, 0);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+		for (int i = 0; i < Buffers.length; i++)
+		{
+			glDisableVertexAttribArray(i);
+		}
 	}
 
 	private static void EnableRaw()
