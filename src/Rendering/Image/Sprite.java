@@ -17,28 +17,12 @@ public class Sprite
 	Image Compiled;
 	ColorPalette Colors;
 
-	Vector2f ImageOffset = new Vector2f(0, 0);
-
 	public Sprite(Image Template)
 	{
 		BufferedImage Temp = (BufferedImage) Template;
 		this.Size = new Vector2f(Temp.getWidth(), Temp.getHeight());
 		this.Colors = ColorPalette.GeneratePalette(Template);
 		this.Pixels = GenerateCompressedPixels(Template, Colors);
-
-		this.CompileImage();
-	}
-
-	public Sprite(Image Template, Vector2f Offset)
-	{
-		BufferedImage Temp = (BufferedImage) Template;
-		this.Size = new Vector2f(Temp.getWidth(), Temp.getHeight());
-		this.Colors = ColorPalette.GeneratePalette(Template);
-		this.Pixels = GenerateCompressedPixels(Template, Colors);
-
-		this.CompileImage();
-
-		this.ImageOffset = Offset;
 	}
 
 	public Sprite(Vector2f Size, int[] PixelData, ColorPalette Colors)
@@ -58,8 +42,13 @@ public class Sprite
 
 		this.Colors = Colors;
 
-		CompileImage();
+	}
 
+	public Sprite(Vector2f Size, int[][] ColorIDs, ColorPalette Colors)
+	{
+		this.Size = Size;
+		this.Pixels = ColorIDs;
+		this.Colors = Colors;
 	}
 
 	public static int[][] GenerateCompressedPixels(Image Template, ColorPalette Colors)
@@ -79,27 +68,7 @@ public class Sprite
 		return CompressedPixels;
 	}
 
-	public Sprite(Vector2f Size, int[][] ColorIDs, ColorPalette Colors)
-	{
-		this.Size = Size;
-		this.Pixels = ColorIDs;
-		this.Colors = Colors;
-
-		this.CompileImage();
-	}
-
-	public Sprite(Vector2f Size, int[][] ColorIDs, ColorPalette Colors, Vector2f Offset)
-	{
-		this.Size = Size;
-		this.Pixels = ColorIDs;
-		this.Colors = Colors;
-
-		this.CompileImage();
-
-		this.ImageOffset = Offset;
-	}
-
-	public void CompileImage()
+	private void CompileImage()
 	{
 		BufferedImage Compiled = new BufferedImage((int) Size.GetX(), (int) Size.GetY(), BufferedImage.TYPE_4BYTE_ABGR);
 
@@ -117,7 +86,6 @@ public class Sprite
 	public void SwitchToPalette(ColorPalette Colors)
 	{
 		this.Colors = Colors;
-		CompileImage();
 	}
 
 	public ColorPalette GetPalette()
@@ -127,12 +95,9 @@ public class Sprite
 
 	public Image GetImage()
 	{
-		return Compiled;
-	}
+		this.CompileImage();
 
-	public Vector2f GetImageOffset()
-	{
-		return ImageOffset;
+		return Compiled;
 	}
 
 	public int[] GetPixelData()

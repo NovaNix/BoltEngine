@@ -6,7 +6,6 @@ package IO;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ public class EasyLoader
 	static HashMap<String, Font> Fonts = new HashMap<String, Font>();
 	static HashMap<String, BufferedImage> Images = new HashMap<String, BufferedImage>();
 	static HashMap<String, ImageIcon> Icons = new HashMap<String, ImageIcon>();
-	static HashMap<String, File> Files = new HashMap<String, File>();
 
 	public static BufferedImage LoadImage(String Path, boolean Internal)
 	{
@@ -28,38 +26,68 @@ public class EasyLoader
 		{
 			return Images.get(Path);
 		}
-		
+
 		else
 		{
 			if (Internal)
 			{
-				return LoadLocalImage(Path);	
+				return LoadLocalImage(Path);
 			}
-			
+
 			else
 			{
 				return LoadExternalImage(Path);
 			}
 		}
-	
+
 	}
-	
+
 	public static ImageIcon LoadIcon(String Path, boolean Internal)
 	{
-		
-		
-		
-		return null;	
-	}
-	
-	public static Font LoadFont(String Path, boolean Internal)
-	{
-		
-		
-		
+		if (IsAdded(Icons, Path))
+		{
+			return Icons.get(Path);
+		}
+
+		else
+		{
+			if (Internal)
+			{
+				return LoadLocalImageIcon(Path);
+			}
+
+			else
+			{
+				// return LoadExternalImageIcon(Path);
+			}
+		}
+
 		return null;
 	}
-	
+
+	public static Font LoadFont(String Path, boolean Internal)
+	{
+		if (IsAdded(Fonts, Path))
+		{
+			return Fonts.get(Path);
+		}
+
+		else
+		{
+			if (Internal)
+			{
+				return LoadLocalFont(Path);
+			}
+
+			else
+			{
+				// return LoadExternalFont(Path);
+			}
+		}
+
+		return null;
+	}
+
 	public static Font LoadLocalFont(String Path)
 	{
 		if (IsAdded(Fonts, Path))
