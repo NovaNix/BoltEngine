@@ -373,19 +373,19 @@ public class Rendering
 	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
 	{
 		ApplyShader(S);
-		
+
 		Draw(VBO, Type);
 	}
-	
+
 	public static void Draw(VertexBufferObject VBO, int Type)
 	{
-		VertexBuffer[] Buffers = VBO.GetBuffers();
-		
+		ArrayBuffer[] Buffers = VBO.GetBuffers();
+
 		for (int i = 0; i < Buffers.length; i++)
 		{
 			glEnableVertexAttribArray(i);
 			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
-			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);	
+			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);
 		}
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIndexID());

@@ -8,6 +8,7 @@ import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segmant;
 import Rendering.Rendering.RenderingType;
+import Rendering.OpenGLTest.ArrayBuffer;
 import Rendering.OpenGLTest.VertexBufferObject;
 import Utils.BoltUtils;
 import Utils.Vector2fUtils;
@@ -116,7 +117,9 @@ public class Polygon extends Shape
 			index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
 		}
 
-		return new VertexBufferObject(v, t, index);
+		ArrayBuffer V = new ArrayBuffer(v, 2);
+		ArrayBuffer T = new ArrayBuffer(t, 2);
+		return new VertexBufferObject(new ArrayBuffer[] { V, T }, index);
 	}
 
 	public Vector2f[] GetCompressed()
