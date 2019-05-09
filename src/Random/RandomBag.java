@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package Random;
 
@@ -70,7 +70,6 @@ public class RandomBag<H>
 		Random Ran = new Random();
 
 		int PickedItemSlot = Ran.nextInt(Total);
-		;
 
 		H PickedItem = Items.get(PickedItemSlot - 1);
 
