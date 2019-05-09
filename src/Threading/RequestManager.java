@@ -1,6 +1,8 @@
 package Threading;
 
-public abstract class RequestManager <H> implements Runnable
+import java.util.ArrayList;
+
+public abstract class RequestManager<H> implements Runnable
 {
 
 	boolean Alive = false;
@@ -17,6 +19,7 @@ public abstract class RequestManager <H> implements Runnable
 	}
 
 	public abstract void ProcessRequest(H Request);
+
 	public abstract boolean RequestDone(H Request);
 
 	@Override
@@ -91,7 +94,7 @@ public abstract class RequestManager <H> implements Runnable
 
 	public void DumpFinishedRequests()
 	{
-		FinishedRequests = new ArrayList<AlgorithmRequest>();
+		FinishedRequests = new ArrayList<H>();
 	}
 
 	public void Kill()
