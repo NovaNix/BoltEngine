@@ -52,20 +52,20 @@ public class Polygon extends Shape
 	public void Clean()
 	{
 		boolean Done = false;
-	
+
 		while (!Done)
 		{
 			Vector2f[] CornerArray = GetCorners();
 			float[] Angles = BoltMath.GetAngles(this);
-		
+
 			boolean CornerRemoved = false;
-		
+
 			for (int i = 0; i < GetCornerCount(); i++)
 			{
 				Vector2f PreviousCorner = CornerArray[(i - 1) % CornerArray.length];
-				
+
 				Vector2f CurrentCorner = CornerArray[i];
-				
+
 				if (CurrentCorner == PreviousCorner || Angles[i] == 180)
 				{
 					RemoveCorner(i);
@@ -73,16 +73,16 @@ public class Polygon extends Shape
 					break;
 				}
 			}
-			
+
 			if (!CornerRemoved)
 			{
 				Done = true;
 			}
-		
+
 		}
-		
+
 		Refresh();
-	
+
 	}
 
 	public void Refresh()
@@ -137,87 +137,6 @@ public class Polygon extends Shape
 
 		return Vectors.ToArray();
 
-	}
-
-	public void Cut(Triangle Tri)
-	{
-		int C1 = Corners.GetVectorPosition(Tri.GetCorner1());
-		int C2 = Corners.GetVectorPosition(Tri.GetCorner2());
-		int C3 = Corners.GetVectorPosition(Tri.GetCorner3());
-
-		int Mid = GetMiddlePoint(C1, C2, C3);
-
-		Corners.RemoveVector(Corners.ToArray()[Mid]);
-
-		Refresh();
-	}
-
-	private int GetMiddlePoint(int P1, int P2, int P3)
-	{
-		int ListEnd = GetCornerCount() - 1;
-
-		int[] Corners = { P1, P2, P3 };
-
-		for (int i = 0; i < Corners.length; i++)
-		{
-			int SelectedCorner = Corners[i];
-
-			int Corner1;
-			int Corner2;
-
-			switch (i)
-			{
-				case 0:
-
-					Corner1 = P2;
-					Corner2 = P3;
-
-					break;
-				case 1:
-
-					Corner1 = P1;
-					Corner2 = P3;
-
-					break;
-				case 2:
-
-					Corner1 = P2;
-					Corner2 = P1;
-
-					break;
-				default:
-					System.out.println("BIG ERROR!");
-					return -1;
-			}
-
-			int Next;
-			int Last;
-
-			if (SelectedCorner == 0)
-			{
-				Next = 1;
-				Last = ListEnd;
-			}
-
-			else if (SelectedCorner == ListEnd)
-			{
-				Next = 0;
-				Last = ListEnd - 1;
-			}
-
-			else
-			{
-				Next = SelectedCorner + 1;
-				Last = SelectedCorner - 1;
-			}
-
-			if ((Corner1 == Next || Corner2 == Next) && (Corner1 == Last || Corner2 == Last))
-			{
-				return SelectedCorner;
-			}
-		}
-
-		return -1;
 	}
 
 	public Triangle[] ExtractTriangles()
@@ -290,7 +209,7 @@ public class Polygon extends Shape
 						if (TriGood)
 						{
 							Triangles.add(Tri);
-							Clone.Cut(Tri);
+							Clone.RemoveCorner(i);
 							break;
 						}
 					}
@@ -321,45 +240,21 @@ public class Polygon extends Shape
 		int Prev = (Corner - 1) % GetCornerCount();
 		int Next = (Corner + 1) % GetCornerCount();
 
-		int OldCornerCount = GetCornerCount();
-	
 		Vector2f PrevPoint = Corners.ToArray()[Prev];
 		Vector2f NextPoint = Corners.ToArray()[Next];
-	
+
 		Corners.RemoveVector(Corners.ToArray()[Corner]);
-		
+
 		Sides[Prev] = new Segmant(PrevPoint, NextPoint);
 		Sides[Corner] = null;
-		
+
 		Sides = (Segmant[]) BoltUtils.RemoveNulls(Sides);
-		
+
 	}
 
 	public int GetCornerCount()
 	{
 		return Corners.ToArray().length;
-	}
-
-	public float GetInternalAngle(int Point)
-	{
-		int PreviousCorner = (Point - 1) % GetCornerCount();
-		int NextCorner = (Point + 1) % GetCornerCount();
-
-		Vector2f MiddlePoint = GetCorners()[Point];
-
-		Vector2f Point1 = GetCorners()[PreviousCorner];
-		Vector2f Point2 = GetCorners()[NextCorner];
-
-		Triangle Tri = new Triangle(Point1, Point2, MiddlePoint);
-
-		float Angle = AngleBetween(Point1, MiddlePoint, Point2);
-
-		if (!CollidesWith(Tri.GetCenter()))
-		{
-			Angle = 360 - Angle;
-		}
-
-		return Angle;
 	}
 
 	protected float AngleBetween(Vector2f Point1, Vector2f Intersection, Vector2f Point2)
@@ -386,17 +281,6 @@ public class Polygon extends Shape
 		float PolygonHeight = BottemRight.GetYDistanceTo(TopLeft);
 
 		return new Vector2f(PolygonWidth, PolygonHeight);
-	}
-
-	public void MergeWith(Polygon Merged)
-	{
-		ArrayList<Segmant> Edges = new ArrayList<Segmant>();
-
-		for (int i = 0; i < Sides.length; i++)
-		{
-
-		}
-
 	}
 
 	@Override
@@ -591,10 +475,7 @@ public class Polygon extends Shape
 
 		Corners.Multiply(MultiplyBy);
 
-		// this.Sides = Segmant.GenerateSegmants(Corners.ToArray());
-
-		this.Center = new ReferencedVector2f(Position);
-		this.Center.SetPosition(Vector2fUtils.GetAverage(Corners.ToArray()));
+		Refresh();
 
 	}
 
@@ -608,6 +489,8 @@ public class Polygon extends Shape
 		{
 			CornerList[i].Rotate(Rotation, Center);
 		}
+
+		Refresh();
 	}
 
 	@Override
@@ -616,7 +499,6 @@ public class Polygon extends Shape
 		Vector2f Translation = this.Center.Derive();
 		Translation.Subtract(Center);
 		Position.Add(Translation);
-		// Corners.Add(Translation);
 	}
 
 	public Polygon Copy()
