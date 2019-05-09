@@ -10,68 +10,71 @@ import static org.lwjgl.opengl.GL15.glGenBuffers;
 public class VertexBufferObject
 {
 
-	long VBOID = 0L;
+	VertexBuffer[] Buffers;
 
-	int VBufferID = 0;
-	int TBufferID = 0;
+	int[] Index;
 
-	int IBufferID = 0;
-
-	float[] Verticies;
-	float[] TextureCoords;
-
-	int[] Indicies;
-
-	public VertexBufferObject(float[] V, float[] T, int[] I)
+	int IndexID;
+	
+	public VertexBufferObject(VertexBuffer[] Buffers, int[] I)
 	{
-		this.Verticies = V;
-		this.TextureCoords = T;
-		this.Indicies = I;
+		this.Buffers = Buffers;
+		
+		this.Index = I;
+		
+		IndexID = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Index, GL_STATIC_DRAW);
 	}
 
-	public void GenerateVBO()
+	public VertexBuffer GetBuffer(int Buffer)
 	{
-		VBufferID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, VBufferID);
-		glBufferData(GL_ARRAY_BUFFER, Verticies, GL_STATIC_DRAW);
-
-		TBufferID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, TBufferID);
-		glBufferData(GL_ARRAY_BUFFER, TextureCoords, GL_STATIC_DRAW);
-
-		IBufferID = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBufferID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indicies, GL_STATIC_DRAW);
+		return Buffers.[Buffer];	
 	}
-
-	public int GetVBufferID()
+	
+	public int[] GetIndex()
 	{
-		return VBufferID;
+		return Index;
 	}
-
-	public int GetTBufferID()
+	
+	public int GetSize()
 	{
-		return TBufferID;
+		return Buffers.length;	
 	}
-
-	public int GetIBufferID()
+	
+	public class VertexBuffer
 	{
-		return IBufferID;
-	}
-
-	public float[] GetVerticies()
-	{
-		return this.Verticies;
-	}
-
-	public float[] GetTextureCoords()
-	{
-		return this.TextureCoords;
-	}
-
-	public int[] GetIndicies()
-	{
-		return this.Indicies;
+		int BufferID;
+		
+		float[] Data;
+		
+		int GroupSize;
+		
+		public VertexBuffer(float[] Data, int GroupSize)
+		{
+			this.Data = Data;
+			
+			this.BufferID = glGenBuffers();
+			glBindBuffer(GL_ARRAY_BUFFER, BufferID);
+			glBufferData(GL_ARRAY_BUFFER, Data, GL_STATIC_DRAW);
+			
+			this.GroupSize = GroupSize;
+		}
+		
+		public int GetID()
+		{
+			return BufferID;
+		}
+		
+		public float[] GetData()
+		{
+			return Data;
+		}
+		
+		public int GetGroupSize()
+		{
+			return GroupSize;
+		}
 	}
 
 }
