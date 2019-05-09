@@ -32,6 +32,11 @@ public class VertexBufferObject
 		return Buffers.[Buffer];	
 	}
 	
+	public int GetIndexID()
+	{
+		return IndexID;	
+	}
+	
 	public int[] GetIndex()
 	{
 		return Index;
