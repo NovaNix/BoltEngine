@@ -1,66 +1,42 @@
 package Messaging;
 
-import java.util.ArrayList;
+import Threading.Request;
+import Threading.RequestManager;
 
-public class MessageManager implements Runnable
+public class MessageManager extends RequestManager
 {
 
-	boolean IsAlive = false;
-
-	ArrayList<PushRequest> Requests = new ArrayList<PushRequest>();
-
-	@Override
-	public void run()
+	public MessageManager(int Threads)
 	{
-		IsAlive = true;
-
-		while (IsAlive)
-		{
-			for (int i = 0; i < Requests.size(); i++)
-			{
-				Message ToDistribute = Requests.get(i).GetMessage();
-
-				MessageListener[] SendTo = Requests.get(i).GetListeners();
-
-				for (int j = 0; j < SendTo.length; j++)
-				{
-					SendTo[j].MessageRecieved(ToDistribute);
-				}
-			}
-
-			Requests.clear();
-
-			try
-			{
-				wait();
-			} catch (InterruptedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	public void Kill()
-	{
-		IsAlive = false;
+		super(Threads);
 	}
 
 	public void DistributeMessage(Message ToDistribute, MessageListener[] SendTo)
 	{
-		Requests.add(new PushRequest(ToDistribute, SendTo));
-
-		notify();
+		PushRequest(new PushRequest(ToDistribute, SendTo));
 	}
 
-	public class PushRequest
+	public class PushRequest extends Request
 	{
 		Message ToDistribute;
 		MessageListener[] SendTo;
 
 		private PushRequest(Message ToDistribute, MessageListener[] SendTo)
 		{
+			super("Push Request", new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					for (int i = 0; i < SendTo.length; i++)
+					{
+						SendTo[i].MessageRecieved(ToDistribute);
+					}
+
+				}
+			});
+
 			this.ToDistribute = ToDistribute;
 			this.SendTo = SendTo;
 		}

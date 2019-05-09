@@ -4,12 +4,10 @@
 package Algorithms.Handling;
 
 import Algorithms.Algorithm;
-import Threading.Task;
+import Threading.Request;
 
-public class AlgorithmRequest extends Task
+public class AlgorithmRequest extends Request
 {
-
-	// boolean IsDone = false;
 
 	Algorithm Alg;
 
@@ -23,11 +21,6 @@ public class AlgorithmRequest extends Task
 	public Object[] GetResult()
 	{
 		return Alg.GetResult();
-	}
-
-	public boolean IsDone()
-	{
-		return IsDone();
 	}
 
 }

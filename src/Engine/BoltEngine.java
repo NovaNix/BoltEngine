@@ -25,7 +25,7 @@ public class BoltEngine
 
 	public static void Initiate()
 	{
-		MessagingEngineManager = new MessageManager();
+		MessagingEngineManager = new MessageManager(5);
 
 		MessageManagerThread = new Thread(MessagingEngineManager);
 

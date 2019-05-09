@@ -2,25 +2,27 @@ package Threading;
 
 import java.util.ArrayList;
 
-public abstract class RequestManager<H> implements Runnable
+import Algorithms.Handling.AlgorithmRequest;
+
+public class RequestManager implements Runnable
 {
 
 	boolean Alive = false;
 
-	ArrayList<H> PendingRequests = new ArrayList<H>();
-	ArrayList<H> FinishedRequests = new ArrayList<H>();
+	ArrayList<Request> PendingRequests = new ArrayList<Request>();
+	ArrayList<Request> FinishedRequests = new ArrayList<Request>();
 
 	Thread HandlerThread;
 
-	public RequestManager()
+	TaskExecuter AlgorithmRunner;
+
+	public RequestManager(int Threads)
 	{
+		AlgorithmRunner = new TaskExecuter(Threads);
+
 		HandlerThread = new Thread(this);
 		HandlerThread.start();
 	}
-
-	public abstract void ProcessRequest(H Request);
-
-	public abstract boolean RequestDone(H Request);
 
 	@Override
 	public void run()
@@ -30,9 +32,12 @@ public abstract class RequestManager<H> implements Runnable
 		while (Alive)
 		{
 
-			for (int i = 0; i < PendingRequests.size(); i++)
+			AlgorithmRequest[] Requests = new AlgorithmRequest[PendingRequests.size()];
+			Requests = PendingRequests.toArray(Requests);
+
+			if (Requests.length != 0)
 			{
-				ProcessRequest(PendingRequests.get(i));
+				AlgorithmRunner.ExecuteTasks(Requests, false);
 			}
 
 			CleanFinishedRequests();
@@ -50,7 +55,7 @@ public abstract class RequestManager<H> implements Runnable
 		}
 	}
 
-	public void PushRequest(H Request)
+	public void PushRequest(Request Request)
 	{
 		PendingRequests.add(Request);
 		notifyAll();
@@ -60,7 +65,7 @@ public abstract class RequestManager<H> implements Runnable
 	{
 		boolean Done = false;
 
-		ArrayList<H> ToRemove = new ArrayList<H>();
+		ArrayList<Request> ToRemove = new ArrayList<Request>();
 
 		while (!Done)
 		{
@@ -68,7 +73,7 @@ public abstract class RequestManager<H> implements Runnable
 
 			for (int i = 0; i < PendingRequests.size(); i++)
 			{
-				if (RequestDone(PendingRequests.get(i)))
+				if (PendingRequests.get(i).IsDone())
 				{
 					ToRemove.add(PendingRequests.get(i));
 
@@ -94,7 +99,7 @@ public abstract class RequestManager<H> implements Runnable
 
 	public void DumpFinishedRequests()
 	{
-		FinishedRequests = new ArrayList<H>();
+		FinishedRequests = new ArrayList<Request>();
 	}
 
 	public void Kill()
