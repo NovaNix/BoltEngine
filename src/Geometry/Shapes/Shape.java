@@ -3,7 +3,7 @@ package Geometry.Shapes;
 import Geometry.Line;
 import Geometry.Segmant;
 import Rendering.Renderable;
-import Utils.Followable;
+import Rendering.Cameras.Followable;
 import Utils.Movable;
 import Vectors.Vector2f;
 

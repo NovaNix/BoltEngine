@@ -4,7 +4,6 @@ import Geometry.Segmant;
 import Geometry.Shapes.Circle;
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
-import Utils.Followable;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 

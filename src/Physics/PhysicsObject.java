@@ -6,7 +6,7 @@ import Geometry.Shapes.Shape;
 import Physics.Collision.CollisionGroup;
 import Physics.Forces.Force;
 import Rendering.Renderable;
-import Utils.Followable;
+import Rendering.Cameras.Followable;
 import Vectors.Vector2f;
 
 public abstract class PhysicsObject implements Followable
