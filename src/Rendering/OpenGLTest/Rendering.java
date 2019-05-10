@@ -338,6 +338,8 @@ public class Rendering
 	{
 		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
+
+		DrawImage.SetUniform("sampler", 0);
 	}
 
 	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
