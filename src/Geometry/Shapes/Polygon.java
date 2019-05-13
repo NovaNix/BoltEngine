@@ -26,10 +26,6 @@ public class Polygon extends Shape
 
 	float Rotation = 0f;
 
-	protected float[] CompressedCorners;
-	protected int[] Index;
-	protected int[] TextureCoords;
-
 	public Polygon(Vector2f[] Corners)
 	{
 		this.Position = new Vector2f(Vector2fUtils.GetMinX(Corners).GetX(), Vector2fUtils.GetMaxY(Corners).GetY());
