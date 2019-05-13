@@ -1,33 +1,16 @@
 #version 330 core
 layout (location = 0) in vec2 Vertex;
-layout (location = 1) in vec2 Tex;
+layout (location = 1) in vec2 TexCoord;
+
+uniform mat4 CameraModel;
+uniform mat4 ObjectModel;
+uniform mat4 Projection;
+
+uniform float LayerDepth;
 
 out vec2 TexCoords;
 
-uniform bool RS = false;
-uniform bool Referenced = false;
-
-uniform vec2 Offset;
-
-uniform mat4 CameraModel;
-uniform mat4 Projection;
-
 void main()
 {
-    TexCoords = Tex;
-    
-    if (RS)
-    {
-    	gl_Position = Projection * vec4(Vertex * Offset, 0.0, 1.0);
-    }
-    
-    else if (Referenced)
-    {
-    	gl_Position = Projection * CameraModel * vec4(Vertex * Offset, 0.0, 1.0);
-    }
-    
-    else
-    {
-    	gl_Position = Projection * vec4(Vertex, 0.0, 1.0);
-    }
+    gl_Position = vec4(Projection * CameraModel * ObjectModel * Vertex, -Layer, 1.0);
 }
