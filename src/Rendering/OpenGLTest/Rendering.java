@@ -31,26 +31,20 @@ public class Rendering
 	static Shader DrawShape;
 	static Shader DrawPoint;
 
-	private static Vector2f ReferencePoint;
-
-	private static Vector2f RSOffset;
-	private static Vector2f RSScale;
+	private static Matrix4f Projection;
+	private static Matrix4f CameraModel;
 
 	private static Rectangle CameraCollision;
 
-	public void Start(Vector2f Size, Vector2f Reference, Vector2f Offset, Vector2f Scale, Rectangle CameraPOV)
+	public void Start(Matrix4f CameraModel, Matrix4f Projection)
 	{
-		ReferencePoint = Reference;
-
-		RSOffset = Offset;
-		RSScale = Scale;
-
-		CameraCollision = CameraPOV;
+		this.CameraModel = CameraModel;
+		this.Projection = Projection;
 	}
 
-	public static void SetReferencePoint(Vector2f Point)
+	public static void SetCameraModel(Matrix4f CameraModel)
 	{
-		ReferencePoint = Point;
+		
 	}
 
 	public static Vector2f GetReferencePoint()
@@ -339,7 +333,14 @@ public class Rendering
 		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
 
-		DrawImage.SetUniform("sampler", 0);
+		DrawImage.SetUniform("ObjectModel", OBJECTMODEL);
+		DrawImage.SetUniform("Texture1", 0);
+		DrawImage.SetUniform("CameraModel", CameraModel);
+		DrawImage.SetUniform("Projection", Projection);
+		DrawImage.SetUniform("Hue", 0, 0, 0, 0);
+		
+		Draw(new VertexBufferObject(), FINISH);
+		
 	}
 
 	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
