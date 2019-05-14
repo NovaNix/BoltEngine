@@ -38,15 +38,20 @@ public class Rendering
 
 	private static Rectangle CameraCollision;
 
-	public void Start(Matrix4f CameraModel, Matrix4f Projection)
+	public void Start(Matrix4f CamModel, Matrix4f CamProjection)
 	{
-		this.CameraModel = CameraModel;
-		this.Projection = Projection;
+		CameraModel = CamModel;
+		Projection = CamProjection;
 	}
 
-	public static void SetCameraModel(Matrix4f CameraModel)
+	public static void SetCameraModel(Matrix4f Model)
 	{
-
+		CameraModel = Model;
+	}
+	
+	public static void SetCameraProjection(Matrix4f CamProjection)
+	{
+		Projection = CamProjection;
 	}
 
 	// All renderable types
@@ -349,9 +354,23 @@ public class Rendering
 		ObjectModel.rotate(Rotation);
 		ObjectModel.translate(Position.getX(), Position.getY());
 		
+		if (Raw)
+		{
+			DrawImage.SetUniform("CameraModel", new Matrix4f());	
+		}
+		
+		else if (RS)
+		{
+			DrawImage.SetUniform("CameraModel", new Matrix4f());	
+		}
+		
+		else
+		{
+			DrawImage.SetUniform("CameraModel", CameraModel);	
+		}
+		
 		DrawImage.SetUniform("ObjectModel", ObjectModel);
 		DrawImage.SetUniform("Texture1", 0);
-		DrawImage.SetUniform("CameraModel", CameraModel);
 		DrawImage.SetUniform("Projection", Projection);
 		DrawImage.SetUniform("Hue", 0, 0, 0, 0);
 
@@ -421,19 +440,29 @@ public class Rendering
 		}
 	}
 
+	boolean Raw;
+	boolean RS;
+	boolean Referenced;
+	
 	private static void EnableRaw()
 	{
-
+		Raw = true;
+		RS = false;
+		Referenced = false;
 	}
 
 	private static void EnableRS()
 	{
-
+		Raw = false;
+		RS = true;
+		Referenced = false;
 	}
 
 	private static void EnableReferenced()
 	{
-
+		Raw = false;
+		RS = false;
+		Referenced = true;
 	}
 
 	private static void ApplyTexture(Texture Apply, int Sampler)
