@@ -51,6 +51,9 @@ public class Camera extends JComponent implements Movable
 	int FBOHandle;
 	int FBOTexture;
 
+	Matrix4f Projection;
+	Matrix4f Model;
+
 	public Camera(String Name, Vector2f Position)
 	{
 		this.Name = Name;
@@ -105,11 +108,21 @@ public class Camera extends JComponent implements Movable
 
 	}
 
+	private void GenerateProjection()
+	{
+		this.Projection = new Matrix4f().ortho2D(-GetWidth()/2, GetWidth/2(), -GetHeight()/2, GetHeight()/2);
+	}
+	
+	private void GenerateModel()
+	{
+		this.Model = new Matrix4f().translate(Position.getX(), Position.getY());
+	}
+
 	public int Render()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
 
-		Rendering.Start(this.GetCameraScale(), this.Position, this.ZoomOffset, new Vector2f(this.Zoom, this.Zoom), this.CameraCollision);
+		Rendering.Start(Model, Projection);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
 		{
