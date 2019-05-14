@@ -18,6 +18,8 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.awt.Color;
 import java.awt.Font;
 
+import org.joml.Matrix4f;
+
 import Geometry.Shapes.Rectangle;
 import Vectors.Vector2f;
 
@@ -44,12 +46,7 @@ public class Rendering
 
 	public static void SetCameraModel(Matrix4f CameraModel)
 	{
-		
-	}
 
-	public static Vector2f GetReferencePoint()
-	{
-		return ReferencePoint;
 	}
 
 	// All renderable types
@@ -338,9 +335,9 @@ public class Rendering
 		DrawImage.SetUniform("CameraModel", CameraModel);
 		DrawImage.SetUniform("Projection", Projection);
 		DrawImage.SetUniform("Hue", 0, 0, 0, 0);
-		
+
 		Draw(new VertexBufferObject(), FINISH);
-		
+
 	}
 
 	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
