@@ -325,18 +325,37 @@ public class Rendering
 		ApplyTexture(Sprite, 0);
 	}
 
+	VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] {new ArrayBuffer(
+		new float[] {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f}), new ArrayBuffer(
+		new float[] {
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f})}, 
+							
+		new int[] {0, 1, 2, 3, 2, 1)});
+	
 	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
 
-		DrawImage.SetUniform("ObjectModel", OBJECTMODEL);
+		Matrix4f ObjectModel = new Matrix4f();
+		ObjectModel.scale(Scale.getX(), Scale.getY());
+		ObjectModel.rotate(Rotation);
+		ObjectModel.translate(Position.getX(), Position.getY());
+		
+		DrawImage.SetUniform("ObjectModel", ObjectModel);
 		DrawImage.SetUniform("Texture1", 0);
 		DrawImage.SetUniform("CameraModel", CameraModel);
 		DrawImage.SetUniform("Projection", Projection);
 		DrawImage.SetUniform("Hue", 0, 0, 0, 0);
 
-		Draw(new VertexBufferObject(), FINISH);
+		Draw(Box, GL_TRIANGLES);
 
 	}
 
