@@ -120,28 +120,26 @@ public class Polygon extends Shape
 
 	public void MergePolygon(Polygon Poly)
 	{
-		Polygon CutSelf = Clone();
-		Polygon CutOther = Poly.Clone();
-		
+		Polygon CutSelf = Copy();
+		Polygon CutOther = Poly.Copy();
+
 		ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
-		ArrayList<Segmant> IntersectionLines = new ArrayList<Vector2f>();
-	
+		ArrayList<Segmant> IntersectionLines = new ArrayList<Segmant>();
+
 		for (int i = 0; i < CutSelf.GetSides().length; i++)
 		{
-			for (int j = 0; j < CutOther().GetSides().length; j++)
+			for (int j = 0; j < CutOther.GetSides().length; j++)
 			{
-				
-			
+
 			}
-		
+
 		}
-	
+
 	}
 
 	public void Cut(Polygon Poly)
 	{
-		
-	
+
 	}
 
 	public Vector2f[] GetCompressed()

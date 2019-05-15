@@ -1,6 +1,7 @@
 package Vectors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Vector2fGroup
 {
@@ -28,18 +29,18 @@ public class Vector2fGroup
 	public void ReplaceVector(Vector2f Replace, Vector2f Replacement)
 	{
 		Vectors.set(GetVectorPosition(Replace), Replacement);
-		
+
 	}
-	
+
 	public void ReplaceVector(Vector2f Replace, Vector2f[] Replacement)
 	{
-		ArrayList<Vector2f> ReplacementList = new ArrayList<Vector2f>(Arrays.asList(Replacement)); 
+		ArrayList<Vector2f> ReplacementList = new ArrayList<Vector2f>(Arrays.asList(Replacement));
 		int Index = GetVectorPosition(Replace);
-		
+
 		Vectors.remove(Index);
 		Vectors.addAll(Index, ReplacementList);
 	}
-	
+
 	public void RemoveVector(Vector2f Vector)
 	{
 		Vectors.remove(Vector);
@@ -47,14 +48,14 @@ public class Vector2fGroup
 
 	public void RemoveVector(int Vector)
 	{
-		Vectors.remove(Vector);	
+		Vectors.remove(Vector);
 	}
-	
+
 	public int GetVectorPosition(Vector2f Vector)
 	{
 		return Vectors.indexOf(Vector);
 	}
-	
+
 	public void Add(Vector2f Vector)
 	{
 		for (int i = 0; i < Vectors.size(); i++)
