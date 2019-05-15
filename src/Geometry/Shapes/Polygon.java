@@ -118,6 +118,32 @@ public class Polygon extends Shape
 		return new VertexBufferObject(new ArrayBuffer[] { V, T }, index);
 	}
 
+	public void MergePolygon(Polygon Poly)
+	{
+		Polygon CutSelf = Clone();
+		Polygon CutOther = Poly.Clone();
+		
+		ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
+		ArrayList<Segmant> IntersectionLines = new ArrayList<Vector2f>();
+	
+		for (int i = 0; i < CutSelf.GetSides().length; i++)
+		{
+			for (int j = 0; j < CutOther().GetSides().length; j++)
+			{
+				
+			
+			}
+		
+		}
+	
+	}
+
+	public void Cut(Polygon Poly)
+	{
+		
+	
+	}
+
 	public Vector2f[] GetCompressed()
 	{
 		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
