@@ -2,6 +2,7 @@ package Rendering.OpenGLTest;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -38,7 +39,7 @@ public class Rendering
 
 	private static Rectangle CameraCollision;
 
-	public void Start(Matrix4f CamModel, Matrix4f CamProjection)
+	public static void Start(Matrix4f CamModel, Matrix4f CamProjection)
 	{
 		CameraModel = CamModel;
 		Projection = CamProjection;
@@ -48,7 +49,7 @@ public class Rendering
 	{
 		CameraModel = Model;
 	}
-	
+
 	public static void SetCameraProjection(Matrix4f CamProjection)
 	{
 		Projection = CamProjection;
@@ -330,45 +331,35 @@ public class Rendering
 		ApplyTexture(Sprite, 0);
 	}
 
-	VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] {new ArrayBuffer(
-		new float[] {
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f}), new ArrayBuffer(
-		new float[] {
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f})}, 
-							
-		new int[] {0, 1, 2, 3, 2, 1)});
-	
+	static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f }, 2), new ArrayBuffer(new float[] { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f }, 2) },
+
+			new int[] { 0, 1, 2, 3, 2, 1 });
+
 	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
 
 		Matrix4f ObjectModel = new Matrix4f();
-		ObjectModel.scale(Scale.getX(), Scale.getY());
-		ObjectModel.rotate(Rotation);
-		ObjectModel.translate(Position.getX(), Position.getY());
-		
+		ObjectModel.scaleXY(Scale.GetX(), Scale.GetY());
+		ObjectModel.rotateZ((float) Math.toRadians(Rotation));
+		ObjectModel.translate(Position.GetX(), Position.GetY(), 0);
+
 		if (Raw)
 		{
-			DrawImage.SetUniform("CameraModel", new Matrix4f());	
+			DrawImage.SetUniform("CameraModel", new Matrix4f());
 		}
-		
+
 		else if (RS)
 		{
-			DrawImage.SetUniform("CameraModel", new Matrix4f());	
+			DrawImage.SetUniform("CameraModel", new Matrix4f());
 		}
-		
+
 		else
 		{
-			DrawImage.SetUniform("CameraModel", CameraModel);	
+			DrawImage.SetUniform("CameraModel", CameraModel);
 		}
-		
+
 		DrawImage.SetUniform("ObjectModel", ObjectModel);
 		DrawImage.SetUniform("Texture1", 0);
 		DrawImage.SetUniform("Projection", Projection);
@@ -440,10 +431,10 @@ public class Rendering
 		}
 	}
 
-	boolean Raw;
-	boolean RS;
-	boolean Referenced;
-	
+	static boolean Raw;
+	static boolean RS;
+	static boolean Referenced;
+
 	private static void EnableRaw()
 	{
 		Raw = true;

@@ -21,10 +21,11 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
+import org.joml.Matrix4f;
+
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
 import Rendering.Renderable;
-import Rendering.Rendering;
 import Utils.Movable;
 import Vectors.Vector2f;
 
@@ -110,12 +111,12 @@ public class Camera extends JComponent implements Movable
 
 	private void GenerateProjection()
 	{
-		this.Projection = new Matrix4f().ortho2D(-GetWidth()/2, GetWidth/2(), -GetHeight()/2, GetHeight()/2);
+		this.Projection = new Matrix4f().ortho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
 	}
-	
+
 	private void GenerateModel()
 	{
-		this.Model = new Matrix4f().translate(Position.getX(), Position.getY());
+		this.Model = new Matrix4f().translate(Position.GetX(), Position.GetY(), 0);
 	}
 
 	public int Render()
