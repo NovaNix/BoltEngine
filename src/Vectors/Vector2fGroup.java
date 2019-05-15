@@ -25,11 +25,31 @@ public class Vector2fGroup
 		Vectors.add(Vector);
 	}
 
+	public void ReplaceVector(Vector2f Replace, Vector2f Replacement)
+	{
+		Vectors.set(GetVectorPosition(Replace), Replacement);
+		
+	}
+	
+	public void ReplaceVector(Vector2f Replace, Vector2f[] Replacement)
+	{
+		ArrayList<Vector2f> ReplacementList = new ArrayList<Vector2f>(Arrays.asList(Replacement)); 
+		int Index = GetVectorPosition(Replace);
+		
+		Vectors.remove(Index);
+		Vectors.addAll(Index, ReplacementList);
+	}
+	
 	public void RemoveVector(Vector2f Vector)
 	{
 		Vectors.remove(Vector);
 	}
 
+	public void RemoveVector(int Vector)
+	{
+		Vectors.remove(Vector);	
+	}
+	
 	public int GetVectorPosition(Vector2f Vector)
 	{
 		return Vectors.indexOf(Vector);
