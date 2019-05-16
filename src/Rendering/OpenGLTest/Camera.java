@@ -87,7 +87,7 @@ public class Camera extends JComponent implements Movable
 
 		if (!this.CameraCollision.GetScale().equals(this.GetCameraScale()))
 		{
-			this.CameraCollision.SetScale(this.GetCameraScale());
+			this.CameraCollision = new Rectangle(Position, new Vector2f(getWidth(), getHeight()));
 
 			FBOHandle = glGenFramebuffers();
 			FBOTexture = glGenTextures();
@@ -155,6 +155,8 @@ public class Camera extends JComponent implements Movable
 		System.out.println("Bound Framebuffer!");
 
 		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
+
+		glViewPort(0, 0, getWidth(), getHeight());
 
 		Rendering.Start(Model, Projection);
 
