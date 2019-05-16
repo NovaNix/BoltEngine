@@ -102,7 +102,9 @@ public abstract class WindowScreen
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewPort(0, 0, getWidth(), getHeight());
+//		glViewPort(0, 0, getWidth(), getHeight());
+		
+		Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0, getWidth(), 0, getHeight()));
 		
 		for (int i = 0; i < Cameras.size(); i++)
 		{
