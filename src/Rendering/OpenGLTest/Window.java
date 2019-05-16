@@ -21,6 +21,7 @@ import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
@@ -48,7 +49,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	long WindowHandle;
 
-	Vector2f CurrentSize = new Vector2f(0, 0);
+	Vector2f CurrentSize = new Vector2f(1280, 750);
 
 	boolean IsVisable = false;
 
@@ -73,7 +74,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwMakeContextCurrent(WindowHandle);
 
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 
@@ -87,12 +88,14 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
 
-		// SetScreen(new SingleCameraScreen(this));
+		SetScreen(new SingleCameraScreen(this));
 
 	}
 
 	public Window(String Name)
 	{
+		GLFWErrorCallback.createPrint(System.err).set();
+
 		glfwInit();
 
 		WindowHandle = glfwCreateWindow(1280, 750, Name, NULL, NULL);
@@ -108,11 +111,12 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwMakeContextCurrent(WindowHandle);
 
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 
-		// SetScreen(new SingleCameraScreen(this));
+		SetScreen(new SingleCameraScreen(this));
+
 	}
 
 	public void Update()
@@ -126,7 +130,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		Screen.Render();
 
@@ -193,7 +197,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	public void SetVisable(boolean Visable)
 	{
-		if (Visable == true)
+		if (Visable == false)
 		{
 			Hide();
 		}
@@ -202,6 +206,11 @@ public class Window implements GLFWWindowSizeCallbackI
 		{
 			Show();
 		}
+	}
+
+	public boolean ShouldClose()
+	{
+		return glfwWindowShouldClose(WindowHandle);
 	}
 
 	public void Destroy()

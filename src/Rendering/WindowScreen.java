@@ -61,6 +61,11 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 
 	public void Update()
 	{
+		for (int i = 0; i < Cameras.size(); i++)
+		{
+			Cameras.get(i).Update();
+		}
+
 		if (!(getWidth() == SimulatedEnviroment.getWidth() && getHeight() == SimulatedEnviroment.getHeight()))
 		{
 			SimulatedEnviroment.setMinimumSize(getSize());

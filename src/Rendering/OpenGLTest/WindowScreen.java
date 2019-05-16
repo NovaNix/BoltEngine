@@ -3,6 +3,8 @@ package Rendering.OpenGLTest;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glReadPixels;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -47,7 +49,11 @@ public abstract class WindowScreen
 
 	public void Update()
 	{
-		if (!(ConnectedWindow.GetWidth() == SimulatedEnviroment.getWidth() && ConnectedWindow.GetHeight() == SimulatedEnviroment.getHeight()))
+
+		// System.out.println("WindowScreen Updated! Current size: " +
+		// SimulatedEnviroment.getWidth() + SimulatedEnviroment.getHeight());
+
+		if (ConnectedWindow.GetWidth() != SimulatedEnviroment.getWidth() || ConnectedWindow.GetHeight() != SimulatedEnviroment.getHeight())
 		{
 			Dimension Size = new Dimension(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
 
@@ -55,6 +61,11 @@ public abstract class WindowScreen
 			SimulatedEnviroment.setPreferredSize(Size);
 			SimulatedEnviroment.setMaximumSize(Size);
 			SimulatedEnviroment.pack();
+		}
+
+		for (int i = 0; i < Cameras.size(); i++)
+		{
+			Cameras.get(i).Update();
 		}
 	}
 
@@ -80,9 +91,20 @@ public abstract class WindowScreen
 
 	public void Render()
 	{
+		System.out.println("Rendering Cameras!");
+
+		int[] CameraTexHandles = new int[Cameras.size()];
+
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			Rendering.RenderRawImage(Cameras.get(i).Render(), new Vector2f(Cameras.get(i).getX(), Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(), Cameras.get(i).getHeight()), 0);
+			CameraTexHandles[i] = Cameras.get(i).Render();
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		for (int i = 0; i < Cameras.size(); i++)
+		{
+			Rendering.RenderRawImage(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(), Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(), Cameras.get(i).getHeight()), 0);
 		}
 	}
 

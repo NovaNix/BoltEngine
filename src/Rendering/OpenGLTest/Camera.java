@@ -1,5 +1,7 @@
 package Rendering.OpenGLTest;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -7,12 +9,16 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -22,6 +28,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL;
 
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
@@ -57,6 +64,8 @@ public class Camera extends JComponent implements Movable
 
 	public Camera(String Name, Vector2f Position)
 	{
+		GL.createCapabilities();
+
 		this.Name = Name;
 
 		this.Position = Position;
@@ -65,26 +74,26 @@ public class Camera extends JComponent implements Movable
 
 		this.AspectRatio = new Vector2f(0, 0);
 
-		FBOHandle = glGenFramebuffers();
-
-		FBOTexture = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, FBOTexture);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
+		GenerateProjection();
+		GenerateModel();
 	}
 
 	public void Update()
 	{
-		this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
+		if (getHeight() != 0 && getWidth() != 0)
+		{
+			this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
+		}
 
 		if (!this.CameraCollision.GetScale().equals(this.GetCameraScale()))
 		{
 			this.CameraCollision.SetScale(this.GetCameraScale());
+
+			FBOHandle = glGenFramebuffers();
+			FBOTexture = glGenTextures();
+
+			glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+			glBindTexture(GL_TEXTURE_2D, FBOTexture);
 
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
@@ -93,7 +102,23 @@ public class Camera extends JComponent implements Movable
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
 
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			{
+				System.out.println("Failed to generate FBO!");
+				System.exit(1);
+			}
+
+			else
+			{
+				System.out.println("FBO Properly Generated");
+			}
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 			this.SetZoom(this.Zoom);
+
+			GenerateProjection();
+			GenerateModel();
 		}
 
 		// if (this instanceof SingleFollowCamera)
@@ -111,7 +136,7 @@ public class Camera extends JComponent implements Movable
 
 	private void GenerateProjection()
 	{
-		this.Projection = new Matrix4f().ortho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
+		this.Projection = new Matrix4f().setOrtho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
 	}
 
 	private void GenerateModel()
@@ -123,12 +148,22 @@ public class Camera extends JComponent implements Movable
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+		System.out.println("Bound Framebuffer!");
+
+		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
+
 		Rendering.Start(Model, Projection);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
 		{
 			this.Rendered.get(i).Render();
 		}
+
+		System.out.println("All Rendered!");
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

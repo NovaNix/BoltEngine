@@ -16,7 +16,7 @@ public class BoltMath
 		for (int i = 0; i < Corners.length; i++)
 		{
 
-			int PreviousCorner = (i - 1) % Corners.length;
+			int PreviousCorner = mod((i - 1), Corners.length);
 			int NextCorner = (i + 1) % Corners.length;
 
 			Vector2f LastPoint = Corners[PreviousCorner];
@@ -78,4 +78,27 @@ public class BoltMath
 		return ang;
 	}
 
+	public static int mod(int a, int b)
+	{
+		int Answer = a % b;
+
+		if (Answer < 0)
+		{
+			Answer = b + Answer;
+		}
+
+		return Answer;
+	}
+
+	public static float mod(float a, float b)
+	{
+		float Answer = a % b;
+
+		if (Answer < 0)
+		{
+			Answer = b + Answer;
+		}
+
+		return Answer;
+	}
 }

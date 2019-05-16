@@ -6,6 +6,10 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class VertexBufferObject
 {
 
@@ -17,13 +21,22 @@ public class VertexBufferObject
 
 	public VertexBufferObject(ArrayBuffer[] Buffers, int[] I)
 	{
+
 		this.Buffers = Buffers;
 
 		this.Index = I;
 
 		IndexID = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Index, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, CreateBuffer(Index), GL_STATIC_DRAW);
+	}
+
+	public IntBuffer CreateBuffer(int[] data)
+	{
+		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+		buffer.put(data);
+		buffer.flip();
+		return buffer;
 	}
 
 	public ArrayBuffer GetBuffer(int Buffer)

@@ -59,7 +59,7 @@ public class Polygon extends Shape
 
 			for (int i = 0; i < GetCornerCount(); i++)
 			{
-				Vector2f PreviousCorner = CornerArray[(i - 1) % CornerArray.length];
+				Vector2f PreviousCorner = CornerArray[BoltMath.mod((i - 1), CornerArray.length)];
 
 				Vector2f CurrentCorner = CornerArray[i];
 
@@ -184,7 +184,7 @@ public class Polygon extends Shape
 				if (!(Angles[i] >= 180))
 				{
 
-					int PreviousCorner = (i - 1) % CornerList.length;
+					int PreviousCorner = BoltMath.mod((i - 1), CornerList.length);
 					int NextCorner = (i + 1) % CornerList.length;
 
 					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
@@ -260,7 +260,7 @@ public class Polygon extends Shape
 	public void RemoveCorner(int Corner)
 	{
 
-		int Prev = (Corner - 1) % GetCornerCount();
+		int Prev = BoltMath.mod((Corner - 1), GetCornerCount());
 		int Next = (Corner + 1) % GetCornerCount();
 
 		Vector2f PrevPoint = Corners.ToArray()[Prev];

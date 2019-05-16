@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
 import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
-import static org.lwjgl.opengl.GL20.glBindAttribLocation;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glCreateShader;
@@ -34,7 +33,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -62,8 +60,8 @@ public class Shader
 		glAttachShader(ShaderID, VertexHandle);
 		glAttachShader(ShaderID, FragmentHandle);
 
-		glBindAttribLocation(ShaderID, 0, "vertices");
-		glBindAttribLocation(ShaderID, 1, "textures");
+		// glBindAttribLocation(ShaderID, 0, "Vertex");
+		// glBindAttribLocation(ShaderID, 1, "TexCoord");
 
 		glLinkProgram(ShaderID);
 
@@ -107,9 +105,11 @@ public class Shader
 		glShaderSource(ID, ShaderCode);
 		glCompileShader(ID);
 
+		System.out.println(glGetShaderInfoLog(VertexHandle));
+
 		if (glGetShaderi(ID, GL_COMPILE_STATUS) != 1)
 		{
-			System.err.println(glGetShaderInfoLog(VertexHandle));
+			System.err.println(glGetShaderInfoLog(ID));
 			System.exit(1);
 		}
 
@@ -132,12 +132,10 @@ public class Shader
 
 		if (Internal)
 		{
+			InputStream Input = getClass().getResourceAsStream(FilePath);
 
-			ClassLoader Loader = Thread.currentThread().getContextClassLoader();
+			InputStreamReader InputReader = new InputStreamReader(Input);
 
-			InputStream Input = Loader.getResourceAsStream(FilePath);
-
-			Reader InputReader = new InputStreamReader(Input);
 			Reader = new BufferedReader(InputReader);
 		}
 
@@ -166,9 +164,9 @@ public class Shader
 			{
 				ShaderText.append(Line);
 				ShaderText.append("\n");
-
-				Reader.close();
 			}
+
+			Reader.close();
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -185,7 +183,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		FloatBuffer Data = BufferUtils.createFloatBuffer(16);
@@ -201,7 +199,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform1i(Location, Value);
@@ -214,7 +212,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform2i(Location, Value1, Value2);
@@ -227,7 +225,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform3i(Location, Value1, Value2, Value3);
@@ -240,7 +238,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform4i(Location, Value1, Value2, Value3, Value4);
@@ -253,7 +251,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform1f(Location, Value);
@@ -266,7 +264,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform2f(Location, Value1, Value2);
@@ -279,7 +277,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform3f(Location, Value1, Value2, Value3);
@@ -292,7 +290,7 @@ public class Shader
 
 		if (Location == -1)
 		{
-			System.out.println("Tried to set an uniform that didnt exist");
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
 		}
 
 		glUniform4f(Location, Value1, Value2, Value3, Value4);

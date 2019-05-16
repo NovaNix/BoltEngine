@@ -21,7 +21,6 @@ import java.awt.Font;
 
 import org.joml.Matrix4f;
 
-import Geometry.Shapes.Rectangle;
 import Vectors.Vector2f;
 
 public class Rendering
@@ -29,7 +28,7 @@ public class Rendering
 
 	static Shader CurrentShader;
 
-	static Shader DrawImage;
+	static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
 	static Shader DrawOval;
 	static Shader DrawShape;
 	static Shader DrawPoint;
@@ -37,7 +36,7 @@ public class Rendering
 	private static Matrix4f Projection;
 	private static Matrix4f CameraModel;
 
-	private static Rectangle CameraCollision;
+	static int VAOID;
 
 	public static void Start(Matrix4f CamModel, Matrix4f CamProjection)
 	{
@@ -327,27 +326,34 @@ public class Rendering
 
 	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
-		ApplyShader(DrawImage);
-		ApplyTexture(Sprite, 0);
+		DrawImage(Sprite.GetID(), Position, Scale, Rotation);
 	}
 
-	static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f }, 2), new ArrayBuffer(new float[] { 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f }, 2) },
+	static float[] BoxV = { -1.f, 1.0f, // TOP LEFT
+			0.0f, 1.0f, // TOP RIGHT
+			0.0f, 0.0f, // BOTTEM RIGHT
+			-1.0f, 0.0f // BOTTEM LEFT
+	};
 
-			new int[] { 0, 1, 2, 3, 2, 1 });
+	static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
+
+	static int[] BoxI = { 0, 1, 2, 2, 3, 0 };
+
+	static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT, 2) }, BoxI);
 
 	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
-		ApplyShader(DrawImage);
 		ApplyTexture(Sprite, 0);
+		ApplyShader(DrawImage);
 
 		Matrix4f ObjectModel = new Matrix4f();
-		ObjectModel.scaleXY(Scale.GetX(), Scale.GetY());
+		ObjectModel.scale(Scale.GetX(), Scale.GetY(), 0);
 		ObjectModel.rotateZ((float) Math.toRadians(Rotation));
 		ObjectModel.translate(Position.GetX(), Position.GetY(), 0);
 
 		if (Raw)
 		{
-			DrawImage.SetUniform("CameraModel", new Matrix4f());
+			// DrawImage.SetUniform("CameraModel", new Matrix4f());
 		}
 
 		else if (RS)
@@ -360,10 +366,11 @@ public class Rendering
 			DrawImage.SetUniform("CameraModel", CameraModel);
 		}
 
-		DrawImage.SetUniform("ObjectModel", ObjectModel);
+		// DrawImage.SetUniform("ObjectModel", ObjectModel);
 		DrawImage.SetUniform("Texture1", 0);
 		DrawImage.SetUniform("Projection", Projection);
-		DrawImage.SetUniform("Hue", 0, 0, 0, 0);
+		// DrawImage.SetUniform("Hue", 0f, 0f, 0f, 1f);
+		DrawImage.SetUniform("LayerDepth", 0f);
 
 		Draw(Box, GL_TRIANGLES);
 
@@ -413,6 +420,11 @@ public class Rendering
 		for (int i = 0; i < Buffers.length; i++)
 		{
 			glEnableVertexAttribArray(i);
+			System.out.println("Bound buffer " + i);
+		}
+
+		for (int i = 0; i < Buffers.length; i++)
+		{
 			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
 			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);
 		}
@@ -428,6 +440,7 @@ public class Rendering
 		for (int i = 0; i < Buffers.length; i++)
 		{
 			glDisableVertexAttribArray(i);
+			System.out.println("Unbound buffer " + i);
 		}
 	}
 

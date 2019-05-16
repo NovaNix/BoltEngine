@@ -12,5 +12,7 @@ out vec2 TexCoords;
 
 void main()
 {
-    gl_Position = vec4(Projection * CameraModel * ObjectModel * Vertex, -Layer, 1.0);
+//    gl_Position = Projection * CameraModel * ObjectModel * vec4(Vertex, -LayerDepth, 1.0);
+    gl_Position = Projection * vec4(Vertex, -LayerDepth, 1.0);
+    TexCoords = TexCoord;
 }
