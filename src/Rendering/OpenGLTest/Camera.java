@@ -156,7 +156,7 @@ public class Camera extends JComponent implements Movable
 
 		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
 
-		glViewPort(0, 0, getWidth(), getHeight());
+	//	glViewPort(0, 0, getWidth(), getHeight());
 
 		Rendering.Start(Model, Projection);
 
