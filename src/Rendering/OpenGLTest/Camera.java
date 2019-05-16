@@ -136,7 +136,7 @@ public class Camera extends JComponent implements Movable
 
 	private void GenerateProjection()
 	{
-		this.Projection = new Matrix4f().setOrtho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
+		this.Projection = new Matrix4f().ortho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
 	}
 
 	private void GenerateModel()
