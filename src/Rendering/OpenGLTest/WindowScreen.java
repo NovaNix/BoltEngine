@@ -102,6 +102,8 @@ public abstract class WindowScreen
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+		glViewPort(0, 0, getWidth(), getHeight());
+		
 		for (int i = 0; i < Cameras.size(); i++)
 		{
 			Rendering.RenderRawImage(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(), Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(), Cameras.get(i).getHeight()), 0);
