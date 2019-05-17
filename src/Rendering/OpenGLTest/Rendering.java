@@ -32,14 +32,14 @@ public class Rendering
 
 	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
-	private static Shader DrawOval;
-	private static Shader DrawShape;
-	private static Shader DrawPoint;
+	private static Shader DrawOval = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawoval.frag", true);
+	private static Shader DrawShape = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
+	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawpoint.frag", true);
 
+	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
+	
 	private static Matrix4f Projection;
 	private static Matrix4f CameraModel;
-
-	static int VAOID;
 
 	public static void Start(Matrix4f CamModel, Matrix4f CamProjection)
 	{
