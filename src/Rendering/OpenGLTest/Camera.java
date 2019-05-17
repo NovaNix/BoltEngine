@@ -40,28 +40,28 @@ import Vectors.Vector2f;
 public class Camera extends JComponent implements Movable
 {
 
-	String Name = "Unnamed Camera";
+	private String Name = "Unnamed Camera";
 
-	ArrayList<Renderable> Rendered = new ArrayList<Renderable>();
+	private ArrayList<Renderable> Rendered = new ArrayList<Renderable>();
 
-	Vector2f Position = new Vector2f(0, 0);
-	float Rotation = 0f;
+	private Vector2f Position = new Vector2f(0, 0);
+	private float Rotation = 0f;
 
-	Rectangle CameraCollision;
+	private Rectangle CameraCollision;
 
-	Rectangle ZoomCollision;
+	private Rectangle ZoomCollision;
 
-	float Zoom = 1f;
+	private float Zoom = 1f;
 
-	Vector2f ZoomOffset = new Vector2f(0, 0);
+	private Vector2f ZoomOffset = new Vector2f(0, 0);
 
-	Vector2f AspectRatio;
+	private Vector2f AspectRatio;
 
-	int FBOHandle;
-	int FBOTexture;
+	private int FBOHandle;
+	private int FBOTexture;
 
-	Matrix4f Projection;
-	Matrix4f Model;
+	private Matrix4f Projection;
+	private Matrix4f Model;
 
 	public Camera(String Name, Vector2f Position)
 	{
