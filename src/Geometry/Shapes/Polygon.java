@@ -20,7 +20,7 @@ public class Polygon extends Shape
 {
 
 	Vector2fGroup Corners;
-	Segmant[] Sides;
+	LoopedList<Segmant> Sides;
 
 	Circle BoundingBubble;
 
@@ -84,7 +84,9 @@ public class Polygon extends Shape
 
 	public void Refresh()
 	{
-		this.Sides = Segmant.GenerateSegmants(this.Corners.ToArray());
+		Segmant[] Edges = Segmant.GenerateSegmants(this.Corners.ToArray());
+
+		Sides = new LoopedList<Segmant>(Arrays.asList(Edges));
 
 		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
 
@@ -170,36 +172,36 @@ public class Polygon extends Shape
 
 		boolean Done = false;
 
-		Vector2f[] AllCorners = Corners.ToArray();
+		LoopedList<Vector2f> AllCorners = Corners.GetVectorList();
 
 		while (!Done)
 		{
-			Vector2f[] CornerList = Clone.GetCorners();
+			LoopedList<Vector2f> CornerList = Corners.GetVectorList();
 
 			float[] Angles = BoltMath.GetAngles(Clone);
 
-			for (int i = 0; i < CornerList.length; i++)
+			for (int i = 0; i < CornerList.size(); i++)
 			{
-
 				if (!(Angles[i] >= 180))
 				{
 
-					int PreviousCorner = BoltMath.mod((i - 1), CornerList.length);
-					int NextCorner = (i + 1) % CornerList.length;
+					Vector2f PreviousCorner = CornerList.get(i - 1);
+					Vector2f MidCorner = CornerList.get(i);
+					Vector2f NextCorner = CornerList.get(i + 1);
 
-					Segmant TriLine = new Segmant(CornerList[PreviousCorner], CornerList[NextCorner]);
+					Segmant TriLine = new Segmant(PreviousCorner, NextCorner);
 
-					Triangle Tri = new Triangle(CornerList[PreviousCorner], CornerList[i], CornerList[NextCorner]);
+					Triangle Tri = new Triangle(PreviousCorner, MidCorner, NextCorner);
 
 					boolean LineGood = true;
 
-					for (int j = 0; j < Clone.GetSides().length; j++)
+					for (int j = 0; j < Clone.GetSides().size(); j++)
 					{
-						Vector2f Collision = TriLine.GetIntersectionWith(Clone.GetSides()[j]);
+						Vector2f Collision = TriLine.GetIntersectionWith(Clone.GetSides().get(j));
 
 						if (Collision != null)
 						{
-							if (Collision.equals(CornerList[PreviousCorner]) || Collision.equals(CornerList[NextCorner]))
+							if (Collision.equals(PreviousCorner) || Collision.equals(NextCorner))
 							{
 								Collision = null;
 							}
@@ -217,11 +219,13 @@ public class Polygon extends Shape
 					{
 						boolean TriGood = true;
 
-						for (int j = 0; j < AllCorners.length; j++)
+						for (int j = 0; j < AllCorners.size(); j++)
 						{
-							if (!AllCorners[j].equals(Tri.GetCorner1()) && !AllCorners[j].equals(Tri.GetCorner2()) && !AllCorners[j].equals(Tri.GetCorner3()))
+							Vector2f SelectedCorner = AllCorners.get(j);
+						
+							if (!SelectedCorner.equals(Tri.GetCorner1()) && !SelectedCorner.equals(Tri.GetCorner2()) && !SelectedCorner.equals(Tri.GetCorner3()))
 							{
-								if (Tri.CollidesWith(AllCorners[j]))
+								if (Tri.CollidesWith(SelectedCorner))
 								{
 									TriGood = false;
 									break;
@@ -260,19 +264,16 @@ public class Polygon extends Shape
 	public void RemoveCorner(int Corner)
 	{
 
-		int Prev = BoltMath.mod((Corner - 1), GetCornerCount());
-		int Next = (Corner + 1) % GetCornerCount();
+		int Prev = Corner - 1;
+		int Next = Corner + 1;
 
-		Vector2f PrevPoint = Corners.ToArray()[Prev];
-		Vector2f NextPoint = Corners.ToArray()[Next];
+		Vector2f PrevPoint = Corners.GetVector(Prev);
+		Vector2f NextPoint = Corners.GetVector(Next);
 
-		Corners.RemoveVector(Corners.ToArray()[Corner]);
+		Corners.RemoveVector(Corners.GetVector(Corner));
 
-		Sides[Prev] = new Segmant(PrevPoint, NextPoint);
-		Sides[Corner] = null;
-
-		Sides = (Segmant[]) BoltUtils.RemoveNulls(Sides);
-
+		Sides.set(Prev, new Segmant(PrevPoint, NextPoint));
+		Sides.remove(Corner);
 	}
 
 	public int GetCornerCount()
@@ -405,7 +406,7 @@ public class Polygon extends Shape
 
 			for (int i = 0; i < Sides.length; i++)
 			{
-				if (Collision.CollidesWith(Sides[i]))
+				if (Collision.CollidesWith(Sides.get(i)))
 				{
 					return true;
 				}
@@ -485,7 +486,7 @@ public class Polygon extends Shape
 		return Corners.ToArray();
 	}
 
-	public Segmant[] GetSides()
+	public LoopedList<Segmant> GetSides()
 	{
 		return Sides;
 	}
