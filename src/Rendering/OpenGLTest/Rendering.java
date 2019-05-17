@@ -34,7 +34,7 @@ public class Rendering
 	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawOval = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawoval.frag", true);
 	private static Shader DrawShape = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
-	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawpoint.frag", true);
+	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
 
 	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
 	
