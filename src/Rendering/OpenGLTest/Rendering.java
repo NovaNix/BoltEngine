@@ -28,13 +28,13 @@ import Vectors.Vector2f;
 public class Rendering
 {
 
-	static Shader CurrentShader;
+	private static Shader CurrentShader;
 
-	static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
-	static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
-	static Shader DrawOval;
-	static Shader DrawShape;
-	static Shader DrawPoint;
+	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
+	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
+	private static Shader DrawOval;
+	private static Shader DrawShape;
+	private static Shader DrawPoint;
 
 	private static Matrix4f Projection;
 	private static Matrix4f CameraModel;
@@ -332,19 +332,17 @@ public class Rendering
 		DrawImage(Sprite.GetID(), Position, Scale, Rotation);
 	}
 
-	static float[] BoxV = { -1.f, 1.0f, // TOP LEFT
+	private static float[] BoxV = { -1.f, 1.0f, // TOP LEFT
 			1.0f, 1.0f, // TOP RIGHT
 			1.0f, -1.0f, // BOTTEM RIGHT
 			-1.0f, -1.0f // BOTTEM LEFT
 	};
 
-	// static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
+	private static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
 
-	static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
+	private static int[] BoxI = { 0, 1, 2, 2, 3, 0 };
 
-	static int[] BoxI = { 0, 1, 2, 2, 3, 0 };
-
-	static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT, 2) }, BoxI);
+	private static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT, 2) }, BoxI);
 
 	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
@@ -411,6 +409,11 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
+	private static Matrix4f GenerateModel(Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		return null;	
+	}
+	
 	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
 	{
 		ApplyShader(S);
@@ -445,8 +448,6 @@ public class Rendering
 		}
 	}
 
-	// static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
-
 	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
 
 	static VertexBufferObject CamBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT2, 2) }, BoxI);
@@ -459,9 +460,9 @@ public class Rendering
 		Draw(CamBox, GL_TRIANGLES);
 	}
 
-	static boolean Raw;
-	static boolean RS;
-	static boolean Referenced;
+	private static boolean Raw;
+	private static boolean RS;
+	private static boolean Referenced;
 
 	private static void EnableRaw()
 	{
