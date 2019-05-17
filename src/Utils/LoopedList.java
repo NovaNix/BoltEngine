@@ -62,19 +62,21 @@ public class LoopedList <E> extends ArrayList<E>
 		return super.set(LoopedLocation(index), element);
 	}
 
-	// NOTE! subList() is not changed because of issues implementing overlap or flowback
+	// NOTE! THe subList produced does not update with the list due to potential issues with overlap
+	// This may be changed later
 
-//	@Override
-//	public List<E> subList(int fromIndex, int toIndex)
-//	{
-//		int Index1 = LoopedLocation(fromIndex);
-//		int Index2 = LoopedLocation(toIndex);
-//		
-//		if (Index1 <= Index2)
-//		{
-//			return super.subList(Index1, Index2);
-//		}
-//	}
+	@Override
+	public List<E> subList(int fromIndex, int toIndex)
+
+		List<E> SubList = new ArrayList<E>();
+		
+		for (int i = fromIndex; i < toIndex; i++)
+		{
+			SubList.add(LoopedLocation(i));
+		}
+		
+		return SubList;
+	}
 
 
 
