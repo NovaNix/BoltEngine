@@ -111,6 +111,11 @@ public class Vector2fGroup
 		return VectorArray;
 	}
 
+	public LoopedList GetVectorList()
+	{
+		return Vectors;
+	}	
+	
 	public Vector2fGroup Clone()
 	{
 		Vector2fGroup Group = new Vector2fGroup();
