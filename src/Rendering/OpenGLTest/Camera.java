@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
@@ -136,12 +137,12 @@ public class Camera extends JComponent implements Movable
 
 	private void GenerateProjection()
 	{
-		this.Projection = new Matrix4f().ortho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
+		this.Projection = new Matrix4f().setOrtho2D(-getWidth() / 2, getWidth() / 2, -getHeight() / 2, getHeight() / 2);
 	}
 
 	private void GenerateModel()
 	{
-		this.Model = new Matrix4f().translate(Position.GetX(), Position.GetY(), 0);
+		this.Model = new Matrix4f().setTranslation(Position.GetX(), Position.GetY(), 0);
 	}
 
 	public int Render()
@@ -156,7 +157,7 @@ public class Camera extends JComponent implements Movable
 
 		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
 
-	//	glViewPort(0, 0, getWidth(), getHeight());
+		glViewport(0, 0, getWidth(), getHeight());
 
 		Rendering.Start(Model, Projection);
 

@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glGetError;
 
 import org.lwjgl.opengl.GL;
 
@@ -25,7 +26,7 @@ public class BasicRender
 
 	static Camera Cam = new Camera("Default Perspective", new Vector2f(0, 0));
 
-	static Texture DirtTexture = new Texture(EasyLoader.LoadLocalImage("/DemoImages/Dirt.png"));
+	static Texture DirtTexture = new Texture(EasyLoader.LoadLocalImage("/DemoImages/Austin.png"));
 
 	public static void main(String[] args)
 	{
@@ -36,6 +37,8 @@ public class BasicRender
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		// glDisable(GL_CULL_FACE);
 
 		glfwSwapInterval(1);
 
@@ -51,6 +54,7 @@ public class BasicRender
 		}
 
 		Win.Destroy();
+		System.exit(1);
 
 	}
 
@@ -61,6 +65,8 @@ public class BasicRender
 		Win.Update();
 
 		Win.Render();
+
+		System.out.println(glGetError());
 	}
 
 }

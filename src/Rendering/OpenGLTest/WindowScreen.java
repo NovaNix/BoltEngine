@@ -15,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import Menu.Menu;
@@ -102,13 +103,17 @@ public abstract class WindowScreen
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-//		glViewPort(0, 0, getWidth(), getHeight());
-		
-		Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0, getWidth(), 0, getHeight()));
-		
+		// glViewPort(0, 0, getWidth(), getHeight());
+
+		Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0, ConnectedWindow.GetWidth(), 0, ConnectedWindow.GetHeight()));
+
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			Rendering.RenderRawImage(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(), Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(), Cameras.get(i).getHeight()), 0);
+			// Rendering.DrawCamera(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(),
+			// Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(),
+			// Cameras.get(i).getHeight()), 0);
+			Rendering.DrawCamera(CameraTexHandles[i]);
+
 		}
 	}
 

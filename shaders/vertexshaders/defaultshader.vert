@@ -13,6 +13,9 @@ out vec2 TexCoords;
 void main()
 {
     TexCoords = TexCoord;
-	mat4 ProjectionViewModel = Projection * CameraModel * ObjectModel;
-    gl_Position = ProjectionViewModel * vec4(Vertex, LayerDepth, 1.0);
+//	mat4 ProjectionViewModel = Projection * CameraModel * ObjectModel;
+//    gl_Position = ProjectionViewModel * vec4(Vertex, LayerDepth, 1.0);
+//	vec2 Pos = Vertex * vec2(500, 500);
+//	gl_Position = Projection * vec4(Pos, 0, 1);
+	gl_Position = vec4(Vertex, 0, 1);
 }

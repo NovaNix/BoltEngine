@@ -16,6 +16,8 @@ public class ArrayBuffer
 
 	float[] Data;
 
+	FloatBuffer DataBuffer;
+
 	int GroupSize;
 
 	public ArrayBuffer(float[] Data, int GroupSize)
@@ -24,7 +26,10 @@ public class ArrayBuffer
 
 		this.BufferID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-		glBufferData(GL_ARRAY_BUFFER, CreateBuffer(Data), GL_STATIC_DRAW);
+
+		DataBuffer = CreateBuffer(Data);
+
+		glBufferData(GL_ARRAY_BUFFER, DataBuffer, GL_STATIC_DRAW);
 
 		this.GroupSize = GroupSize;
 	}
@@ -45,6 +50,11 @@ public class ArrayBuffer
 	public float[] GetData()
 	{
 		return Data;
+	}
+
+	public FloatBuffer GetDataBuffer()
+	{
+		return DataBuffer;
 	}
 
 	public int GetGroupSize()

@@ -10,7 +10,9 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glUseProgram;
@@ -29,6 +31,7 @@ public class Rendering
 	static Shader CurrentShader;
 
 	static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
+	static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
 	static Shader DrawOval;
 	static Shader DrawShape;
 	static Shader DrawPoint;
@@ -330,10 +333,12 @@ public class Rendering
 	}
 
 	static float[] BoxV = { -1.f, 1.0f, // TOP LEFT
-			0.0f, 1.0f, // TOP RIGHT
-			0.0f, 0.0f, // BOTTEM RIGHT
-			-1.0f, 0.0f // BOTTEM LEFT
+			1.0f, 1.0f, // TOP RIGHT
+			1.0f, -1.0f, // BOTTEM RIGHT
+			-1.0f, -1.0f // BOTTEM LEFT
 	};
+
+	// static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
 
 	static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
 
@@ -368,9 +373,9 @@ public class Rendering
 
 		// DrawImage.SetUniform("ObjectModel", ObjectModel);
 		DrawImage.SetUniform("Texture1", 0);
-		DrawImage.SetUniform("Projection", Projection);
+		// DrawImage.SetUniform("Projection", Projection);
 		// DrawImage.SetUniform("Hue", 0f, 0f, 0f, 1f);
-		DrawImage.SetUniform("LayerDepth", 0f);
+		// DrawImage.SetUniform("LayerDepth", 0f);
 
 		Draw(Box, GL_TRIANGLES);
 
@@ -419,13 +424,9 @@ public class Rendering
 
 		for (int i = 0; i < Buffers.length; i++)
 		{
-			glEnableVertexAttribArray(i);
-			System.out.println("Bound buffer " + i);
-		}
-
-		for (int i = 0; i < Buffers.length; i++)
-		{
 			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
+			glBufferData(GL_ARRAY_BUFFER, Buffers[i].GetDataBuffer(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);
 		}
 
@@ -442,6 +443,20 @@ public class Rendering
 			glDisableVertexAttribArray(i);
 			System.out.println("Unbound buffer " + i);
 		}
+	}
+
+	// static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
+
+	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
+
+	static VertexBufferObject CamBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT2, 2) }, BoxI);
+
+	public static void DrawCamera(int CamTexture)
+	{
+		ApplyTexture(CamTexture, 0);
+		ApplyShader(DrawCamera);
+
+		Draw(CamBox, GL_TRIANGLES);
 	}
 
 	static boolean Raw;
