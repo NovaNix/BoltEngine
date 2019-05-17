@@ -48,13 +48,13 @@ import Vectors.Vector2f;
 public class Window implements GLFWWindowSizeCallbackI
 {
 
-	long WindowHandle;
+	private long WindowHandle;
 
-	Vector2f CurrentSize = new Vector2f(1280, 750);
+	private Vector2f CurrentSize = new Vector2f(1280, 750);
 
-	boolean IsVisable = false;
+	private boolean IsVisable = false;
 
-	WindowScreen Screen;
+	private WindowScreen Screen;
 
 	public Window(String Name, String IconPath)
 	{
