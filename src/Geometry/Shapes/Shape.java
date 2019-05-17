@@ -10,11 +10,11 @@ import Vectors.Vector2f;
 public abstract class Shape implements Followable, Renderable, Movable
 {
 
-	Vector2f Position;
+	protected Vector2f Position;
 
-	Vector2f Center;
+	protected Vector2f Center;
 
-	float Radius;
+	protected float Radius;
 
 	public abstract Vector2f[] GetCollisionPointsWith(Line Collision);
 
