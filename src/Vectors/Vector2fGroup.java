@@ -3,6 +3,8 @@ package Vectors;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Utils.LoopedList;
+
 public class Vector2fGroup
 {
 
@@ -21,11 +23,11 @@ public class Vector2fGroup
 		}
 	}
 
-	public void GetVector(int Vector)
+	public Vector2f GetVector(int Vector)
 	{
-		return Vectors.get(Vector);	
+		return Vectors.get(Vector);
 	}
-	
+
 	public void AddVector(Vector2f Vector)
 	{
 		Vectors.add(Vector);
@@ -111,11 +113,11 @@ public class Vector2fGroup
 		return VectorArray;
 	}
 
-	public LoopedList GetVectorList()
+	public LoopedList<Vector2f> GetVectorList()
 	{
 		return Vectors;
-	}	
-	
+	}
+
 	public Vector2fGroup Clone()
 	{
 		Vector2fGroup Group = new Vector2fGroup();

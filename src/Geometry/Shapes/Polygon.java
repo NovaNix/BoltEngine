@@ -2,6 +2,7 @@ package Geometry.Shapes;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Engine.BoltMath;
 import Geometry.Line;
@@ -11,6 +12,7 @@ import Rendering.Rendering.RenderingType;
 import Rendering.OpenGLTest.ArrayBuffer;
 import Rendering.OpenGLTest.VertexBufferObject;
 import Utils.BoltUtils;
+import Utils.LoopedList;
 import Utils.Vector2fUtils;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
@@ -128,9 +130,9 @@ public class Polygon extends Shape
 		ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
 		ArrayList<Segmant> IntersectionLines = new ArrayList<Segmant>();
 
-		for (int i = 0; i < CutSelf.GetSides().length; i++)
+		for (int i = 0; i < CutSelf.GetSides().size(); i++)
 		{
-			for (int j = 0; j < CutOther.GetSides().length; j++)
+			for (int j = 0; j < CutOther.GetSides().size(); j++)
 			{
 
 			}
@@ -222,7 +224,7 @@ public class Polygon extends Shape
 						for (int j = 0; j < AllCorners.size(); j++)
 						{
 							Vector2f SelectedCorner = AllCorners.get(j);
-						
+
 							if (!SelectedCorner.equals(Tri.GetCorner1()) && !SelectedCorner.equals(Tri.GetCorner2()) && !SelectedCorner.equals(Tri.GetCorner3()))
 							{
 								if (Tri.CollidesWith(SelectedCorner))
@@ -316,29 +318,29 @@ public class Polygon extends Shape
 	@Override
 	public void Render()
 	{
-		for (int i = 0; i < Sides.length; i++)
+		for (int i = 0; i < Sides.size(); i++)
 		{
-			Sides[i].Render(new Color(255, 0, 0), RenderingType.Referenced);
+			Sides.get(i).Render(new Color(255, 0, 0), RenderingType.Referenced);
 		}
 	}
 
 	@Override
 	public void Render(Color Hue, RenderingType Type)
 	{
-		for (int i = 0; i < Sides.length; i++)
+		for (int i = 0; i < Sides.size(); i++)
 		{
-			Sides[i].Render(Hue, Type);
+			Sides.get(i).Render(Hue, Type);
 		}
 	}
 
 	@Override
 	public Vector2f[] GetCollisionPointsWith(Line Collision)
 	{
-		Vector2f[] Collisions = new Vector2f[Sides.length];
+		Vector2f[] Collisions = new Vector2f[Sides.size()];
 
-		for (int i = 0; i < Sides.length; i++)
+		for (int i = 0; i < Sides.size(); i++)
 		{
-			Collisions[i] = Sides[i].GetIntersectionWith(Collision);
+			Collisions[i] = Sides.get(i).GetIntersectionWith(Collision);
 		}
 
 		return BoltUtils.RemoveNulls(Collisions);
@@ -354,13 +356,13 @@ public class Polygon extends Shape
 	@Override
 	public Segmant[] GetCollisionSegmantsWith(Line Collision)
 	{
-		Segmant[] Collisions = new Segmant[Sides.length];
+		Segmant[] Collisions = new Segmant[Sides.size()];
 
-		for (int i = 0; i < Sides.length; i++)
+		for (int i = 0; i < Sides.size(); i++)
 		{
-			if (Sides[i].GetIntersectionWith(Collision) != null)
+			if (Sides.get(i).GetIntersectionWith(Collision) != null)
 			{
-				Collisions[i] = Sides[i];
+				Collisions[i] = Sides.get(i);
 			}
 		}
 
@@ -384,7 +386,7 @@ public class Polygon extends Shape
 
 		else
 		{
-			return Collision.GetIntersectionsWith(Sides) != null;
+			return Collision.GetIntersectionsWith(Sides.toArray(new Segmant[Sides.size()])) != null;
 		}
 	}
 
@@ -404,7 +406,7 @@ public class Polygon extends Shape
 				return true;
 			}
 
-			for (int i = 0; i < Sides.length; i++)
+			for (int i = 0; i < Sides.size(); i++)
 			{
 				if (Collision.CollidesWith(Sides.get(i)))
 				{
@@ -425,9 +427,9 @@ public class Polygon extends Shape
 				return true;
 			}
 
-			for (int i = 0; i < Sides.length; i++)
+			for (int i = 0; i < Sides.size(); i++)
 			{
-				if (Collision.CollidesWith(Sides[i]))
+				if (Collision.CollidesWith(Sides.get(i)))
 				{
 					return true;
 				}
@@ -442,11 +444,11 @@ public class Polygon extends Shape
 	{
 		Ray PointRay = new Ray(Point, 0f);
 
-		Vector2f[] RayCollisions = new Vector2f[Sides.length];
+		Vector2f[] RayCollisions = new Vector2f[Sides.size()];
 
-		for (int i = 0; i < Sides.length; i++)
+		for (int i = 0; i < Sides.size(); i++)
 		{
-			RayCollisions[i] = PointRay.GetIntersectionWith(Sides[i]);
+			RayCollisions[i] = PointRay.GetIntersectionWith(Sides.get(i));
 		}
 
 		Vector2f[] Collisions = BoltUtils.RemoveNulls(RayCollisions);

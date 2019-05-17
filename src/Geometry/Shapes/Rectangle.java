@@ -1,9 +1,6 @@
 package Geometry.Shapes;
 
-import Geometry.Line;
 import Geometry.Segmant;
-import Utils.BoltUtils;
-import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 
 public class Rectangle extends Polygon
@@ -22,10 +19,10 @@ public class Rectangle extends Polygon
 	{
 		super(Position, new Vector2f[] { Position, new Vector2f(Position.GetX() + Scale.GetX(), Position.GetY()), new Vector2f(Position.GetX() + Scale.GetX(), Position.GetY() + Scale.GetY()), new Vector2f(Position.GetX(), Position.GetY() + Scale.GetY()) });
 
-		TopFace = Sides[0];
-		BottemFace = Sides[2];
-		LeftFace = Sides[3];
-		RightFace = Sides[1];
+		TopFace = Sides.get(0);
+		BottemFace = Sides.get(2);
+		LeftFace = Sides.get(3);
+		RightFace = Sides.get(1);
 
 		// this.Position = Position;
 

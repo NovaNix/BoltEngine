@@ -1,9 +1,13 @@
 package Utils;
 
-import java.utils.ArrayList;
-import java.utils.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 
-public class LoopedList <E> extends ArrayList<E>
+import Engine.BoltMath;
+
+public class LoopedList<E> extends ArrayList<E>
 {
 
 	public LoopedList()
@@ -29,13 +33,13 @@ public class LoopedList <E> extends ArrayList<E>
 	@Override
 	public void add(int index, E element)
 	{
-		super.add(LoopedLocation(index));
+		super.add(LoopedLocation(index), element);
 	}
-	
+
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c)
 	{
-		return super.addAll(LoopedLocation, c);
+		return super.addAll(LoopedLocation(index), c);
 	}
 
 	@Override
@@ -62,22 +66,21 @@ public class LoopedList <E> extends ArrayList<E>
 		return super.set(LoopedLocation(index), element);
 	}
 
-	// NOTE! THe subList produced does not update with the list due to potential issues with overlap
+	// NOTE! THe subList produced does not update with the list due to potential
+	// issues with overlap
 	// This may be changed later
 
 	@Override
 	public List<E> subList(int fromIndex, int toIndex)
-
+	{
 		List<E> SubList = new ArrayList<E>();
-		
+
 		for (int i = fromIndex; i < toIndex; i++)
 		{
-			SubList.add(LoopedLocation(i));
+			SubList.add(get(i));
 		}
-		
+
 		return SubList;
 	}
-
-
 
 }
