@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Vector2fGroup
 {
 
-	LoopedList<Vector2f> Vectors = new LoopedList<Vector2f>();
+	private LoopedList<Vector2f> Vectors = new LoopedList<Vector2f>();
 
 	public Vector2fGroup()
 	{
@@ -21,6 +21,11 @@ public class Vector2fGroup
 		}
 	}
 
+	public void GetVector(int Vector)
+	{
+		return Vectors.get(Vector);	
+	}
+	
 	public void AddVector(Vector2f Vector)
 	{
 		Vectors.add(Vector);
