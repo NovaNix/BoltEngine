@@ -6,10 +6,10 @@ import Vectors.Vector2f;
 public class Line
 {
 
-	Vector2f PointOnLine;
+	protected Vector2f PointOnLine;
 
-	float Slope;
-	float YIntercept;
+	protected float Slope;
+	protected float YIntercept;
 
 	public Line(Vector2f Point, float Slope)
 	{
