@@ -50,7 +50,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	private long WindowHandle;
 
-	private Vector2f CurrentSize = new Vector2f(1280, 750);
+	private Vector2f CurrentSize = new Vector2f(1280, 780);
 
 	private boolean IsVisable = false;
 
@@ -62,7 +62,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwInit();
 
-		WindowHandle = glfwCreateWindow(1280, 750, Name, NULL, NULL);
+		WindowHandle = glfwCreateWindow(1280, 780, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_SAMPLES, 4);
@@ -100,7 +100,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwInit();
 
-		WindowHandle = glfwCreateWindow(1280, 750, Name, NULL, NULL);
+		WindowHandle = glfwCreateWindow(1280, 780, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_SAMPLES, 4);

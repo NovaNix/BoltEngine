@@ -37,19 +37,32 @@ public class Rendering
 	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
 
 	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
-	
+
+	private static float[] BoxV2 = { -1.f, 1.0f, // TOP LEFT
+			1.0f, 1.0f, // TOP RIGHT
+			1.0f, -1.0f, // BOTTEM RIGHT
+			-1.0f, -1.0f // BOTTEM LEFT
+	};
+
+	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
+
+	static int[] I2 = { 0, 1, 2, 0, 2, 3 };
+
+	static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2), new ArrayBuffer(BoxT2, 2) }, I2);
+
 	private static Matrix4f Projection;
-	private static Matrix4f CameraModel;
 
-	public static void Start(Matrix4f CamModel, Matrix4f CamProjection)
+	private static Matrix4f RawCameraModel;
+	private static Matrix4f RSCameraModel;
+	private static Matrix4f ReferencedCameraModel;
+
+	public static void Start(Matrix4f RawCamModel, Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
 	{
-		CameraModel = CamModel;
+		RawCameraModel = RawCamModel;
+		RSCameraModel = RSCamModel;
+		ReferencedCameraModel = RefCamModel;
+
 		Projection = CamProjection;
-	}
-
-	public static void SetCameraModel(Matrix4f Model)
-	{
-		CameraModel = Model;
 	}
 
 	public static void SetCameraProjection(Matrix4f CamProjection)
@@ -173,18 +186,18 @@ public class Rendering
 
 	// RAW RENDERING
 
-	public static void RenderRawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRawImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRaw();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public static void RenderRawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRaw();
 
-		DrawImage(Sprite, Position, Scale, Rotation);
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderRawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
@@ -225,18 +238,18 @@ public class Rendering
 
 	// Rendering Supported Rendering
 
-	public static void RenderRSImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRSImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRS();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public static void RenderRSImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRSImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRS();
 
-		DrawImage(Sprite, Position, Scale, Rotation);
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderRSBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
@@ -277,18 +290,18 @@ public class Rendering
 
 	// Referenced Rendering
 
-	public static void RenderReferencedImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderReferencedImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableReferenced();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
-	public static void RenderReferencedImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderReferencedImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableReferenced();
 
-		DrawImage(Sprite, Position, Scale, Rotation);
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderReferencedBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
@@ -327,55 +340,50 @@ public class Rendering
 		DrawText(Position, Text, Style, Hue);
 	}
 
-	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
-		DrawImage(Sprite.GetID(), Position, Scale, Rotation);
+		DrawImage(Sprite.GetID(), Sprite.GetSize(), Position, Scale, Rotation);
 	}
 
-	private static float[] BoxV = { -1.f, 1.0f, // TOP LEFT
-			1.0f, 1.0f, // TOP RIGHT
-			1.0f, -1.0f, // BOTTEM RIGHT
-			-1.0f, -1.0f // BOTTEM LEFT
-	};
+	private static float[] BoxV = { -1, 1, 1, 1, 1, -1, -1, -1 };
 
 	private static float[] BoxT = { 0, 0, 1, 0, 1, 1, 0, 1 };
 
-	private static int[] BoxI = { 0, 1, 2, 2, 3, 0 };
+	private static int[] BoxI = { 0, 1, 3, 1, 2, 3 };
 
 	private static VertexBufferObject Box = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT, 2) }, BoxI);
 
-	private static void DrawImage(int Sprite, Vector2f Position, Vector2f Scale, int Rotation)
+	private static void DrawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		ApplyTexture(Sprite, 0);
 		ApplyShader(DrawImage);
 
-		Matrix4f ObjectModel = new Matrix4f();
-		ObjectModel.scale(Scale.GetX(), Scale.GetY(), 0);
-		ObjectModel.rotateZ((float) Math.toRadians(Rotation));
-		ObjectModel.translate(Position.GetX(), Position.GetY(), 0);
-
 		if (Raw)
 		{
-			// DrawImage.SetUniform("CameraModel", new Matrix4f());
+			DrawImage.SetUniform("CameraModel", RawCameraModel);
 		}
 
 		else if (RS)
 		{
-			DrawImage.SetUniform("CameraModel", new Matrix4f());
+			DrawImage.SetUniform("CameraModel", RSCameraModel);
 		}
 
 		else
 		{
-			DrawImage.SetUniform("CameraModel", CameraModel);
+			DrawImage.SetUniform("CameraModel", ReferencedCameraModel);
 		}
 
-		// DrawImage.SetUniform("ObjectModel", ObjectModel);
+		DrawImage.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
+
+		DrawImage.SetUniform("Blur", 1);
+
+		DrawImage.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
 		DrawImage.SetUniform("Texture1", 0);
-		// DrawImage.SetUniform("Projection", Projection);
+		DrawImage.SetUniform("Projection", Projection);
 		// DrawImage.SetUniform("Hue", 0f, 0f, 0f, 1f);
 		// DrawImage.SetUniform("LayerDepth", 0f);
 
-		Draw(Box, GL_TRIANGLES);
+		Draw(FullScreenBox, GL_TRIANGLES);
 
 	}
 
@@ -411,9 +419,11 @@ public class Rendering
 
 	private static Matrix4f GenerateModel(Vector2f Position, Vector2f Scale, float Rotation)
 	{
-		return null;	
+		Matrix4f ObjectModel = new Matrix4f().translate(Position.GetX() + Scale.GetX() / 2, Position.GetY() - Scale.GetY() / 2, 0).rotateZ((float) Math.toRadians(-Rotation)).scale(Scale.GetX() / 2, -(Scale.GetY() / 2), 0);
+
+		return ObjectModel;
 	}
-	
+
 	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
 	{
 		ApplyShader(S);
@@ -444,20 +454,15 @@ public class Rendering
 		for (int i = 0; i < Buffers.length; i++)
 		{
 			glDisableVertexAttribArray(i);
-			System.out.println("Unbound buffer " + i);
 		}
 	}
-
-	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
-
-	static VertexBufferObject CamBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV, 2), new ArrayBuffer(BoxT2, 2) }, BoxI);
 
 	public static void DrawCamera(int CamTexture)
 	{
 		ApplyTexture(CamTexture, 0);
 		ApplyShader(DrawCamera);
 
-		Draw(CamBox, GL_TRIANGLES);
+		Draw(FullScreenBox, GL_TRIANGLES);
 	}
 
 	private static boolean Raw;

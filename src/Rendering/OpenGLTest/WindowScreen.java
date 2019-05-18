@@ -3,6 +3,7 @@ package Rendering.OpenGLTest;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glReadPixels;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
@@ -15,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 
-import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import Menu.Menu;
@@ -103,9 +103,10 @@ public abstract class WindowScreen
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// glViewPort(0, 0, getWidth(), getHeight());
+		glViewport(0, 0, ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
 
-		Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0, ConnectedWindow.GetWidth(), 0, ConnectedWindow.GetHeight()));
+		// Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0,
+		// ConnectedWindow.GetWidth(), 0, ConnectedWindow.GetHeight()));
 
 		for (int i = 0; i < Cameras.size(); i++)
 		{

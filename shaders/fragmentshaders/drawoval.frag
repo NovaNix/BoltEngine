@@ -12,7 +12,7 @@ out vec4 Color;
 void main()
 {
 
-	float Dis = distance(vec2(0, 0), gl_FragCoord);
+	float Dis = distance(vec2(0, 0), gl_FragCoord.xy);
 
 	if (Dis > 1)
 	{
