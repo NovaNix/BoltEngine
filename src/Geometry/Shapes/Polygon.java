@@ -178,7 +178,7 @@ public class Polygon extends Shape
 
 		while (!Done)
 		{
-			LoopedList<Vector2f> CornerList = Corners.GetVectorList();
+			LoopedList<Vector2f> CornerList = Clone.GetCornerList();
 
 			float[] Angles = BoltMath.GetAngles(Clone);
 
@@ -486,6 +486,11 @@ public class Polygon extends Shape
 	public Vector2f[] GetCorners()
 	{
 		return Corners.ToArray();
+	}
+
+	public LoopedList<Vector2f> GetCornerList()
+	{
+		return Corners.GetVectorList();
 	}
 
 	public LoopedList<Segmant> GetSides()
