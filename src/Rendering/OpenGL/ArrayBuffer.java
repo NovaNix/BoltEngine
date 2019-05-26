@@ -1,4 +1,4 @@
-package Rendering.OpenGLTest;
+package Rendering.OpenGL;
 
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;

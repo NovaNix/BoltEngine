@@ -1,4 +1,4 @@
-package Rendering.OpenGLTest;
+package Rendering.Image;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import Rendering.Image.Sprite;
 import Vectors.Vector2f;
 
 public class Texture

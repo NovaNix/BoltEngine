@@ -1,9 +1,35 @@
-
 package Rendering.Cameras;
 
-import java.awt.Image;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGB;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
+import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
+import static org.lwjgl.opengl.GL30.glGenFramebuffers;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
 import java.util.ArrayList;
+
 import javax.swing.JComponent;
+
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL;
 
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
@@ -12,26 +38,33 @@ import Rendering.Rendering;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-@SuppressWarnings({ "serial" })
-public abstract class Camera extends JComponent implements Movable
+public class Camera extends JComponent implements Movable
 {
 
-	String Name = "Unnamed Camera";
+	private String Name = "Unnamed Camera";
 
-	ArrayList<Renderable> Rendered = new ArrayList<Renderable>();
+	private ArrayList<Renderable> Rendered = new ArrayList<Renderable>();
 
-	Vector2f Position = new Vector2f(0, 0);
-	float Rotation = 0f;
+	private Vector2f Position = new Vector2f(0, 0);
+	private float Rotation = 0f;
 
-	Rectangle CameraCollision;
+	protected Rectangle CameraCollision;
 
-	Rectangle ZoomCollision;
+	private Rectangle ZoomCollision;
 
-	float Zoom = 1f;
+	private float Zoom = 1f;
 
-	Vector2f ZoomOffset = new Vector2f(0, 0);
+	private Vector2f ZoomOffset = new Vector2f(0, 0);
 
-	Vector2f AspectRatio;
+	private Vector2f AspectRatio;
+
+	private int FBOHandle;
+	private int FBOTexture;
+
+	private Matrix4f Projection;
+	private Matrix4f RawModel;
+	private Matrix4f RSModel;
+	private Matrix4f RefModel;
 
 	public Camera(String Name, Vector2f Position)
 	{
@@ -42,103 +75,133 @@ public abstract class Camera extends JComponent implements Movable
 		this.CameraCollision = new Rectangle(Position, new Vector2f(0, 0));
 
 		this.AspectRatio = new Vector2f(0, 0);
+
+		GenerateProjection();
+		GenerateModel();
 	}
 
 	public void Update()
 	{
-		this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
-
-		if (!CameraCollision.GetScale().equals(GetCameraScale()))
+		if (getHeight() != 0 && getWidth() != 0)
 		{
-			this.CameraCollision.SetScale(GetCameraScale());
-
-			this.SetZoom(Zoom);
+			this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
 		}
 
-		if (this instanceof SingleFollowCamera)
+		if (!this.CameraCollision.GetScale().equals(this.GetCameraScale()))
 		{
-			((SingleFollowCamera) this).UpdateFollowShape();
-			((SingleFollowCamera) this).UpdateFollowing();
+			this.CameraCollision = new Rectangle(Position, new Vector2f(getWidth(), getHeight()));
+
+			GL.createCapabilities();
+
+			FBOHandle = glGenFramebuffers();
+			FBOTexture = glGenTextures();
+
+			glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+			glBindTexture(GL_TEXTURE_2D, FBOTexture);
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
+
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			{
+				System.out.println("Failed to generate FBO!");
+				System.exit(1);
+			}
+
+			else
+			{
+				System.out.println("FBO Properly Generated");
+			}
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+			this.SetZoom(this.Zoom);
+
+			GenerateProjection();
+			GenerateModel();
 		}
 
-		else if (this instanceof MultiFollowCamera)
-		{
-
-		}
+		// if (this instanceof SingleFollowCamera)
+		// {
+		// ((SingleFollowCamera) this).UpdateFollowShape();
+		// ((SingleFollowCamera) this).UpdateFollowing();
+		// }
+		//
+		// else if (this instanceof MultiFollowCamera)
+		// {
+		//
+		// }
 
 	}
 
-	public Image Render()
+	private void GenerateProjection()
 	{
-		Rendering.Start(GetCameraScale(), Position, ZoomOffset, new Vector2f(Zoom, Zoom), CameraCollision);
+		this.Projection = new Matrix4f().setOrtho2D(0, getWidth(), -getHeight(), 0);
+	}
 
-		for (int i = 0; i < Rendered.size(); i++)
+	private void GenerateModel()
+	{
+		this.RawModel = new Matrix4f();
+		this.RSModel = new Matrix4f().setTranslation(0, 0, 0);
+		this.RefModel = new Matrix4f().setTranslation(Position.GetX(), Position.GetY(), 0);
+	}
+
+	public int Render()
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+		System.out.println("Bound Framebuffer!");
+
+		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
+
+		glViewport(0, 0, getWidth(), getHeight());
+
+		Rendering.Start(RawModel, RSModel, RefModel, Projection);
+
+		for (int i = 0; i < this.Rendered.size(); i++)
 		{
-			Rendered.get(i).Render();
+			this.Rendered.get(i).Render();
 		}
 
-		// CameraCollision.Render();
+		System.out.println("All Rendered!");
 
-		Image Final = Rendering.GetProduct();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		Rendering.Clear();
-
-		return Final;
+		return FBOTexture;
 	}
 
 	public void AddRenderable(Renderable ToRender)
 	{
-		Rendered.add(ToRender);
+		this.Rendered.add(ToRender);
 	}
 
 	public void RemoveRenderable(Renderable ToRemove)
 	{
-		Rendered.remove(ToRemove);
+		this.Rendered.remove(ToRemove);
 	}
-
-	// public void UpdateScale()
-	// {
-	// Scale = Math.min(getWidth() / 1000f, getHeight() / 750f);
-	// }
-	//
-	// public void UpdateOffset()
-	// {
-	// XOffset = (((float) getWidth() - 1000) / 2) / Scale;
-	// YOffset = (((float) getHeight() - 750) / 2) / Scale;
-	// }
-	//
-	// public void CameraResized()
-	// {
-	// UpdateScale();
-	// UpdateOffset();
-	//
-	// Update();
-	// }
-	//
-	// public float GetXOffset()
-	// {
-	// return XOffset;
-	// }
-	//
-	// public float GetYOffset()
-	// {
-	// return YOffset;
-	// }
 
 	public void SetZoom(float Zoom)
 	{
 		this.Zoom = Zoom;
 
-		Vector2f ZoomCollisionScale = CameraCollision.GetScale().Derive();
+		Vector2f ZoomCollisionScale = this.CameraCollision.GetScale().Derive();
 		ZoomCollisionScale.Divide(new Vector2f(Zoom, Zoom));
 
-		float XTranslation = (CameraCollision.GetScale().GetX() - ZoomCollisionScale.GetX()) / 2;
-		float YTranslation = (CameraCollision.GetScale().GetY() - ZoomCollisionScale.GetY()) / 2;
+		float XTranslation = (this.CameraCollision.GetScale().GetX() - ZoomCollisionScale.GetX()) / 2;
+		float YTranslation = (this.CameraCollision.GetScale().GetY() - ZoomCollisionScale.GetY()) / 2;
 
 		this.ZoomOffset = new Vector2f(XTranslation, YTranslation);
 
-		Vector2f ZoomCollisionPosition = Position.Derive();
-		ZoomCollisionPosition.Add(ZoomOffset);
+		Vector2f ZoomCollisionPosition = this.Position.Derive();
+		ZoomCollisionPosition.Add(this.ZoomOffset);
 
 		this.ZoomCollision = new Rectangle(ZoomCollisionPosition, ZoomCollisionScale);
 	}
@@ -150,18 +213,18 @@ public abstract class Camera extends JComponent implements Movable
 
 	public float GetZoom()
 	{
-		return Zoom;
+		return this.Zoom;
 	}
 
 	public Vector2f GetPosition()
 	{
-		return Position;
+		return this.Position;
 	}
 
 	@Override
 	public void Move(Vector2f Translation)
 	{
-		Position.Add(Translation);
+		this.Position.Add(Translation);
 		// Update();
 	}
 
@@ -174,7 +237,7 @@ public abstract class Camera extends JComponent implements Movable
 
 	public boolean OnCamera(Shape Collision)
 	{
-		return ZoomCollision.CollidesWith(Collision);
+		return this.ZoomCollision.CollidesWith(Collision);
 	}
 
 }

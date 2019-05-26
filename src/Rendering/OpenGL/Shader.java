@@ -1,4 +1,4 @@
-package Rendering.OpenGLTest;
+package Rendering.OpenGL;
 
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
@@ -105,10 +105,11 @@ public class Shader
 		glShaderSource(ID, ShaderCode);
 		glCompileShader(ID);
 
-		System.out.println(glGetShaderInfoLog(VertexHandle));
+		System.out.println(glGetShaderInfoLog(ID));
 
 		if (glGetShaderi(ID, GL_COMPILE_STATUS) != 1)
 		{
+			System.err.println("Error making shader" + FilePath);
 			System.err.println(glGetShaderInfoLog(ID));
 			System.exit(1);
 		}

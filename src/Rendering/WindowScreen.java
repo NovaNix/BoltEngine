@@ -1,15 +1,15 @@
 package Rendering;
 
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glReadPixels;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferStrategy;
+import java.awt.Dimension;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
@@ -24,7 +24,7 @@ import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
 import Vectors.Vector2f;
 
-public abstract class WindowScreen extends Canvas implements Renderable, MouseMotionListener
+public abstract class WindowScreen
 {
 
 	protected ArrayList<Camera> Cameras = new ArrayList<Camera>();
@@ -45,33 +45,32 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 
 		SimulatedEnviroment.setUndecorated(true);
 
-		this.addMouseMotionListener(this);
 		this.ConnectedWindow = ConnectedWindow;
-
-		// this.SimulatedEnviroment.setLayout(new BorderLayout());
-
-		ConnectedWindow.add(this, BorderLayout.CENTER);
-
-		ConnectedWindow.pack();
-
-		createBufferStrategy(2);
 
 		Update();
 	}
 
 	public void Update()
 	{
+
+		// System.out.println("WindowScreen Updated! Current size: " +
+		// SimulatedEnviroment.getWidth() + SimulatedEnviroment.getHeight());
+
+		if (ConnectedWindow.GetWidth() != SimulatedEnviroment.getWidth() || ConnectedWindow.GetHeight() != SimulatedEnviroment.getHeight())
+		{
+			Dimension Size = new Dimension(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
+
+			SimulatedEnviroment.setMinimumSize(Size);
+			SimulatedEnviroment.setPreferredSize(Size);
+			SimulatedEnviroment.setMaximumSize(Size);
+			SimulatedEnviroment.pack();
+		}
+
+		glfwMakeContextCurrent(ConnectedWindow.GetHandle());
+
 		for (int i = 0; i < Cameras.size(); i++)
 		{
 			Cameras.get(i).Update();
-		}
-
-		if (!(getWidth() == SimulatedEnviroment.getWidth() && getHeight() == SimulatedEnviroment.getHeight()))
-		{
-			SimulatedEnviroment.setMinimumSize(getSize());
-			SimulatedEnviroment.setPreferredSize(getSize());
-			SimulatedEnviroment.setMaximumSize(getSize());
-			SimulatedEnviroment.pack();
 		}
 	}
 
@@ -83,93 +82,44 @@ public abstract class WindowScreen extends Canvas implements Renderable, MouseMo
 	{
 		// byte[] pixels = new byte[3 * getWidth() * getHeight()];
 
-		ByteBuffer pixels = BufferUtils.createByteBuffer(getWidth() * getHeight() * 3);
+		ByteBuffer pixels = BufferUtils.createByteBuffer(ConnectedWindow.GetWidth() * ConnectedWindow.GetHeight() * 3);
 
-		glReadPixels(0, 0, getWidth(), getHeight(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
+		glReadPixels(0, 0, ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
 		return pixels;
 	}
-
-	// @Override
-	// public void paintComponent(Graphics g)
-	// {
-	//
-	//
-	//// RenderLock.lock();
-	////
-	//// try
-	//// {
-	//// BufferStrategy bs;
-	//// ConnectedWindow.createBufferStrategy(2);
-	//// bs = ConnectedWindow.getBufferStrategy();
-	////
-	//// super.paintComponent(g);
-	//// for (int i = 0; i < Cameras.size(); i++)
-	//// {
-	//// g.drawImage(Cameras.get(i).Render(), Cameras.get(i).getX(),
-	// Cameras.get(i).getY(), Cameras.get(i).getWidth(), Cameras.get(i).getHeight(),
-	// Cameras.get(i));
-	//// }
-	//// if (CurrentMenu != null)
-	//// {
-	//// CurrentMenu.Render();
-	//// }
-	////
-	//// } finally
-	//// {
-	//// RenderLock.unlock();
-	//// }
-	//
-	// }
 
 	public JFrame GetSimulatedWindow()
 	{
 		return SimulatedEnviroment;
 	}
 
-	@Override
 	public void Render()
 	{
-		BufferStrategy Strat = getBufferStrategy();
+		System.out.println("Rendering Cameras!");
 
-		Graphics g = Strat.getDrawGraphics();
+		int[] CameraTexHandles = new int[Cameras.size()];
 
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			g.drawImage(Cameras.get(i).Render(), Cameras.get(i).getX(), Cameras.get(i).getY(), Cameras.get(i).getWidth(), Cameras.get(i).getHeight(), Cameras.get(i));
+			CameraTexHandles[i] = Cameras.get(i).Render();
 		}
-		if (CurrentMenu != null)
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glViewport(0, 0, ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
+
+		// Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0,
+		// ConnectedWindow.GetWidth(), 0, ConnectedWindow.GetHeight()));
+
+		for (int i = 0; i < Cameras.size(); i++)
 		{
-			CurrentMenu.Render();
+			// Rendering.DrawCamera(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(),
+			// Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(),
+			// Cameras.get(i).getHeight()), 0);
+			Rendering.DrawCamera(CameraTexHandles[i]);
+
 		}
-
-		g.dispose();
-		Strat.show();
-
-		// synchronized (this)
-		// {
-		// repaint();
-		//
-		// try
-		// {
-		// RenderLock.lock();
-		// } finally
-		// {
-		// RenderLock.unlock();
-		// }
-		// }
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e)
-	{
-		MousePosition = new Vector2f(e.getX(), e.getY());
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e)
-	{
-		MousePosition = new Vector2f(e.getX(), e.getY());
 	}
 
 	public Vector2f GetMousePosition()

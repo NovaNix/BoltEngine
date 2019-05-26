@@ -1,77 +1,82 @@
 package Rendering;
 
-import java.awt.BasicStroke;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
-import Geometry.Segmant;
-import Geometry.Shapes.Rectangle;
+import org.joml.Matrix4f;
+
+import Rendering.Image.Texture;
+import Rendering.OpenGL.ArrayBuffer;
+import Rendering.OpenGL.Shader;
+import Rendering.OpenGL.VertexBufferObject;
 import Vectors.Vector2f;
 
 public class Rendering
 {
 
-	private static BufferedImage FinalImage;
+	private static Shader CurrentShader;
 
-	private static Vector2f ReferencePoint;
+	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
+	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
+	private static Shader DrawOval = new Shader("/vertexshaders/drawoval.vert", true, "/fragmentshaders/drawoval.frag", true);
+	private static Shader DrawShape = new Shader("/vertexshaders/drawshape.vert", true, "/fragmentshaders/drawshape.frag", true);
+	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
 
-	public static RenderingHints[] Hints = { new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON), new RenderingHints(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY), new RenderingHints(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE) };
+	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
 
-	private static Graphics RenderingGraphics;
-	private static Graphics2D RenderingGraphics2D;
+	private static float[] BoxV2 = { -1.f, 1.0f, // TOP LEFT
+			1.0f, 1.0f, // TOP RIGHT
+			1.0f, -1.0f, // BOTTEM RIGHT
+			-1.0f, -1.0f // BOTTEM LEFT
+	};
 
-	private static Vector2f RSOffset;
-	private static Vector2f RSScale;
+	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
 
-	private static Rectangle CameraCollision;
+	static int[] I2 = { 0, 1, 2, 0, 2, 3 };
+	static int[] I3 = { 0, 1, 2, 3 };
 
-	public static void Start(Vector2f Size, Vector2f Reference, Vector2f Offset, Vector2f Scale, Rectangle CameraPOV)
+	static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2), new ArrayBuffer(BoxT2, 2) }, I2);
+
+	static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2) }, I3);
+
+	private static Matrix4f Projection;
+
+	private static Matrix4f RawCameraModel;
+	private static Matrix4f RSCameraModel;
+	private static Matrix4f ReferencedCameraModel;
+
+	public static void Start(Matrix4f RawCamModel, Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
 	{
-		FinalImage = new BufferedImage((int) Size.GetX(), (int) Size.GetY(), BufferedImage.TYPE_4BYTE_ABGR);
+		RawCameraModel = RawCamModel;
+		RSCameraModel = RSCamModel;
+		ReferencedCameraModel = RefCamModel;
 
-		ReferencePoint = Reference;
-
-		RenderingGraphics = FinalImage.getGraphics();
-
-		RenderingGraphics2D = (Graphics2D) RenderingGraphics.create();
-
-		RenderingGraphics2D.addRenderingHints(Hints[0]);
-		RenderingGraphics2D.addRenderingHints(Hints[1]);
-		RenderingGraphics2D.addRenderingHints(Hints[2]);
-
-		RSOffset = Offset;
-		RSScale = Scale;
-
-		CameraCollision = CameraPOV;
+		Projection = CamProjection;
 	}
 
-	public static void SetReferencePoint(Vector2f Point)
+	public static void SetCameraProjection(Matrix4f CamProjection)
 	{
-		Rendering.ReferencePoint = Point;
-	}
-
-	public static Vector2f GetReferencePoint()
-	{
-		return ReferencePoint;
-	}
-
-	public static Image GetProduct()
-	{
-		RenderingGraphics.dispose();
-
-		return FinalImage;
-	}
-
-	public static void Clear()
-	{
-		FinalImage = null;
+		Projection = CamProjection;
 	}
 
 	// All renderable types
@@ -92,18 +97,18 @@ public class Rendering
 
 	// Dynamic
 
-	public static void RenderImage(RenderingType Type, Image Texture, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderImage(RenderingType Type, Texture Sprite, Vector2f Position, Vector2f Scale, int Rotation)
 	{
 		switch (Type)
 		{
 			case Raw:
-				RenderRawImage(Texture, Position, Scale, Rotation);
+				RenderRawImage(Sprite, Position, Scale, Rotation);
 				break;
 			case RS:
-				RenderRSImage(Texture, Position, Scale, Rotation);
+				RenderRSImage(Sprite, Position, Scale, Rotation);
 				break;
 			case Referenced:
-				RenderReferencedImage(Texture, Position, Scale, Rotation);
+				RenderReferencedImage(Sprite, Position, Scale, Rotation);
 				break;
 		}
 	}
@@ -190,203 +195,229 @@ public class Rendering
 
 	// RAW RENDERING
 
-	public static void RenderRawImage(Image Texture, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRawImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
+		EnableRaw();
 
-		int X1 = (int) (Position.GetX() + Scale.GetX() / 2);
-		int Y1 = (int) (Position.GetY() + Scale.GetY() / 2);
-		RenderingGraphics2D.rotate(Math.toRadians(Rotation), X1, Y1);
-		RenderingGraphics2D.drawImage(Texture, (int) Position.GetX(), (int) Position.GetY(), (int) Scale.GetX(), (int) Scale.GetY(), null);
-		RenderingGraphics2D.rotate(Math.toRadians(-Rotation), X1, Y1);
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
 
+	public static void RenderRawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableRaw();
+
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderRawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
+		EnableRaw();
 
-		RenderingGraphics2D.setStroke(new BasicStroke(Thickness));
-		RenderingGraphics2D.setColor(Hue);
-		RenderingGraphics2D.drawRect((int) Point1.GetX(), (int) Point1.GetY(), (int) Point2.GetX(), (int) Point2.GetY());
-
+		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
 	public static void RenderRawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
+		EnableRaw();
 
-		RenderingGraphics2D.setStroke(new BasicStroke(Thickness));
-		RenderingGraphics2D.setColor(Hue);
-		RenderingGraphics2D.drawLine((int) Point1.GetX(), (int) Point1.GetY(), (int) Point2.GetX(), (int) Point2.GetY());
+		DrawLine(Point1, Point2, Thickness, Hue);
 
 	}
 
 	public static void RenderRawOval(Vector2f Position, Vector2f Scale)
 	{
-		RenderingGraphics2D.drawOval((int) Position.GetX(), (int) Position.GetY(), (int) Scale.GetX(), (int) Scale.GetY());
+		EnableRaw();
+
+		DrawOval(Position, Scale);
 	}
 
 	public static void RenderRawPoint(Vector2f Point, Color Hue)
 	{
+		EnableRaw();
 
-		RenderingGraphics2D.setColor(Hue);
-		RenderingGraphics2D.fillRect((int) Point.GetX(), (int) Point.GetY(), 1, 1);
-
+		DrawPoint(Point, Hue);
 	}
 
 	public static void RenderRawText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
-		RenderingGraphics2D.setFont(Style);
+		EnableRaw();
 
-		RenderingGraphics2D.setColor(Hue);
-
-		RenderingGraphics2D.drawString(Text, Position.GetX(), Position.GetY());
+		DrawText(Position, Text, Style, Hue);
 	}
 
 	// Rendering Supported Rendering
 
-	public static void RenderRSImage(Image Texture, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderRSImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawImage(Texture, Position, Scale, Rotation);
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
 
-		UndoRSShift();
+	public static void RenderRSImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableRS();
+
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderRSBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawBox(Point1, Point2, Thickness, Hue);
-
-		UndoRSShift();
+		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
 	public static void RenderRSLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawLine(Point1, Point2, Thickness, Hue);
+		DrawLine(Point1, Point2, Thickness, Hue);
 
-		UndoRSShift();
 	}
 
 	public static void RenderRSOval(Vector2f Position, Vector2f Scale)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawOval(Position, Scale);
-
-		UndoRSShift();
+		DrawOval(Position, Scale);
 	}
 
 	public static void RenderRSPoint(Vector2f Point, Color Hue)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawPoint(Point, Hue);
-
-		UndoRSShift();
+		DrawPoint(Point, Hue);
 	}
 
 	public static void RenderRSText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
-		RSShift();
+		EnableRS();
 
-		RenderRawText(Position, Text, Style, Hue);
-
-		UndoRSShift();
-	}
-
-	private static void RSShift()
-	{
-		RenderingGraphics2D.translate(RSOffset.GetX(), RSOffset.GetY());
-		RenderingGraphics2D.scale(RSScale.GetX(), RSScale.GetY());
-	}
-
-	private static void UndoRSShift()
-	{
-		RenderingGraphics2D.scale(1.0 / RSScale.GetX(), 1.0 / RSScale.GetY());
-		RenderingGraphics2D.translate(-RSOffset.GetX(), -RSOffset.GetY());
+		DrawText(Position, Text, Style, Hue);
 	}
 
 	// Referenced Rendering
 
-	public static void RenderReferencedImage(Image Texture, Vector2f Position, Vector2f Scale, int Rotation)
+	public static void RenderReferencedImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
+		EnableReferenced();
 
-		ReferencedShift();
-		RenderRSImage(Texture, Position, Scale, Rotation);
-		UndoReferencedShift();
+		DrawImage(Sprite, Position, Scale, Rotation);
+	}
 
+	public static void RenderReferencedImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableReferenced();
+
+		DrawImage(Sprite, SpriteSize, Position, Scale, Rotation);
 	}
 
 	public static void RenderReferencedBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
+		EnableReferenced();
 
-		ReferencedShift();
-		RenderRSBox(Point1, Point2, Thickness, Hue);
-		UndoReferencedShift();
-
+		DrawBox(Point1, Point2, Thickness, Hue);
 	}
 
 	public static void RenderReferencedLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		ReferencedShift();
-		RenderRSLine(Point1, Point2, Thickness, Hue);
-		UndoReferencedShift();
+		EnableReferenced();
+
+		DrawLine(Point1, Point2, Thickness, Hue);
+
 	}
 
 	public static void RenderReferencedOval(Vector2f Position, Vector2f Scale)
 	{
+		EnableReferenced();
 
-		ReferencedShift();
-		RenderRSOval(Position, Scale);
-		UndoReferencedShift();
-
+		DrawOval(Position, Scale);
 	}
 
 	public static void RenderReferencedPoint(Vector2f Point, Color Hue)
 	{
-		if (CameraCollision.CollidesWith(Point))
-		{
-			ReferencedShift();
-			RenderRSPoint(Point, Hue);
-			UndoReferencedShift();
-		}
+		EnableReferenced();
+
+		DrawPoint(Point, Hue);
 	}
 
 	public static void RenderReferencedText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
-		ReferencedShift();
+		EnableReferenced();
 
-		RenderRSText(Position, Text, Style, Hue);
-
-		UndoReferencedShift();
+		DrawText(Position, Text, Style, Hue);
 	}
 
-	static float TempXReferencedOffset;
-	static float TempYReferencedOffset;
-
-	private static void ReferencedShift()
+	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
-		Vector2f FlippedReference = ReferencePoint.Derive();
-
-		FlippedReference.Invert();
-
-		TempXReferencedOffset = FlippedReference.GetX();
-		TempYReferencedOffset = FlippedReference.GetY();
-
-		RenderingGraphics2D.translate(TempXReferencedOffset, TempYReferencedOffset);
+		DrawImage(Sprite.GetID(), Sprite.GetSize(), Position, Scale, Rotation);
 	}
 
-	private static void UndoReferencedShift()
+	private static void DrawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
-		RenderingGraphics2D.translate(-TempXReferencedOffset, -TempYReferencedOffset);
+		ApplyTexture(Sprite, 0);
+		ApplyShader(DrawImage);
+
+		DrawImage.SetUniform("CameraModel", ActiveCameraModel);
+
+		DrawImage.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
+
+		DrawImage.SetUniform("Blur", 0);
+
+		DrawImage.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
+		DrawImage.SetUniform("Texture1", 0);
+		DrawImage.SetUniform("Projection", Projection);
+
+		Draw(FullScreenBox, GL_TRIANGLES);
+
 	}
 
-	public static Graphics2D GetRenderingGraphics2D()
+	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		return RenderingGraphics2D;
+		ApplyShader(DrawShape);
+
+		glLineWidth(Thickness);
+
+		DrawShape.SetUniform("CameraModel", ActiveCameraModel);
+
+		Vector2f ScaleVec = Point2.Derive();
+		ScaleVec.Subtract(Point1);
+
+		DrawShape.SetUniform("ObjectModel", GenerateModel(Point1, ScaleVec, 0));
+		DrawShape.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
+		DrawShape.SetUniform("Projection", Projection);
+
+		Draw(LineBox, GL_LINE_LOOP);
+	}
+
+	private static void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
+	{
+		ApplyShader(DrawShape);
+	}
+
+	private static void DrawOval(Vector2f Position, Vector2f Scale)
+	{
+		ApplyShader(DrawOval);
+
+		DrawOval.SetUniform("CameraModel", ActiveCameraModel);
+		DrawOval.SetUniform("ObjectModel", GenerateOvalModel(Position, Scale));
+		DrawOval.SetUniform("Projection", Projection);
+
+		DrawOval.SetUniform("InnerColor", 0f, 0f, 0f, 1f);
+		DrawOval.SetUniform("OuterColor", 1f, 1f, 1f, 1f);
+
+		Draw(FullScreenBox, GL_TRIANGLES);
+	}
+
+	private static void DrawPoint(Vector2f Point, Color Hue)
+	{
+		ApplyShader(DrawPoint);
+	}
+
+	private static void DrawText(Vector2f Position, String Text, Font Style, Color Hue)
+	{
+
 	}
 
 	public enum RenderingType
@@ -394,4 +425,104 @@ public class Rendering
 		Raw, RS, Referenced
 	}
 
+	private static Matrix4f GenerateModel(Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		Matrix4f ObjectModel = new Matrix4f().translate(Position.GetX() + Scale.GetX() / 2, -(Position.GetY() + Scale.GetY() / 2), 0).rotateZ((float) Math.toRadians(-Rotation)).scale(Scale.GetX() / 2, -(Scale.GetY() / 2), 0);
+
+		return ObjectModel;
+	}
+
+	private static Matrix4f GenerateOvalModel(Vector2f Position, Vector2f Scale)
+	{
+		Matrix4f ObjectModel = new Matrix4f().translate(Position.GetX(), -Position.GetY(), 0).scale(Scale.GetX() / 2, -(Scale.GetY() / 2), 0);
+
+		return ObjectModel;
+	}
+
+	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
+	{
+		ApplyShader(S);
+
+		Draw(VBO, Type);
+	}
+
+	public static void Draw(VertexBufferObject VBO, int Type)
+	{
+		ArrayBuffer[] Buffers = VBO.GetBuffers();
+
+		for (int i = 0; i < Buffers.length; i++)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
+			glBufferData(GL_ARRAY_BUFFER, Buffers[i].GetDataBuffer(), GL_STATIC_DRAW);
+			glEnableVertexAttribArray(i);
+			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);
+		}
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIndexID());
+
+		// Type for images and shapes should be GL_TRIANGLES
+		// Type for lines should be GL_LINES
+		// Type for points should be GL_POINTS
+
+		glDrawElements(Type, VBO.GetIndex().length, GL_UNSIGNED_INT, 0);
+
+		for (int i = 0; i < Buffers.length; i++)
+		{
+			glDisableVertexAttribArray(i);
+		}
+	}
+
+	public static void DrawCamera(int CamTexture)
+	{
+		ApplyTexture(CamTexture, 0);
+		ApplyShader(DrawCamera);
+
+		Draw(FullScreenBox, GL_TRIANGLES);
+	}
+
+	private static Matrix4f ActiveCameraModel;
+
+	private static void EnableRaw()
+	{
+		ActiveCameraModel = RawCameraModel;
+	}
+
+	private static void EnableRS()
+	{
+		ActiveCameraModel = RSCameraModel;
+	}
+
+	private static void EnableReferenced()
+	{
+		ActiveCameraModel = ReferencedCameraModel;
+	}
+
+	private static void ApplyTexture(Texture Apply, int Sampler)
+	{
+		if ((Sampler >= 0) && (Sampler <= 31))
+		{
+			glActiveTexture(GL_TEXTURE0 + Sampler);
+			glBindTexture(GL_TEXTURE_2D, Apply.GetID());
+		}
+	}
+
+	private static void ApplyTexture(int Apply, int Sampler)
+	{
+		if ((Sampler >= 0) && (Sampler <= 31))
+		{
+			glActiveTexture(GL_TEXTURE0 + Sampler);
+			glBindTexture(GL_TEXTURE_2D, Apply);
+		}
+	}
+
+	private static void ApplyShader(Shader Apply)
+	{
+		glUseProgram(Apply.GetShaderID());
+		CurrentShader = Apply;
+	}
+
+	private static void ClearTexture()
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }
