@@ -1,6 +1,7 @@
 package Rendering;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -42,6 +43,8 @@ public class Rendering
 	private static Shader DrawShape = new Shader("/vertexshaders/drawshape.vert", true, "/fragmentshaders/drawshape.frag", true);
 	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
 
+	private static Shader DrawLine = new Shader("/vertexshaders/drawline.vert", true, "/fragmentshaders/drawshape.frag", true);
+
 	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
 
 	private static float[] BoxV2 = { -1.f, 1.0f, // TOP LEFT
@@ -58,6 +61,12 @@ public class Rendering
 	static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2), new ArrayBuffer(BoxT2, 2) }, I2);
 
 	static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2) }, I3);
+
+	static float[] LineVertex = new float[] { 0, 0, 1, 1 };
+
+	static int[] I4 = new int[] { 0, 1 };
+
+	static VertexBufferObject Line = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(LineVertex, 2) }, I4);
 
 	private static Matrix4f Projection;
 
@@ -393,7 +402,18 @@ public class Rendering
 
 	private static void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		ApplyShader(DrawShape);
+		ApplyShader(DrawLine);
+
+		glLineWidth(Thickness);
+
+		DrawLine.SetUniform("CameraModel", ActiveCameraModel);
+
+		DrawLine.SetUniform("LinePosition", Point1.GetX(), Point1.GetY(), Point2.GetX(), Point2.GetY());
+
+		DrawLine.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
+		DrawLine.SetUniform("Projection", Projection);
+
+		Draw(Line, GL_LINES);
 	}
 
 	private static void DrawOval(Vector2f Position, Vector2f Scale)

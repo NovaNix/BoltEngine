@@ -54,6 +54,7 @@ public abstract class Game implements Runnable
 
 		while (Running)
 		{
+
 			TickHandler.LoopUpdate();
 			RenderHandler.LoopUpdate();
 
@@ -83,6 +84,8 @@ public abstract class Game implements Runnable
 				TPS = 0;
 				FPS = 0;
 			}
+
+			Running = !EndGame();
 		}
 
 		Running = false;
@@ -97,6 +100,8 @@ public abstract class Game implements Runnable
 	protected abstract void UpdateInput();
 
 	protected abstract void Render();
+
+	protected abstract boolean EndGame();
 
 	public void CapFPS(float FPS)
 	{

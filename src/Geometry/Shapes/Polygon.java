@@ -8,9 +8,9 @@ import Engine.BoltMath;
 import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segmant;
+import Rendering.Rendering.RenderingType;
 import Rendering.OpenGL.ArrayBuffer;
 import Rendering.OpenGL.VertexBufferObject;
-import Rendering.Rendering.RenderingType;
 import Utils.BoltUtils;
 import Utils.LoopedList;
 import Utils.Vector2fUtils;
@@ -320,7 +320,7 @@ public class Polygon extends Shape
 	{
 		for (int i = 0; i < Sides.size(); i++)
 		{
-			Sides.get(i).Render(new Color(255, 0, 0), RenderingType.Referenced);
+			Sides.get(i).Render(new Color(255, 255, 255), RenderingType.Referenced);
 		}
 	}
 

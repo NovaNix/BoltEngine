@@ -72,6 +72,8 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 		Cam.AddRenderable(() -> Rendering.RenderRawBox(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 0, 100)));
 
+		Cam.AddRenderable(() -> Rendering.RenderRawLine(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 255, 100)));
+
 		Win.AddCamera(Cam);
 
 		Win.SetVisible(true);
