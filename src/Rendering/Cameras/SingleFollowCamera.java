@@ -96,22 +96,4 @@ public class SingleFollowCamera extends Camera
 		return Tested == Following;
 	}
 
-	@Override
-	public void Move(Vector2f Translation)
-	{
-		Position.Add(Translation);
-		// this.FollowCollision.SetCenter(CameraCollision.GetCenter());
-		// Update();
-	}
-	//
-	// @Override
-	// public void SetPosition(Vector2f Position)
-	// {
-	// this.Position = this.Position.Add(Position);
-	// CameraCollision.SetPosition(Position);
-	// ZoomCollision.SetPosition(Position);
-	// FollowCollision.SetPosition
-	// // Update();
-	// }
-
 }

@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import Rendering.OpenGLTest.Texture;
+import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
 public class Mask extends Texture

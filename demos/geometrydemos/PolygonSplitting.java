@@ -5,12 +5,10 @@ import java.awt.image.BufferedImage;
 
 import Geometry.Shapes.Polygon;
 import Geometry.Shapes.Triangle;
-import Rendering.Rendering;
 import Rendering.Rendering.RenderingType;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Cameras.SingleFollowCamera;
-import Rendering.Exceptions.ExcessCamerasException;
 import Vectors.Vector2f;
 
 public class PolygonSplitting
@@ -42,21 +40,14 @@ public class PolygonSplitting
 
 		Black.setRGB(0, 0, 0);
 
-		Cam.AddRenderable(() -> Rendering.RenderRawImage(Black, new Vector2f(0, 0), new Vector2f(1000, 750), 0));
+		// Cam.AddRenderable(() -> Rendering.RenderRawImage(Black, new Vector2f(0, 0),
+		// new Vector2f(1000, 750), 0));
 
 		Cam.AddRenderable(() -> RenderSplit());
 
-		// Cam.AddRenderable(() -> Poly.Render());
-		try
-		{
-			Win.GetScreen().AddCamera(Cam);
-		} catch (ExcessCamerasException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Win.AddCamera(Cam);
 
-		Win.setVisible(true);
+		Win.SetVisible(true);
 
 		Split = Poly.ExtractTriangles();
 
@@ -77,7 +68,7 @@ public class PolygonSplitting
 
 	public static void Render()
 	{
-		Win.GetScreen().Render();
+		Win.Render();
 	}
 
 }

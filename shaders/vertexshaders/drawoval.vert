@@ -6,10 +6,10 @@ uniform mat4 CameraModel;
 uniform mat4 ObjectModel;
 uniform mat4 Projection;
 
-out vec2 TexCoords;
+out vec2 OvalCoord;
 
 void main()
 {
-    TexCoords = TexCoord;
+	OvalCoord = TexCoord;
 	gl_Position = Projection * CameraModel * ObjectModel * vec4(Vertex, 0, 1);
 }
