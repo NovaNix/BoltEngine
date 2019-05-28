@@ -7,6 +7,7 @@ import java.util.ListIterator;
 
 import Engine.BoltMath;
 
+// LoopedList acts as an ArrayList, but when a index goes outside of its range it wraps around
 public class LoopedList<E> extends ArrayList<E>
 {
 
@@ -25,6 +26,7 @@ public class LoopedList<E> extends ArrayList<E>
 		super(initialCapacity);
 	}
 
+	// Returns the ArrayList location of the specified location
 	private int LoopedLocation(int Location)
 	{
 		return BoltMath.mod(Location, size());

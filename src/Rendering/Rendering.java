@@ -35,6 +35,8 @@ import Vectors.Vector2f;
 public class Rendering
 {
 
+	// All the shaders for the draw methods
+
 	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawOval = new Shader("/vertexshaders/drawoval.vert", true, "/fragmentshaders/drawoval.frag", true);
@@ -44,6 +46,8 @@ public class Rendering
 	private static Shader DrawLine = new Shader("/vertexshaders/drawline.vert", true, "/fragmentshaders/drawshape.frag", true);
 
 	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
+
+	// All the VBOs for the draw methods
 
 	private static float[] BoxV2 = { -1.f, 1.0f, // TOP LEFT
 			1.0f, 1.0f, // TOP RIGHT
@@ -66,12 +70,15 @@ public class Rendering
 
 	static VertexBufferObject Line = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(LineVertex, 2) }, I4);
 
+	// All the Matrices needed for the shaders
+
 	private static Matrix4f Projection;
 
 	private static Matrix4f RawCameraModel;
 	private static Matrix4f RSCameraModel;
 	private static Matrix4f ReferencedCameraModel;
 
+	// Prepares for rendering and applys the specified matrices
 	public static void Start(Matrix4f RawCamModel, Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
 	{
 		RawCameraModel = RawCamModel;
@@ -89,7 +96,8 @@ public class Rendering
 	// All renderable types
 
 	// Raw (The rendering location is not changed by the observer's size)
-	// RS (The rendering location is shifted depending on the observer's size)
+	// RS (The rendering location is shifted depending on the observer's size, NOT
+	// YET IMPLEMENTED)
 	// Referenced (The rendering location is shifted depending on the reference
 	// point)
 
@@ -99,7 +107,7 @@ public class Rendering
 	// Lines
 	// Rectangles
 	// Text (WIP)
-	// Point
+	// Point (WIP)
 	// Oval
 
 	// Dynamic
@@ -356,6 +364,8 @@ public class Rendering
 		DrawText(Position, Text, Style, Hue);
 	}
 
+	// Pure drawing methods
+
 	private static void DrawImage(Texture Sprite, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		DrawImage(Sprite.GetID(), Sprite.GetSize(), Position, Scale, Rotation);
@@ -491,6 +501,7 @@ public class Rendering
 		Draw(FullScreenBox, GL_TRIANGLES);
 	}
 
+	// The current active camera model
 	private static Matrix4f ActiveCameraModel;
 
 	private static void EnableRaw()
@@ -508,6 +519,7 @@ public class Rendering
 		ActiveCameraModel = ReferencedCameraModel;
 	}
 
+	// Applys the specified texture to the specified sampler
 	private static void ApplyTexture(Texture Apply, int Sampler)
 	{
 		if ((Sampler >= 0) && (Sampler <= 31))
@@ -517,6 +529,7 @@ public class Rendering
 		}
 	}
 
+	// Applys the specified texture to the specified sampler
 	private static void ApplyTexture(int Apply, int Sampler)
 	{
 		if ((Sampler >= 0) && (Sampler <= 31))
@@ -526,13 +539,10 @@ public class Rendering
 		}
 	}
 
+	// Applys the specified shader
 	private static void ApplyShader(Shader Apply)
 	{
 		glUseProgram(Apply.GetShaderID());
 	}
 
-	private static void ClearTexture()
-	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
 }
