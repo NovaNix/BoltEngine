@@ -12,19 +12,21 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 public class Keyboard implements GLFWKeyCallbackI
 {
 
-	HashMap<Integer, Boolean> Keys = new HashMap<Integer, Boolean>();
+	static Keyboard CallbackHandler = new Keyboard();
 
-	public Keyboard(long WindowHandle)
+	static HashMap<Integer, Boolean> Keys = new HashMap<Integer, Boolean>();
+
+	public static void InitKeyboard(long WindowHandle)
 	{
-		glfwSetKeyCallback(WindowHandle, this);
+		glfwSetKeyCallback(WindowHandle, CallbackHandler);
 	}
 
-	public void Update()
+	public static void Update()
 	{
 		glfwPollEvents();
 	}
 
-	public boolean KeyDown(int Key)
+	public static boolean KeyDown(int Key)
 	{
 		if (Keys.containsKey(Key))
 		{
