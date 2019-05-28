@@ -35,10 +35,11 @@ import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
 import Rendering.Renderable;
 import Rendering.Rendering;
+import Rendering.Utils.RenderableContainer;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-public class Camera extends JComponent implements Movable
+public class Camera extends JComponent implements Movable, RenderableContainer
 {
 
 	private String Name = "Unnamed Camera";
@@ -178,11 +179,13 @@ public class Camera extends JComponent implements Movable
 		return FBOTexture;
 	}
 
+	@Override
 	public void AddRenderable(Renderable ToRender)
 	{
 		this.Rendered.add(ToRender);
 	}
 
+	@Override
 	public void RemoveRenderable(Renderable ToRemove)
 	{
 		this.Rendered.remove(ToRemove);

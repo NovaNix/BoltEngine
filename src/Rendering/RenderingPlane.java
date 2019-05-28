@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import Algorithms.Sorting.Sortable;
+import Rendering.Utils.RenderableContainer;
 import Vectors.Vector2f;
 
-public class RenderingPlane implements Renderable, Sortable<Renderable>
+public class RenderingPlane implements RenderableContainer, Renderable, Sortable<Renderable>
 {
 
 	String Name;
@@ -59,11 +60,13 @@ public class RenderingPlane implements Renderable, Sortable<Renderable>
 		this.YParallax = YParallax;
 	}
 
+	@Override
 	public void AddRenderable(Renderable Rendered)
 	{
 		ToRender.add(Rendered);
 	}
 
+	@Override
 	public void RemoveRenderable(Renderable Rendered)
 	{
 		ToRender.remove(Rendered);
