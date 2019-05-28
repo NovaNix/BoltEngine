@@ -1,10 +1,11 @@
 /*
  * 
  */
-package Rendering;
+package Rendering.Utils;
 
 import java.util.ArrayList;
 
+import Rendering.Renderable;
 import Utils.ChunkArray;
 
 public class RenderableChunkArray extends ChunkArray<Renderable> implements Renderable

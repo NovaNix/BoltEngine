@@ -1,13 +1,13 @@
 /*
  *
  */
-package Rendering;
+package Rendering.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import Algorithms.Sorting.Sortable;
-import Rendering.Utils.RenderableContainer;
+import Rendering.Renderable;
 import Vectors.Vector2f;
 
 public class RenderingPlane implements RenderableContainer, Renderable, Sortable<Renderable>
