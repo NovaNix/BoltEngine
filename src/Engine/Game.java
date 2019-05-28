@@ -17,7 +17,8 @@ public abstract class Game implements Runnable
 	private int FPS;
 	private int TPS;
 
-	// These hold how fast tick and render are run
+	// These hold how fast tick and render are run in milliseconds
+	// Stopwatches are not used to measure the time due to potential accuracy issues
 	private double TickSpeed;
 	private double RenderSpeed;
 
@@ -60,15 +61,23 @@ public abstract class Game implements Runnable
 
 			if (TickHandler.TickTime())
 			{
+				double Now = System.currentTimeMillis();
+
 				UpdateInput();
 				Tick();
+
+				TickSpeed = System.currentTimeMillis() - Now;
 
 				TPS++;
 			}
 
 			if (RenderHandler.TickTime())
 			{
+				double Now = System.currentTimeMillis();
+
 				Render();
+
+				RenderSpeed = System.currentTimeMillis() - Now;
 
 				FPS++;
 			}
@@ -121,6 +130,16 @@ public abstract class Game implements Runnable
 	public int GetTPS()
 	{
 		return TPS;
+	}
+
+	public double GetTickSpeed()
+	{
+		return TickSpeed;
+	}
+
+	public double GetRenderSpeed()
+	{
+		return RenderSpeed;
 	}
 
 }
