@@ -1,15 +1,15 @@
 package Geometry.Shapes;
 
-import Geometry.Segmant;
+import Geometry.Segment;
 import Vectors.Vector2f;
 
 public class Rectangle extends Polygon
 {
 
-	Segmant TopFace;
-	Segmant LeftFace;
-	Segmant RightFace;
-	Segmant BottemFace;
+	Segment TopFace;
+	Segment LeftFace;
+	Segment RightFace;
+	Segment BottemFace;
 
 	Vector2f Scale;
 

@@ -59,14 +59,14 @@ public class Point extends Shape
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Line Collision)
+	public Segment[] GetCollisionSegmentsWith(Line Collision)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Shape Collision)
+	public Segment[] GetCollisionSegmentsWith(Shape Collision)
 	{
 		return null;
 	}

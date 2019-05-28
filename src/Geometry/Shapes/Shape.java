@@ -1,7 +1,7 @@
 package Geometry.Shapes;
 
 import Geometry.Line;
-import Geometry.Segmant;
+import Geometry.Segment;
 import Rendering.Renderable;
 import Rendering.Cameras.Followable;
 import Utils.Movable;
@@ -20,9 +20,9 @@ public abstract class Shape implements Followable, Renderable, Movable
 
 	public abstract Vector2f[] GetCollisionPointsWith(Shape Collision);
 
-	public abstract Segmant[] GetCollisionSegmantsWith(Line Collision);
+	public abstract Segment[] GetCollisionSegmentsWith(Line Collision);
 
-	public abstract Segmant[] GetCollisionSegmantsWith(Shape Collision);
+	public abstract Segment[] GetCollisionSegmentsWith(Shape Collision);
 
 	public abstract boolean CollidesWith(Line Collision);
 

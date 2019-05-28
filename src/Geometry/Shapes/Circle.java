@@ -1,7 +1,7 @@
 package Geometry.Shapes;
 
 import Geometry.Line;
-import Geometry.Segmant;
+import Geometry.Segment;
 import Rendering.Rendering;
 import Utils.BoltUtils;
 import Vectors.ReferencedVector2f;
@@ -119,14 +119,14 @@ public class Circle extends Shape
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Line Collision)
+	public Segment[] GetCollisionSegmentsWith(Line Collision)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Shape Collision)
+	public Segment[] GetCollisionSegmentsWith(Shape Collision)
 	{
 		// TODO Auto-generated method stub
 		return null;

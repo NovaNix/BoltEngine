@@ -1,6 +1,6 @@
 package Rendering.Cameras;
 
-import Geometry.Segmant;
+import Geometry.Segment;
 import Geometry.Shapes.Circle;
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
@@ -27,7 +27,7 @@ public class SingleFollowCamera extends Camera
 			{
 				if (!FollowCollision.CollidesWith(Following.GetFollowingPosition()))
 				{
-					Segmant Path = new Segmant(FollowCollision.GetCenter(), Following.GetFollowingPosition());
+					Segment Path = new Segment(FollowCollision.GetCenter(), Following.GetFollowingPosition());
 
 					Vector2f[] Collisions = FollowCollision.GetCollisionPointsWith(Path);
 

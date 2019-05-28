@@ -7,7 +7,7 @@ import java.util.Arrays;
 import Engine.BoltMath;
 import Geometry.Line;
 import Geometry.Ray;
-import Geometry.Segmant;
+import Geometry.Segment;
 import Rendering.Rendering.RenderingType;
 import Rendering.OpenGL.ArrayBuffer;
 import Rendering.OpenGL.VertexBufferObject;
@@ -22,7 +22,7 @@ public class Polygon extends Shape
 {
 
 	Vector2fGroup Corners;
-	LoopedList<Segmant> Sides;
+	LoopedList<Segment> Sides;
 
 	Circle BoundingBubble;
 
@@ -86,9 +86,9 @@ public class Polygon extends Shape
 
 	public void Refresh()
 	{
-		Segmant[] Edges = Segmant.GenerateSegmants(this.Corners.ToArray());
+		Segment[] Edges = Segment.GenerateSegments(this.Corners.ToArray());
 
-		Sides = new LoopedList<Segmant>(Arrays.asList(Edges));
+		Sides = new LoopedList<Segment>(Arrays.asList(Edges));
 
 		Vector2f AVCenter = Vector2fUtils.GetAverage(this.Corners.ToArray());
 
@@ -128,7 +128,7 @@ public class Polygon extends Shape
 		Polygon CutOther = Poly.Copy();
 
 		ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
-		ArrayList<Segmant> IntersectionLines = new ArrayList<Segmant>();
+		ArrayList<Segment> IntersectionLines = new ArrayList<Segment>();
 
 		for (int i = 0; i < CutSelf.GetSides().size(); i++)
 		{
@@ -191,7 +191,7 @@ public class Polygon extends Shape
 					Vector2f MidCorner = CornerList.get(i);
 					Vector2f NextCorner = CornerList.get(i + 1);
 
-					Segmant TriLine = new Segmant(PreviousCorner, NextCorner);
+					Segment TriLine = new Segment(PreviousCorner, NextCorner);
 
 					Triangle Tri = new Triangle(PreviousCorner, MidCorner, NextCorner);
 
@@ -274,7 +274,7 @@ public class Polygon extends Shape
 
 		Corners.RemoveVector(Corners.GetVector(Corner));
 
-		Sides.set(Prev, new Segmant(PrevPoint, NextPoint));
+		Sides.set(Prev, new Segment(PrevPoint, NextPoint));
 		Sides.remove(Corner);
 	}
 
@@ -354,9 +354,9 @@ public class Polygon extends Shape
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Line Collision)
+	public Segment[] GetCollisionSegmentsWith(Line Collision)
 	{
-		Segmant[] Collisions = new Segmant[Sides.size()];
+		Segment[] Collisions = new Segment[Sides.size()];
 
 		for (int i = 0; i < Sides.size(); i++)
 		{
@@ -366,11 +366,11 @@ public class Polygon extends Shape
 			}
 		}
 
-		return (Segmant[]) BoltUtils.RemoveNulls(Collisions);
+		return (Segment[]) BoltUtils.RemoveNulls(Collisions);
 	}
 
 	@Override
-	public Segmant[] GetCollisionSegmantsWith(Shape Collision)
+	public Segment[] GetCollisionSegmentsWith(Shape Collision)
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -386,7 +386,7 @@ public class Polygon extends Shape
 
 		else
 		{
-			return Collision.GetIntersectionsWith(Sides.toArray(new Segmant[Sides.size()])) != null;
+			return Collision.GetIntersectionsWith(Sides.toArray(new Segment[Sides.size()])) != null;
 		}
 	}
 
@@ -493,7 +493,7 @@ public class Polygon extends Shape
 		return Corners.GetVectorList();
 	}
 
-	public LoopedList<Segmant> GetSides()
+	public LoopedList<Segment> GetSides()
 	{
 		return Sides;
 	}

@@ -7,13 +7,13 @@ import Rendering.Rendering;
 import Rendering.Rendering.RenderingType;
 import Vectors.Vector2f;
 
-public class Segmant extends Line implements Renderable
+public class Segment extends Line implements Renderable
 {
 
 	Vector2f Point1;
 	Vector2f Point2;
 
-	public Segmant(Vector2f Point1, Vector2f Point2)
+	public Segment(Vector2f Point1, Vector2f Point2)
 	{
 		super(Point1, Point2);
 
@@ -21,25 +21,26 @@ public class Segmant extends Line implements Renderable
 		this.Point2 = Point2;
 	}
 
-	public static Segmant[] GenerateSegmants(Vector2f[] Points)
+	// Returns the segments in between the points. Loops the last point to the first point 
+	public static Segment[] GenerateSegments(Vector2f[] Points)
 	{
-		Segmant[] Sides = new Segmant[Points.length];
+		Segment[] Sides = new Segment[Points.length];
 
 		for (int i = 0; i < Points.length - 1; i++)
 		{
-			Sides[i] = new Segmant(Points[i], Points[i + 1]);
+			Sides[i] = new Segment(Points[i], Points[i + 1]);
 		}
 
-		Sides[Points.length - 1] = new Segmant(Points[Points.length - 1], Points[0]);
+		Sides[Points.length - 1] = new Segment(Points[Points.length - 1], Points[0]);
 
 		return Sides;
 	}
 
-	public Segmant[] BreakOnPoint(Vector2f Point)
+	public Segment[] BreakOnPoint(Vector2f Point)
 	{
 		if (PointOnLine(Point))
 		{
-			return new Segmant[] { new Segmant(Point1, Point), new Segmant(Point2, Point) };
+			return new Segment[] { new Segment(Point1, Point), new Segment(Point2, Point) };
 		}
 
 		else
@@ -48,7 +49,7 @@ public class Segmant extends Line implements Renderable
 		}
 	}
 
-	public Segmant[] BreakOnIntersection(Line Tested)
+	public Segment[] BreakOnIntersection(Line Tested)
 	{
 		if (!LinesAreParallel(Tested))
 		{
