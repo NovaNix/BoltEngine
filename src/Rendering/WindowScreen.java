@@ -19,7 +19,6 @@ import javax.swing.JFrame;
 
 import org.lwjgl.BufferUtils;
 
-import Menu.Menu;
 import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
 import Vectors.Vector2f;
@@ -33,7 +32,7 @@ public abstract class WindowScreen
 
 	protected JFrame SimulatedEnviroment;
 
-	protected Menu CurrentMenu;
+	// protected Menu CurrentMenu;
 
 	protected Vector2f MousePosition = new Vector2f(0, 0);
 

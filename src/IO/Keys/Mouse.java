@@ -1,5 +1,7 @@
 package IO.Keys;
 
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+
 import Vectors.Vector2f;
 
 public class Mouse
@@ -12,7 +14,7 @@ public class Mouse
 
 	public void Update()
 	{
-
+		glfwPollEvents();
 	}
 
 	public void LeftMouseDown()

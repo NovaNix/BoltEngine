@@ -35,8 +35,6 @@ import Vectors.Vector2f;
 public class Rendering
 {
 
-	private static Shader CurrentShader;
-
 	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
 	private static Shader DrawOval = new Shader("/vertexshaders/drawoval.vert", true, "/fragmentshaders/drawoval.frag", true);
@@ -100,7 +98,7 @@ public class Rendering
 	// Images
 	// Lines
 	// Rectangles
-	// Text
+	// Text (WIP)
 	// Point
 	// Oval
 
@@ -459,13 +457,6 @@ public class Rendering
 		return ObjectModel;
 	}
 
-	public static void Draw(VertexBufferObject VBO, Shader S, int Type)
-	{
-		ApplyShader(S);
-
-		Draw(VBO, Type);
-	}
-
 	public static void Draw(VertexBufferObject VBO, int Type)
 	{
 		ArrayBuffer[] Buffers = VBO.GetBuffers();
@@ -538,7 +529,6 @@ public class Rendering
 	private static void ApplyShader(Shader Apply)
 	{
 		glUseProgram(Apply.GetShaderID());
-		CurrentShader = Apply;
 	}
 
 	private static void ClearTexture()
