@@ -60,9 +60,6 @@ public class Shader
 		glAttachShader(ShaderID, VertexHandle);
 		glAttachShader(ShaderID, FragmentHandle);
 
-		// glBindAttribLocation(ShaderID, 0, "Vertex");
-		// glBindAttribLocation(ShaderID, 1, "TexCoord");
-
 		glLinkProgram(ShaderID);
 
 		if (glGetProgrami(ShaderID, GL_LINK_STATUS) != 1)
