@@ -35,21 +35,26 @@ public class Line
 		this.PointOnLine = new Vector2f(0, YIntercept);
 	}
 
+	// Returns a horizontal line at the specified Y coord
 	public static Line MakeHorizontalLine(float Y)
 	{
 		return new Line(new Vector2f(0, Y), new Vector2f(1, Y));
 	}
 
+	// Returns a vertical line at the specified X coord
 	public static Line MakeVerticalLine(float X)
 	{
 		return new Line(new Vector2f(X, 0), new Vector2f(X, 1));
 	}
 
+	// Returns the Y coord for the specified x coord
 	public float GetYFromX(float X)
 	{
 		return (Slope * X) + YIntercept;
 	}
 
+	// Returns the intersection with another line. Returns null if the lines are
+	// parallel
 	public Vector2f GetIntersectionWith(Line Tested)
 	{
 		Vector2f Collision = null;
@@ -89,6 +94,7 @@ public class Line
 		return Collision;
 	}
 
+	// Returns all intersections between this line and all lines in the Lines list
 	public Vector2f[] GetIntersectionsWith(Line[] Lines)
 	{
 		Vector2f[] Collisions = new Vector2f[Lines.length];
@@ -101,6 +107,7 @@ public class Line
 		return BoltUtils.RemoveNulls(Collisions);
 	}
 
+	// Returns if a point is on this line
 	public boolean PointOnLine(Vector2f Point)
 	{
 		if (!IsVertical())
@@ -114,21 +121,26 @@ public class Line
 		}
 	}
 
+	// Returns if this line is horizontal
 	public boolean IsHorizontal()
 	{
 		return Slope == 0;
 	}
 
+	// Returns if this line is vertical
 	public boolean IsVertical()
 	{
 		return Math.abs(Slope) == Double.POSITIVE_INFINITY;
 	}
 
+	// Returns if this line and the specified line are parallel
 	public boolean LinesAreParallel(Line Side)
 	{
 		return (Slope == Side.GetSlope());
 	}
 
+	// Returns if the point is above this line. If this line is vertical, it will
+	// return if the point has a higher x
 	public boolean PointAbove(Vector2f Point)
 	{
 		if (!IsVertical())
@@ -142,6 +154,8 @@ public class Line
 		}
 	}
 
+	// Returns if the point is below this line. If this line is vertical, it will
+	// return if the point has a lower x
 	public boolean PointBelow(Vector2f Point)
 	{
 		if (!IsVertical())
@@ -155,21 +169,25 @@ public class Line
 		}
 	}
 
+	// Returns if the two points are on the same side of the line
 	public boolean OnSameSide(Vector2f Check1, Vector2f Check2)
 	{
 		return (PointAbove(Check1) && PointAbove(Check2)) || (PointBelow(Check1) && PointBelow(Check2));
 	}
 
+	// Returns the auto-generated point on the line
 	public Vector2f GetPointOnLine()
 	{
 		return PointOnLine;
 	}
 
+	// Returns the slope of the line
 	public float GetSlope()
 	{
 		return Slope;
 	}
 
+	// Returns the Y-Intercept of the line
 	public float GetYIntercept()
 	{
 		return YIntercept;

@@ -22,7 +22,9 @@ public class Ray extends Line
 		this.Angle = Angle;
 	}
 
-	public static Vector2f GenerateRayPoint(Vector2f Start, float Distance, float Angle)
+	// Returns a point a specified distance away, and at a certain angle to the
+	// starting point
+	private static Vector2f GenerateRayPoint(Vector2f Start, float Distance, float Angle)
 	{
 		float RotatedAngle = Angle;
 
@@ -95,21 +97,25 @@ public class Ray extends Line
 		return null;
 	}
 
+	// Returns if the ray is pointing North
 	public boolean PointingNorth()
 	{
 		return 0 < Angle && Angle < 180;
 	}
 
+	// Returns if the ray is pointing South
 	public boolean PointingSouth()
 	{
 		return 180 < Angle && Angle < 360;
 	}
 
+	// Returns if the ray is pointing East
 	public boolean PointingEast()
 	{
 		return 270 < Angle || Angle < 90;
 	}
 
+	// Returns if the ray is pointing West
 	public boolean PointingWest()
 	{
 		return 90 < Angle && Angle < 270;

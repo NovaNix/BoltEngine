@@ -21,7 +21,8 @@ public class Segment extends Line implements Renderable
 		this.Point2 = Point2;
 	}
 
-	// Returns the segments in between the points. Loops the last point to the first point 
+	// Returns the segments in between the points. Loops the last point to the first
+	// point
 	public static Segment[] GenerateSegments(Vector2f[] Points)
 	{
 		Segment[] Sides = new Segment[Points.length];
@@ -36,6 +37,8 @@ public class Segment extends Line implements Renderable
 		return Sides;
 	}
 
+	// Returns this segment as two segments broken on the specified point. If the
+	// point is not on the line, it returns null
 	public Segment[] BreakOnPoint(Vector2f Point)
 	{
 		if (PointOnLine(Point))
@@ -49,6 +52,8 @@ public class Segment extends Line implements Renderable
 		}
 	}
 
+	// Returns this segment as two segments broken by the line. If the line is
+	// parallel, it returns null
 	public Segment[] BreakOnIntersection(Line Tested)
 	{
 		if (!LinesAreParallel(Tested))
@@ -87,6 +92,7 @@ public class Segment extends Line implements Renderable
 		}
 	}
 
+	// Returns if the line is within a specified domain
 	public boolean InDomain(float X1, float X2)
 	{
 
@@ -110,6 +116,7 @@ public class Segment extends Line implements Renderable
 		}
 	}
 
+	// Returns if the line is within a specified range
 	public boolean InRange(float Y1, float Y2)
 	{
 		Vector2f Range = new Vector2f(Y1, Y2);
@@ -132,21 +139,25 @@ public class Segment extends Line implements Renderable
 		}
 	}
 
+	// Returns the first end point of this segment
 	public Vector2f GetPoint1()
 	{
 		return Point1;
 	}
 
+	// Returns the second end point of this segment
 	public Vector2f GetPoint2()
 	{
 		return Point2;
 	}
 
+	// Returns the domain between the two end points
 	public float[] GetDomain()
 	{
 		return new float[] { Math.min(Point1.GetX(), Point2.GetX()), Math.max(Point1.GetX(), Point2.GetX()) };
 	}
 
+	// Returns the range between the two end points
 	public float[] GetRange()
 	{
 		return new float[] { Math.min(Point1.GetY(), Point2.GetY()), Math.max(Point1.GetY(), Point2.GetY()) };

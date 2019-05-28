@@ -9,8 +9,6 @@ import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segment;
 import Rendering.Rendering.RenderingType;
-import Rendering.OpenGL.ArrayBuffer;
-import Rendering.OpenGL.VertexBufferObject;
 import Utils.BoltUtils;
 import Utils.LoopedList;
 import Utils.Vector2fUtils;
@@ -48,6 +46,7 @@ public class Polygon extends Shape
 		Clean();
 	}
 
+	// Removed unnecessary points
 	public void Clean()
 	{
 		boolean Done = false;
@@ -84,6 +83,7 @@ public class Polygon extends Shape
 
 	}
 
+	// Regenerates the sides, bounding bubble, etc
 	public void Refresh()
 	{
 		Segment[] Edges = Segment.GenerateSegments(this.Corners.ToArray());
@@ -100,52 +100,53 @@ public class Polygon extends Shape
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
 
-	public VertexBufferObject GenerateVBO()
-	{
-		float[] v = Vector2fUtils.GetCoordList(Corners.ToArray());
+	// Currently broken
 
-		float[] t = Vector2fUtils.GetCoordList(GetCompressed());
+	// public VertexBufferObject GenerateVBO()
+	// {
+	// float[] v = Vector2fUtils.GetCoordList(Corners.ToArray());
+	//
+	// float[] t = Vector2fUtils.GetCoordList(GetCompressed());
+	//
+	// Triangle[] Tris = ExtractTriangles();
+	//
+	// int[] index = new int[Tris.length * 3];
+	//
+	// for (int i = 0; i < Tris.length; i++)
+	// {
+	// index[i * 3] = Corners.GetVectorPosition(Tris[i].GetCorner1());
+	// index[(i * 3) + 1] = Corners.GetVectorPosition(Tris[i].GetCorner2());
+	// index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
+	// }
+	//
+	// ArrayBuffer V = new ArrayBuffer(v, 2);
+	// ArrayBuffer T = new ArrayBuffer(t, 2);
+	// return new VertexBufferObject(new ArrayBuffer[] { V, T }, index);
+	// }
 
-		Triangle[] Tris = ExtractTriangles();
+	// Unfinished
 
-		int[] index = new int[Tris.length * 3];
+	// public void MergePolygon(Polygon Poly)
+	// {
+	// Polygon CutSelf = Copy();
+	// Polygon CutOther = Poly.Copy();
+	//
+	// ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
+	// ArrayList<Segment> IntersectionLines = new ArrayList<Segment>();
+	//
+	// for (int i = 0; i < CutSelf.GetSides().size(); i++)
+	// {
+	// for (int j = 0; j < CutOther.GetSides().size(); j++)
+	// {
+	//
+	// }
+	//
+	// }
+	//
+	// }
 
-		for (int i = 0; i < Tris.length; i++)
-		{
-			index[i * 3] = Corners.GetVectorPosition(Tris[i].GetCorner1());
-			index[(i * 3) + 1] = Corners.GetVectorPosition(Tris[i].GetCorner2());
-			index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
-		}
-
-		ArrayBuffer V = new ArrayBuffer(v, 2);
-		ArrayBuffer T = new ArrayBuffer(t, 2);
-		return new VertexBufferObject(new ArrayBuffer[] { V, T }, index);
-	}
-
-	public void MergePolygon(Polygon Poly)
-	{
-		Polygon CutSelf = Copy();
-		Polygon CutOther = Poly.Copy();
-
-		ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
-		ArrayList<Segment> IntersectionLines = new ArrayList<Segment>();
-
-		for (int i = 0; i < CutSelf.GetSides().size(); i++)
-		{
-			for (int j = 0; j < CutOther.GetSides().size(); j++)
-			{
-
-			}
-
-		}
-
-	}
-
-	public void Cut(Polygon Poly)
-	{
-
-	}
-
+	// Returns the points of this polygon compressed between -1 and 1 on the x and y
+	// axis
 	public Vector2f[] GetCompressed()
 	{
 		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
@@ -166,6 +167,7 @@ public class Polygon extends Shape
 
 	}
 
+	// Returns the triangulation of this polygon
 	public Triangle[] ExtractTriangles()
 	{
 		Polygon Clone = Copy();
@@ -263,6 +265,7 @@ public class Polygon extends Shape
 		return null;
 	}
 
+	// Removed the specified corner of this polygon
 	public void RemoveCorner(int Corner)
 	{
 
@@ -278,6 +281,7 @@ public class Polygon extends Shape
 		Sides.remove(Corner);
 	}
 
+	// Returns the number of corners
 	public int GetCornerCount()
 	{
 		return Corners.ToArray().length;
