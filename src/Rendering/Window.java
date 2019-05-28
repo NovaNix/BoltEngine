@@ -59,7 +59,31 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	private WindowScreen Screen;
 
+	// NOTE! The window should be initialized inside of the thread where rendering
+	// will be done
+	// This is because of funky opengl stuff
+
 	public Window(String Name, String IconPath)
+	{
+		Init(Name);
+
+		BufferedImage Icon = EasyLoader.LoadLocalImage(IconPath);
+
+		SetIcon(Icon);
+
+		SetScreen(new SingleCameraScreen(this));
+
+	}
+
+	public Window(String Name)
+	{
+		Init(Name);
+
+		SetScreen(new SingleCameraScreen(this));
+
+	}
+
+	private void Init(String Name)
 	{
 		GLFWErrorCallback.createPrint(System.err).set();
 
@@ -87,51 +111,6 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwSwapInterval(1);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
-
-		BufferedImage Icon = EasyLoader.LoadLocalImage(IconPath);
-
-		ByteBuffer Data = Texture.ExtractColorData(Icon);
-
-		GLFWImage.Buffer GLFWBuffer = GLFWImage.create(1);
-		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.getWidth(), Icon.getHeight(), Data);
-		GLFWBuffer.put(0, GLFWIcon);
-
-		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
-
-		SetScreen(new SingleCameraScreen(this));
-
-	}
-
-	public Window(String Name)
-	{
-		GLFWErrorCallback.createPrint(System.err).set();
-
-		boolean Init = glfwInit();
-
-		if (Init == false)
-		{
-			System.out.println("Error!");
-		}
-
-		WindowHandle = glfwCreateWindow(1280, 780, Name, NULL, NULL);
-
-		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_SAMPLES, 4);
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
-		glfwMakeContextCurrent(WindowHandle);
-
-		glfwSwapInterval(1);
-
-		glfwSetWindowSizeCallback(WindowHandle, this);
-
-		SetScreen(new SingleCameraScreen(this));
-
 	}
 
 	public void Update()
@@ -242,6 +221,17 @@ public class Window implements GLFWWindowSizeCallbackI
 	public long GetHandle()
 	{
 		return WindowHandle;
+	}
+
+	public void SetIcon(BufferedImage Icon)
+	{
+		ByteBuffer Data = Texture.ExtractColorData(Icon);
+
+		GLFWImage.Buffer GLFWBuffer = GLFWImage.create(1);
+		GLFWImage GLFWIcon = GLFWImage.create().set(Icon.getWidth(), Icon.getHeight(), Data);
+		GLFWBuffer.put(0, GLFWIcon);
+
+		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
 	}
 
 	@Override
