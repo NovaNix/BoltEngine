@@ -120,7 +120,7 @@ public abstract class WindowScreen
 
 		}
 	}
-
+	
 	public Vector2f GetMousePosition()
 	{
 		return MousePosition;

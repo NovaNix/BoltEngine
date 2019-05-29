@@ -30,6 +30,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
@@ -63,6 +64,8 @@ public class Window implements GLFWWindowSizeCallbackI
 	// will be done
 	// This is because of funky opengl stuff
 
+	Color BackgroundColor = new Color(0, 0, 0);
+	
 	public Window(String Name, String IconPath)
 	{
 		Init(Name);
@@ -124,7 +127,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(BackgroundColor.getRed() / 255f, BackgroundColor.getGreen() / 255f, BackgroundColor.getBlue() / 255f, BackgroundColor.getAlpha() / 255f);
 
 		Screen.Render();
 
@@ -234,6 +237,11 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwSetWindowIcon(WindowHandle, GLFWBuffer);
 	}
 
+	public void SetBackgroundColor(Color Hue)
+	{
+		BackgroundColor = Hue;
+	}
+	
 	@Override
 	public void invoke(long window, int width, int height)
 	{
