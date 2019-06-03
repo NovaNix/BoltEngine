@@ -31,6 +31,25 @@ public class VertexBufferObject
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, CreateBuffer(Index), GL_STATIC_DRAW);
 	}
 
+	public VertexBufferObject(ArrayBuffer[] Buffers)
+	{
+
+		this.Buffers = Buffers;
+
+		int[] I = new int[Buffers[0].GetData().length];
+
+		for (int i = 0; i < I.length / Buffers[0].GetGroupSize(); i++)
+		{
+			I[i] = i;
+		}
+
+		this.Index = I;
+
+		IndexID = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, CreateBuffer(Index), GL_STATIC_DRAW);
+	}
+
 	public IntBuffer CreateBuffer(int[] data)
 	{
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);

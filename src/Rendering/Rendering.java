@@ -35,40 +35,19 @@ import Vectors.Vector2f;
 public class Rendering
 {
 
-	// All the shaders for the draw methods
-
-	private static Shader DrawImage = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
-	private static Shader DrawCamera = new Shader("/vertexshaders/drawcamera.vert", true, "/fragmentshaders/drawimage.frag", true);
-	private static Shader DrawOval = new Shader("/vertexshaders/drawoval.vert", true, "/fragmentshaders/drawoval.frag", true);
-	private static Shader DrawShape = new Shader("/vertexshaders/drawshape.vert", true, "/fragmentshaders/drawshape.frag", true);
-	private static Shader DrawPoint = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawshape.frag", true);
-
-	private static Shader DrawLine = new Shader("/vertexshaders/drawline.vert", true, "/fragmentshaders/drawshape.frag", true);
-
-	private static Shader DrawSprite = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawsprite.frag", true);
-
 	// All the VBOs for the draw methods
 
-	private static float[] BoxV2 = { -1.f, 1.0f, // TOP LEFT
-			1.0f, 1.0f, // TOP RIGHT
-			1.0f, -1.0f, // BOTTEM RIGHT
-			-1.0f, -1.0f // BOTTEM LEFT
-	};
+	private static float[] BoxVertex = { -1f, 1f, 1f, 1f, 1f, -1f, -1f, -1f };
+	private static float[] LineVertex = new float[] { 0, 0, 1, 1 };
+	private static float[] BoxTexture = { 0, 1, 1, 1, 1, 0, 0, 0 };
 
-	static float[] BoxT2 = { 0, 1, 1, 1, 1, 0, 0, 0 };
+	private static int[] BoxIndex = { 0, 1, 2, 0, 2, 3 };
 
-	static int[] I2 = { 0, 1, 2, 0, 2, 3 };
-	static int[] I3 = { 0, 1, 2, 3 };
+	private static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2), new ArrayBuffer(BoxTexture, 2) }, BoxIndex);
 
-	static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2), new ArrayBuffer(BoxT2, 2) }, I2);
+	private static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2) });
 
-	static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxV2, 2) }, I3);
-
-	static float[] LineVertex = new float[] { 0, 0, 1, 1 };
-
-	static int[] I4 = new int[] { 0, 1 };
-
-	static VertexBufferObject Line = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(LineVertex, 2) }, I4);
+	private static VertexBufferObject Line = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(LineVertex, 2) });
 
 	// All the Matrices needed for the shaders
 
@@ -85,11 +64,6 @@ public class Rendering
 		RSCameraModel = RSCamModel;
 		ReferencedCameraModel = RefCamModel;
 
-		Projection = CamProjection;
-	}
-
-	public static void SetCameraProjection(Matrix4f CamProjection)
-	{
 		Projection = CamProjection;
 	}
 
@@ -374,17 +348,17 @@ public class Rendering
 	private static void DrawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		ApplyTexture(Sprite, 0);
-		ApplyShader(DrawImage);
+		ApplyShader(DrawingShader.DrawImage);
 
-		DrawImage.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
 
-		DrawImage.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
+		ActiveShader.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
 
-		DrawImage.SetUniform("Blur", 0);
+		ActiveShader.SetUniform("Blur", 0);
 
-		DrawImage.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
-		DrawImage.SetUniform("Texture1", 0);
-		DrawImage.SetUniform("Projection", Projection);
+		ActiveShader.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
+		ActiveShader.SetUniform("Texture1", 0);
+		ActiveShader.SetUniform("Projection", Projection);
 
 		Draw(FullScreenBox, GL_TRIANGLES);
 
@@ -392,55 +366,55 @@ public class Rendering
 
 	private static void DrawBox(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		ApplyShader(DrawShape);
+		ApplyShader(DrawingShader.DrawShape);
 
 		glLineWidth(Thickness);
 
-		DrawShape.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
 
 		Vector2f ScaleVec = Point2.Derive();
 		ScaleVec.Subtract(Point1);
 
-		DrawShape.SetUniform("ObjectModel", GenerateModel(Point1, ScaleVec, 0));
-		DrawShape.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
-		DrawShape.SetUniform("Projection", Projection);
+		ActiveShader.SetUniform("ObjectModel", GenerateModel(Point1, ScaleVec, 0));
+		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
+		ActiveShader.SetUniform("Projection", Projection);
 
 		Draw(LineBox, GL_LINE_LOOP);
 	}
 
 	private static void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
 	{
-		ApplyShader(DrawLine);
+		ApplyShader(DrawingShader.DrawLine);
 
 		glLineWidth(Thickness);
 
-		DrawLine.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
 
-		DrawLine.SetUniform("LinePosition", Point1.GetX(), Point1.GetY(), Point2.GetX(), Point2.GetY());
+		ActiveShader.SetUniform("LinePosition", Point1.GetX(), Point1.GetY(), Point2.GetX(), Point2.GetY());
 
-		DrawLine.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
-		DrawLine.SetUniform("Projection", Projection);
+		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
+		ActiveShader.SetUniform("Projection", Projection);
 
 		Draw(Line, GL_LINES);
 	}
 
 	private static void DrawOval(Vector2f Position, Vector2f Scale)
 	{
-		ApplyShader(DrawOval);
+		ApplyShader(DrawingShader.DrawOval);
 
-		DrawOval.SetUniform("CameraModel", ActiveCameraModel);
-		DrawOval.SetUniform("ObjectModel", GenerateOvalModel(Position, Scale));
-		DrawOval.SetUniform("Projection", Projection);
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("ObjectModel", GenerateOvalModel(Position, Scale));
+		ActiveShader.SetUniform("Projection", Projection);
 
-		DrawOval.SetUniform("InnerColor", 0f, 0f, 0f, 1f);
-		DrawOval.SetUniform("OuterColor", 1f, 1f, 1f, 1f);
+		ActiveShader.SetUniform("InnerColor", 0f, 0f, 0f, 1f);
+		ActiveShader.SetUniform("OuterColor", 1f, 1f, 1f, 1f);
 
 		Draw(FullScreenBox, GL_TRIANGLES);
 	}
 
 	private static void DrawPoint(Vector2f Point, Color Hue)
 	{
-		ApplyShader(DrawPoint);
+
 	}
 
 	private static void DrawText(Vector2f Position, String Text, Font Style, Color Hue)
@@ -496,7 +470,7 @@ public class Rendering
 	public static void DrawCamera(int CamTexture)
 	{
 		ApplyTexture(CamTexture, 0);
-		ApplyShader(DrawCamera);
+		ApplyShader(DrawingShader.DrawCamera);
 
 		Draw(FullScreenBox, GL_TRIANGLES);
 	}
@@ -539,10 +513,40 @@ public class Rendering
 		}
 	}
 
+	private static Shader ActiveShader;
+
 	// Applys the specified shader
 	private static void ApplyShader(Shader Apply)
 	{
 		glUseProgram(Apply.GetShaderID());
+		ActiveShader = Apply;
+	}
+
+	private static void ApplyShader(DrawingShader Apply)
+	{
+		glUseProgram(Apply.GetShader().GetShaderID());
+		ActiveShader = Apply.GetShader();
+	}
+
+	public enum DrawingShader
+	{
+		DrawImage("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawimage.frag"), DrawCamera("/vertexshaders/drawcamera.vert", "/fragmentshaders/drawimage.frag"), DrawOval("/vertexshaders/drawoval.vert", "/fragmentshaders/drawoval.frag"), DrawShape("/vertexshaders/drawshape.vert", "/fragmentshaders/drawshape.frag"), DrawPoint("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawshape.frag"),
+
+		DrawLine("/vertexshaders/drawline.vert", "/fragmentshaders/drawshape.frag"),
+
+		DrawSprite("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawsprite.frag");
+
+		Shader DrawShader;
+
+		private DrawingShader(String VPath, String FPath)
+		{
+			DrawShader = new Shader(VPath, true, FPath, true);
+		}
+
+		public Shader GetShader()
+		{
+			return DrawShader;
+		}
 	}
 
 }

@@ -113,11 +113,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 				System.exit(1);
 			}
 
-			else
-			{
-				System.out.println("FBO Properly Generated");
-			}
-
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 			this.SetZoom(this.Zoom);
@@ -125,18 +120,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 			GenerateProjection();
 			GenerateModel();
 		}
-
-		// if (this instanceof SingleFollowCamera)
-		// {
-		// ((SingleFollowCamera) this).UpdateFollowShape();
-		// ((SingleFollowCamera) this).UpdateFollowing();
-		// }
-		//
-		// else if (this instanceof MultiFollowCamera)
-		// {
-		//
-		// }
-
 	}
 
 	private void GenerateProjection()
@@ -159,10 +142,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-		System.out.println("Bound Framebuffer!");
-
-		System.out.println("Current size:" + GetCameraScale().GetX() + ", " + GetCameraScale().GetY());
-
 		glViewport(0, 0, getWidth(), getHeight());
 
 		Rendering.Start(RawModel, RSModel, RefModel, Projection);
@@ -171,8 +150,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		{
 			this.Rendered.get(i).Render();
 		}
-
-		System.out.println("All Rendered!");
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

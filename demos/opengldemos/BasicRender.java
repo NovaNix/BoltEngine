@@ -9,7 +9,6 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_SEVERITY_HIGH;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_SEVERITY_LOW;
@@ -104,8 +103,6 @@ public class BasicRender implements GLDebugMessageCallbackI
 		Win.Update();
 
 		Win.Render();
-
-		System.out.println(glGetError());
 	}
 
 	@Override

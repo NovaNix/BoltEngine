@@ -65,7 +65,7 @@ public class Window implements GLFWWindowSizeCallbackI
 	// This is because of funky opengl stuff
 
 	Color BackgroundColor = new Color(0, 0, 0);
-	
+
 	public Window(String Name, String IconPath)
 	{
 		Init(Name);
@@ -94,7 +94,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		if (Init == false)
 		{
-			System.out.println("Error!");
+			System.out.println("Error Generating Window!");
 		}
 
 		WindowHandle = glfwCreateWindow(1280, 780, Name, NULL, NULL);
@@ -241,7 +241,7 @@ public class Window implements GLFWWindowSizeCallbackI
 	{
 		BackgroundColor = Hue;
 	}
-	
+
 	@Override
 	public void invoke(long window, int width, int height)
 	{

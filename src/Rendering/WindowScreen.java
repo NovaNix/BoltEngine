@@ -32,8 +32,6 @@ public abstract class WindowScreen
 
 	protected JFrame SimulatedEnviroment;
 
-	// protected Menu CurrentMenu;
-
 	protected Vector2f MousePosition = new Vector2f(0, 0);
 
 	public WindowScreen(Window ConnectedWindow)
@@ -51,10 +49,6 @@ public abstract class WindowScreen
 
 	public void Update()
 	{
-
-		// System.out.println("WindowScreen Updated! Current size: " +
-		// SimulatedEnviroment.getWidth() + SimulatedEnviroment.getHeight());
-
 		if (ConnectedWindow.GetWidth() != SimulatedEnviroment.getWidth() || ConnectedWindow.GetHeight() != SimulatedEnviroment.getHeight())
 		{
 			Dimension Size = new Dimension(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
@@ -79,8 +73,6 @@ public abstract class WindowScreen
 
 	public ByteBuffer TakeScreenShot()
 	{
-		// byte[] pixels = new byte[3 * getWidth() * getHeight()];
-
 		ByteBuffer pixels = BufferUtils.createByteBuffer(ConnectedWindow.GetWidth() * ConnectedWindow.GetHeight() * 3);
 
 		glReadPixels(0, 0, ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
@@ -95,8 +87,6 @@ public abstract class WindowScreen
 
 	public void Render()
 	{
-		System.out.println("Rendering Cameras!");
-
 		int[] CameraTexHandles = new int[Cameras.size()];
 
 		for (int i = 0; i < Cameras.size(); i++)
@@ -108,19 +98,12 @@ public abstract class WindowScreen
 
 		glViewport(0, 0, ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
 
-		// Rendering.Start(new Matrix4f(), new Matrix4f().ortho2D(0,
-		// ConnectedWindow.GetWidth(), 0, ConnectedWindow.GetHeight()));
-
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			// Rendering.DrawCamera(CameraTexHandles[i], new Vector2f(Cameras.get(i).getX(),
-			// Cameras.get(i).getY()), new Vector2f(Cameras.get(i).getWidth(),
-			// Cameras.get(i).getHeight()), 0);
 			Rendering.DrawCamera(CameraTexHandles[i]);
-
 		}
 	}
-	
+
 	public Vector2f GetMousePosition()
 	{
 		return MousePosition;
