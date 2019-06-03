@@ -1,7 +1,7 @@
 /*
  * 
  */
-package Utils;
+package Tile.Storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;

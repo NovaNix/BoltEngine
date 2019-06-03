@@ -6,7 +6,7 @@ package Rendering.Utils;
 import java.util.ArrayList;
 
 import Rendering.Renderable;
-import Utils.ChunkArray;
+import Tile.Storage.ChunkArray;
 
 public class RenderableChunkArray extends ChunkArray<Renderable> implements Renderable
 {
