@@ -29,11 +29,6 @@ public class Rectangle extends Polygon
 		this.Scale = Scale;
 	}
 
-	public Vector2f GetScale()
-	{
-		return Scale;
-	}
-
 	public boolean CollidesWith(Rectangle Collision)
 	{
 		if (Rotation == 0 && Collision.GetRotation() == 0)

@@ -100,51 +100,6 @@ public class Polygon extends Shape
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
 
-	// Currently broken
-
-	// public VertexBufferObject GenerateVBO()
-	// {
-	// float[] v = Vector2fUtils.GetCoordList(Corners.ToArray());
-	//
-	// float[] t = Vector2fUtils.GetCoordList(GetCompressed());
-	//
-	// Triangle[] Tris = ExtractTriangles();
-	//
-	// int[] index = new int[Tris.length * 3];
-	//
-	// for (int i = 0; i < Tris.length; i++)
-	// {
-	// index[i * 3] = Corners.GetVectorPosition(Tris[i].GetCorner1());
-	// index[(i * 3) + 1] = Corners.GetVectorPosition(Tris[i].GetCorner2());
-	// index[(i * 3) + 2] = Corners.GetVectorPosition(Tris[i].GetCorner3());
-	// }
-	//
-	// ArrayBuffer V = new ArrayBuffer(v, 2);
-	// ArrayBuffer T = new ArrayBuffer(t, 2);
-	// return new VertexBufferObject(new ArrayBuffer[] { V, T }, index);
-	// }
-
-	// Unfinished
-
-	// public void MergePolygon(Polygon Poly)
-	// {
-	// Polygon CutSelf = Copy();
-	// Polygon CutOther = Poly.Copy();
-	//
-	// ArrayList<Vector2f> IntersectionPoints = new ArrayList<Vector2f>();
-	// ArrayList<Segment> IntersectionLines = new ArrayList<Segment>();
-	//
-	// for (int i = 0; i < CutSelf.GetSides().size(); i++)
-	// {
-	// for (int j = 0; j < CutOther.GetSides().size(); j++)
-	// {
-	//
-	// }
-	//
-	// }
-	//
-	// }
-
 	// Returns the points of this polygon compressed between -1 and 1 on the x and y
 	// axis
 	public Vector2f[] GetCompressed()
