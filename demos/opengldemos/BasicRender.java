@@ -1,13 +1,10 @@
 package opengldemos;
 
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_SEVERITY_HIGH;
@@ -32,6 +29,7 @@ import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Image.Texture;
 import TimeKeeping.TickRegulator;
+import TimeKeeping.Timer;
 import Vectors.Vector2f;
 
 public class BasicRender implements GLDebugMessageCallbackI
@@ -47,7 +45,6 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 	public static void main(String[] args)
 	{
-
 		GL.createCapabilities();
 
 		DirtTexture = new Texture(EasyLoader.LoadLocalImage("/DemoImages/Dirt.png"));
@@ -60,10 +57,6 @@ public class BasicRender implements GLDebugMessageCallbackI
 		glEnable(GL_DEBUG_OUTPUT);
 
 		glDebugMessageCallback(new BasicRender(), 0);
-
-		glDisable(GL_CULL_FACE);
-
-		// glfwSwapInterval(1);
 
 		Cam.AddRenderable(() -> Rendering.RenderRawImage(DirtTexture, new Vector2f(50, 50), new Vector2f(500, 500), Rotation));
 
@@ -79,15 +72,31 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 		TickRegulator Rotator = new TickRegulator(30);
 
+		Timer Sec = new Timer(1);
+
+		int FPS = 0;
+
+		Sec.Set();
+
 		while (!Win.ShouldClose())
 		{
 			Rotator.LoopUpdate();
 
 			Render();
 
+			FPS++;
+
 			if (Rotator.TickTime())
 			{
 				Rotation += 0.5;
+
+			}
+
+			if (Sec.Check())
+			{
+				System.out.println("FPS:" + FPS);
+				FPS = 0;
+				Sec.Set();
 			}
 		}
 
@@ -98,8 +107,6 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 	public static void Render()
 	{
-		glfwPollEvents();
-
 		Win.Update();
 
 		Win.Render();
