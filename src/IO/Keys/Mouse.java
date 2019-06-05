@@ -18,7 +18,7 @@ public class Mouse implements GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI
 
 	static Mouse CallbackHandler = new Mouse();
 
-	static Vector2f MousePos;
+	static Vector2f MousePos = new Vector2f(0, 0);
 
 	static boolean LeftDown;
 	static boolean RightDown;
