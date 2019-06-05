@@ -4,7 +4,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 
@@ -32,11 +31,6 @@ public class Mouse implements GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI
 	{
 		glfwSetCursorPosCallback(WindowHandle, CallbackHandler);
 		glfwSetMouseButtonCallback(WindowHandle, CallbackHandler);
-	}
-
-	public static void Update()
-	{
-		glfwPollEvents();
 	}
 
 	public static boolean LeftMouseDown()

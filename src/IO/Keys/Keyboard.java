@@ -2,7 +2,6 @@ package IO.Keys;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 
 import java.util.HashMap;
@@ -19,11 +18,6 @@ public class Keyboard implements GLFWKeyCallbackI
 	public static void InitKeyboard(long WindowHandle)
 	{
 		glfwSetKeyCallback(WindowHandle, CallbackHandler);
-	}
-
-	public static void Update()
-	{
-		glfwPollEvents();
 	}
 
 	public static boolean KeyDown(int Key)
