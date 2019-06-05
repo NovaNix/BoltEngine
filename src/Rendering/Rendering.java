@@ -3,6 +3,7 @@ package Rendering;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
+import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -40,6 +41,7 @@ public class Rendering
 	private static float[] BoxVertex = { -1f, 1f, 1f, 1f, 1f, -1f, -1f, -1f };
 	private static float[] LineVertex = new float[] { 0, 0, 1, 1 };
 	private static float[] BoxTexture = { 0, 1, 1, 1, 1, 0, 0, 0 };
+	private static float[] PointVertex = { 0, 0 };
 
 	private static int[] BoxIndex = { 0, 1, 2, 0, 2, 3 };
 
@@ -48,6 +50,8 @@ public class Rendering
 	private static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2) });
 
 	private static VertexBufferObject Line = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(LineVertex, 2) });
+
+	private static VertexBufferObject PointBuffer = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(PointVertex, 2) });
 
 	// All the Matrices needed for the shaders
 
@@ -414,6 +418,15 @@ public class Rendering
 
 	private static void DrawPoint(Vector2f Point, Color Hue)
 	{
+		ApplyShader(DrawingShader.DrawPoint);
+
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("ObjectModel", GeneratePointModel(Point));
+		ActiveShader.SetUniform("Projection", Projection);
+
+		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
+
+		Draw(PointBuffer, GL_POINTS);
 
 	}
 
@@ -437,6 +450,13 @@ public class Rendering
 	private static Matrix4f GenerateOvalModel(Vector2f Position, Vector2f Scale)
 	{
 		Matrix4f ObjectModel = new Matrix4f().translate(Position.GetX(), -Position.GetY(), 0).scale(Scale.GetX() / 2, -(Scale.GetY() / 2), 0);
+
+		return ObjectModel;
+	}
+
+	private static Matrix4f GeneratePointModel(Vector2f Position)
+	{
+		Matrix4f ObjectModel = new Matrix4f().translate(Position.GetX(), -Position.GetY(), 0);
 
 		return ObjectModel;
 	}

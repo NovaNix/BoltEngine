@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameterfv;
@@ -21,7 +22,6 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
@@ -29,9 +29,6 @@ import Vectors.Vector2f;
 
 public class Texture
 {
-
-	private static HashMap<BufferedImage, Texture> PreloadedImages = new HashMap<BufferedImage, Texture>();
-	private static HashMap<Sprite, Texture> PreloadedSprites = new HashMap<Sprite, Texture>();
 
 	ByteBuffer Data;
 
@@ -41,25 +38,17 @@ public class Texture
 
 	public Texture(BufferedImage Convert)
 	{
-		if (PreloadedImages.containsKey(Convert))
-		{
-			this.Data = PreloadedImages.get(Convert).GetData();
-		}
 
-		else
-		{
-			this.Size = new Vector2f(Convert.getWidth(), Convert.getHeight());
+		this.Size = new Vector2f(Convert.getWidth(), Convert.getHeight());
 
-			ByteBuffer ColorData = ExtractColorData(Convert);
+		ByteBuffer ColorData = ExtractColorData(Convert);
 
-			TextureID = glGenTextures();
+		TextureID = glGenTextures();
 
-			GenerateTexture(ColorData, Size, TextureID);
+		GenerateTexture(ColorData, Size, TextureID);
 
-			Data = ColorData;
+		Data = ColorData;
 
-			PreloadedImages.put(Convert, this);
-		}
 	}
 
 	public Texture(Sprite Convert)
@@ -139,6 +128,12 @@ public class Texture
 	public ByteBuffer GetData()
 	{
 		return Data;
+	}
+
+	@Override
+	public void finalize()
+	{
+		glDeleteTextures(TextureID);
 	}
 
 }

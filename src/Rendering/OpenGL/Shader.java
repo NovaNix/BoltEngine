@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
 import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import static org.lwjgl.opengl.GL20.glGetProgrami;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
@@ -76,25 +77,13 @@ public class Shader
 			System.exit(1);
 		}
 
+		glDeleteShader(VertexHandle);
+		glDeleteShader(FragmentHandle);
+
 	}
 
 	protected int GenerateShader(String FilePath, boolean Internal, int ShaderType)
 	{
-		if (Internal)
-		{
-			if (InternalShaders.containsKey(FilePath))
-			{
-				return InternalShaders.get(FilePath);
-			}
-		}
-
-		else
-		{
-			if (ExternalShaders.containsKey(FilePath))
-			{
-				return ExternalShaders.get(FilePath);
-			}
-		}
 
 		int ID = glCreateShader(ShaderType);
 
@@ -102,23 +91,13 @@ public class Shader
 		glShaderSource(ID, ShaderCode);
 		glCompileShader(ID);
 
-		System.out.println(glGetShaderInfoLog(ID));
+		// System.out.println(glGetShaderInfoLog(ID));
 
 		if (glGetShaderi(ID, GL_COMPILE_STATUS) != 1)
 		{
 			System.err.println("Error making shader" + FilePath);
 			System.err.println(glGetShaderInfoLog(ID));
 			System.exit(1);
-		}
-
-		if (Internal)
-		{
-			InternalShaders.put(FilePath, ID);
-		}
-
-		else
-		{
-			ExternalShaders.put(FilePath, ID);
 		}
 
 		return ID;
@@ -298,6 +277,12 @@ public class Shader
 	public int GetShaderID()
 	{
 		return ShaderID;
+	}
+
+	@Override
+	public void finalize()
+	{
+
 	}
 
 }

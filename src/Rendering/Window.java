@@ -242,10 +242,20 @@ public class Window implements GLFWWindowSizeCallbackI
 		BackgroundColor = Hue;
 	}
 
+	public WindowScreen GetScreen()
+	{
+		return Screen;
+	}
+
 	@Override
 	public void invoke(long window, int width, int height)
 	{
 		CurrentSize = new Vector2f(width, height);
-		// Update();
+	}
+
+	@Override
+	public void finalize()
+	{
+		Destroy();
 	}
 }

@@ -14,7 +14,7 @@ public class Sprite
 	Vector2f Size;
 	int[][] Pixels;
 
-	Image Compiled;
+	Texture Compiled;
 	ColorPalette Colors;
 
 	public Sprite(Image Template)
@@ -80,7 +80,7 @@ public class Sprite
 			}
 		}
 
-		this.Compiled = Compiled;
+		this.Compiled = new Texture(Compiled);
 	}
 
 	public void SwitchToPalette(ColorPalette Colors)
@@ -93,7 +93,7 @@ public class Sprite
 		return Colors;
 	}
 
-	public Image GetImage()
+	public Texture GetImage()
 	{
 		this.CompileImage();
 
