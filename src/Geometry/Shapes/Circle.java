@@ -7,7 +7,7 @@ import Utils.BoltUtils;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 
-public class Circle extends Shape
+public class Circle extends Shape<Circle>
 {
 
 	public Circle(Vector2f Center, float Radius)
@@ -197,6 +197,12 @@ public class Circle extends Shape
 	public void SetCenter(Vector2f Center)
 	{
 		this.Center.SetPosition(Center);
+	}
+
+	@Override
+	public Circle Clone()
+	{
+		return new Circle(Center.Derive(), Radius);
 	}
 
 }

@@ -16,7 +16,7 @@ import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 import Vectors.Vector2fGroup;
 
-public class Polygon extends Shape
+public class Polygon extends Shape<Polygon>
 {
 
 	Vector2fGroup Corners;
@@ -125,7 +125,7 @@ public class Polygon extends Shape
 	// Returns the triangulation of this polygon
 	public Triangle[] ExtractTriangles()
 	{
-		Polygon Clone = Copy();
+		Polygon Clone = Clone();
 
 		ArrayList<Triangle> Triangles = new ArrayList<Triangle>();
 
@@ -265,7 +265,7 @@ public class Polygon extends Shape
 		float PolygonWidth = TopLeft.GetXDistanceTo(BottemRight);
 		float PolygonHeight = BottemRight.GetYDistanceTo(TopLeft);
 
-		return new Vector2f(PolygonWidth, PolygonHeight);
+		return new Vector2f(Math.abs(PolygonWidth), Math.abs(PolygonHeight));
 	}
 
 	@Override
@@ -491,7 +491,8 @@ public class Polygon extends Shape
 		Position.Add(Translation);
 	}
 
-	public Polygon Copy()
+	@Override
+	public Polygon Clone()
 	{
 		return new Polygon(Position, Corners.ToArray());
 	}

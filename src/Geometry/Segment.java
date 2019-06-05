@@ -74,9 +74,6 @@ public class Segment extends Line implements Renderable
 		{
 			if (Point.InDomain(GetDomain()[0], GetDomain()[1]) && Point.InRange(GetRange()[0], GetRange()[1]))
 			{
-				// System.out.println("Point on line, not vertical: " + (Point.GetX() ==
-				// PointOnLine.GetX()));
-				// System.out.println("Slope: " + Slope);
 				return Point.GetY() == Slope * Point.GetX() + YIntercept;
 			}
 

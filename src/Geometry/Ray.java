@@ -141,12 +141,6 @@ public class Ray extends Line
 		{
 			if (PointingEast())
 			{
-				// Point.Print();
-				// RayStart.Print();
-
-				// System.out.println(Slope);
-				// System.out.println(YIntercept);
-
 				return (Point.AboveDomain(RayStart.GetX()) || Point.GetX() == RayStart.GetX()) && Point.GetY() == (Slope * Point.GetX()) + YIntercept;
 			}
 

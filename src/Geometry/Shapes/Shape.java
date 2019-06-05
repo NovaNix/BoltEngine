@@ -7,7 +7,7 @@ import Rendering.Cameras.Followable;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-public abstract class Shape implements Followable, Renderable, Movable
+public abstract class Shape<H extends Shape> implements Followable, Renderable, Movable
 {
 
 	protected Vector2f Position;
@@ -35,6 +35,8 @@ public abstract class Shape implements Followable, Renderable, Movable
 	public abstract void SetPosition(Vector2f Position);
 
 	public abstract void SetCenter(Vector2f Center);
+
+	public abstract H Clone();
 
 	public Vector2f GetPosition()
 	{
