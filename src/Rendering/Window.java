@@ -250,6 +250,7 @@ public class Window implements GLFWWindowSizeCallbackI
 	public void invoke(long window, int width, int height)
 	{
 		CurrentSize = new Vector2f(width, height);
+		Screen.UpdateSize();
 	}
 
 	@Override

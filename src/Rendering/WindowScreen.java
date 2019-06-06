@@ -1,6 +1,5 @@
 package Rendering;
 
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glReadPixels;
@@ -49,18 +48,6 @@ public abstract class WindowScreen
 
 	public void Update()
 	{
-		if (ConnectedWindow.GetWidth() != SimulatedEnviroment.getWidth() || ConnectedWindow.GetHeight() != SimulatedEnviroment.getHeight())
-		{
-			Dimension Size = new Dimension(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
-
-			SimulatedEnviroment.setMinimumSize(Size);
-			SimulatedEnviroment.setPreferredSize(Size);
-			SimulatedEnviroment.setMaximumSize(Size);
-			SimulatedEnviroment.pack();
-		}
-
-		glfwMakeContextCurrent(ConnectedWindow.GetHandle());
-
 		for (int i = 0; i < Cameras.size(); i++)
 		{
 			Cameras.get(i).Update();
@@ -107,6 +94,16 @@ public abstract class WindowScreen
 	public Vector2f GetMousePosition()
 	{
 		return MousePosition;
+	}
+
+	public void UpdateSize()
+	{
+		Dimension Size = new Dimension(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight());
+
+		SimulatedEnviroment.setMinimumSize(Size);
+		SimulatedEnviroment.setPreferredSize(Size);
+		SimulatedEnviroment.setMaximumSize(Size);
+		SimulatedEnviroment.pack();
 	}
 
 }
