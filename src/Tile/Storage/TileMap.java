@@ -1,6 +1,9 @@
 package Tile.Storage;
 
-public class TileMap
+import Geometry.Shapes.Shape;
+import Rendering.Renderable;
+
+public class TileMap implements Renderable
 {
 
 	Tile[][] Tiles;
@@ -28,6 +31,53 @@ public class TileMap
 	public Tile GetTile(int X, int Y)
 	{
 		return Tiles[X][Y];
+	}
+
+	public boolean CollidesWith(Shape Collision)
+	{
+		int XSize = Tiles.length;
+		int YSize = Tiles[0].length;
+
+		for (int x = 0; x < XSize; x++)
+		{
+			for (int y = 0; y < YSize; y++)
+			{
+				Shape S = Tiles[x][y].GetCollision();
+
+				if (S != null)
+				{
+					if (Collision.CollidesWith(S))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public void Render()
+	{
+		int XSize = Tiles.length;
+		int YSize = Tiles[0].length;
+
+		for (int x = 0; x < XSize; x++)
+		{
+			for (int y = 0; y < YSize; y++)
+			{
+				Tiles[x][y].Render();
+
+				// Shape Coll = Tiles[x][y].GetCollision();
+				//
+				// if (Coll != null)
+				// {
+				// Coll.Render();
+				// }
+			}
+		}
+
 	}
 
 }
