@@ -31,7 +31,13 @@ public class TickRegulator
 
 	public TickRegulator()
 	{
+		Regulated = false;
 
+		lastTime = System.nanoTime();
+		tns = 1000000000 / TPS;
+
+		long now = System.nanoTime();
+		delta += (now - lastTime) / tns;
 	}
 
 	public void Regualate(double TPS)
@@ -74,10 +80,13 @@ public class TickRegulator
 			}
 		}
 
-		else
-		{
-			return true;
-		}
+		return true;
+	}
+
+	public void Reset()
+	{
+		lastTime = System.nanoTime();
+		delta = 0;
 	}
 
 }
