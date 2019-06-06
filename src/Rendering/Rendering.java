@@ -45,6 +45,9 @@ public class Rendering
 
 	private static int[] BoxIndex = { 0, 1, 2, 0, 2, 3 };
 
+	private static float[] IdentityKernel = new float[] { 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f };
+	private static float[] BlurKernel = new float[] { 1.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 4.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 1.0f / 16 };
+
 	private static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2), new ArrayBuffer(BoxTexture, 2) }, BoxIndex);
 
 	private static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2) });
@@ -358,7 +361,7 @@ public class Rendering
 
 		ActiveShader.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
 
-		ActiveShader.SetUniform("Blur", 0);
+		ActiveShader.SetUniform("Kernel", IdentityKernel);
 
 		ActiveShader.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
 		ActiveShader.SetUniform("Texture1", 0);

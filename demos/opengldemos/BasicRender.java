@@ -23,7 +23,7 @@ import java.awt.Color;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLDebugMessageCallbackI;
 
-import IO.EasyLoader;
+import IO.File.EasyLoader;
 import Rendering.Rendering;
 import Rendering.Window;
 import Rendering.Cameras.Camera;

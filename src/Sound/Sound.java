@@ -15,7 +15,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import IO.EasyLoader;
+import IO.File.EasyLoader;
 
 public abstract class Sound
 {

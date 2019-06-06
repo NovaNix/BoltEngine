@@ -39,7 +39,7 @@ import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 import org.lwjgl.opengl.GL;
 
-import IO.EasyLoader;
+import IO.File.EasyLoader;
 import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
 import Rendering.Image.Texture;

@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1fv;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUniform2i;
@@ -271,6 +272,19 @@ public class Shader
 		}
 
 		glUniform4f(Location, Value1, Value2, Value3, Value4);
+
+	}
+
+	public void SetUniform(String Name, float[] Value)
+	{
+		int Location = glGetUniformLocation(ShaderID, Name);
+
+		if (Location == -1)
+		{
+			System.out.println("Tried to set an uniform that didnt exist: " + Name);
+		}
+
+		glUniform1fv(Location, Value);
 
 	}
 
