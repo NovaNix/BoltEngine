@@ -129,7 +129,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	{
 		this.RawModel = new Matrix4f();
 		this.RSModel = new Matrix4f().setTranslation(0, 0, 0);
-		this.RefModel = new Matrix4f().setTranslation(Position.GetX(), Position.GetY(), 0);
+		this.RefModel = new Matrix4f().translate(-Position.GetX(), Position.GetY(), 0);
 	}
 
 	public int Render()
@@ -139,6 +139,9 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+		GenerateProjection();
+		GenerateModel();
 
 		glViewport(0, 0, getWidth(), getHeight());
 
@@ -239,7 +242,9 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	@Override
 	public void Move(Vector2f Translation)
 	{
+		System.out.println("Moved! Moved " + Translation.ToString());
 		this.Position.Add(Translation);
+		System.out.println("Center: " + CameraCollision.GetCenter().ToString());
 	}
 
 	@Override

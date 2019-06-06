@@ -14,13 +14,11 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,6 +28,7 @@ import org.joml.Matrix4f;
 import Rendering.Image.Texture;
 import Rendering.OpenGL.ArrayBuffer;
 import Rendering.OpenGL.Shader;
+import Rendering.OpenGL.VertexArrayObject;
 import Rendering.OpenGL.VertexBufferObject;
 import Vectors.Vector2f;
 
@@ -63,6 +62,129 @@ public class Rendering
 	private static Matrix4f RawCameraModel;
 	private static Matrix4f RSCameraModel;
 	private static Matrix4f ReferencedCameraModel;
+
+	static VertexArrayObject DrawImage = new VertexArrayObject()
+	{
+
+		@Override
+		public void BindAttributes()
+		{
+			ArrayBuffer[] Buffers = FullScreenBox.GetBuffers();
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[0].GetID());
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, Buffers[0].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[1].GetID());
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, Buffers[1].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, FullScreenBox.GetIndexID());
+
+		}
+
+		@Override
+		public int GetSize()
+		{
+			return FullScreenBox.GetIndex().length;
+		}
+	};
+
+	static VertexArrayObject DrawLine = new VertexArrayObject()
+	{
+
+		@Override
+		public void BindAttributes()
+		{
+			ArrayBuffer[] Buffers = Line.GetBuffers();
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[0].GetID());
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, Buffers[0].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Line.GetIndexID());
+
+		}
+
+		@Override
+		public int GetSize()
+		{
+			return Line.GetIndex().length;
+		}
+	};
+
+	static VertexArrayObject DrawPoint = new VertexArrayObject()
+	{
+
+		@Override
+		public void BindAttributes()
+		{
+			ArrayBuffer[] Buffers = PointBuffer.GetBuffers();
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[0].GetID());
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, Buffers[0].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, PointBuffer.GetIndexID());
+
+		}
+
+		@Override
+		public int GetSize()
+		{
+			return PointBuffer.GetIndex().length;
+		}
+	};
+
+	static VertexArrayObject DrawBox = new VertexArrayObject()
+	{
+
+		@Override
+		public void BindAttributes()
+		{
+			ArrayBuffer[] Buffers = LineBox.GetBuffers();
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[0].GetID());
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, Buffers[0].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, LineBox.GetIndexID());
+
+		}
+
+		@Override
+		public int GetSize()
+		{
+			return LineBox.GetIndex().length;
+		}
+	};
+
+	static VertexArrayObject DrawOval = new VertexArrayObject()
+	{
+
+		@Override
+		public void BindAttributes()
+		{
+			ArrayBuffer[] Buffers = FullScreenBox.GetBuffers();
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[0].GetID());
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, Buffers[0].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, Buffers[1].GetID());
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, Buffers[1].GetGroupSize(), GL_FLOAT, false, 0, 0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, FullScreenBox.GetIndexID());
+
+		}
+
+		@Override
+		public int GetSize()
+		{
+			return FullScreenBox.GetIndex().length;
+		}
+	};
 
 	// Prepares for rendering and applys the specified matrices
 	public static void Start(Matrix4f RawCamModel, Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
@@ -367,7 +489,7 @@ public class Rendering
 		ActiveShader.SetUniform("Texture1", 0);
 		ActiveShader.SetUniform("Projection", Projection);
 
-		Draw(FullScreenBox, GL_TRIANGLES);
+		Draw(DrawImage, GL_TRIANGLES);
 
 	}
 
@@ -386,7 +508,7 @@ public class Rendering
 		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
 		ActiveShader.SetUniform("Projection", Projection);
 
-		Draw(LineBox, GL_LINE_LOOP);
+		Draw(DrawBox, GL_LINE_LOOP);
 	}
 
 	private static void DrawLine(Vector2f Point1, Vector2f Point2, float Thickness, Color Hue)
@@ -402,7 +524,7 @@ public class Rendering
 		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
 		ActiveShader.SetUniform("Projection", Projection);
 
-		Draw(Line, GL_LINES);
+		Draw(DrawLine, GL_LINES);
 	}
 
 	private static void DrawOval(Vector2f Position, Vector2f Scale)
@@ -416,7 +538,7 @@ public class Rendering
 		ActiveShader.SetUniform("InnerColor", 0f, 0f, 0f, 1f);
 		ActiveShader.SetUniform("OuterColor", 1f, 1f, 1f, 1f);
 
-		Draw(FullScreenBox, GL_TRIANGLES);
+		Draw(DrawOval, GL_TRIANGLES);
 	}
 
 	private static void DrawPoint(Vector2f Point, Color Hue)
@@ -429,7 +551,7 @@ public class Rendering
 
 		ActiveShader.SetUniform("ShapeColor", Hue.getRed() / 255f, Hue.getGreen() / 255f, Hue.getBlue() / 255f, (Hue.getAlpha() / 255f));
 
-		Draw(PointBuffer, GL_POINTS);
+		Draw(DrawPoint, GL_POINTS);
 
 	}
 
@@ -464,30 +586,16 @@ public class Rendering
 		return ObjectModel;
 	}
 
-	public static void Draw(VertexBufferObject VBO, int Type)
+	public static void Draw(VertexArrayObject VAO, int Type)
 	{
-		ArrayBuffer[] Buffers = VBO.GetBuffers();
-
-		for (int i = 0; i < Buffers.length; i++)
-		{
-			glBindBuffer(GL_ARRAY_BUFFER, Buffers[i].GetID());
-			glBufferData(GL_ARRAY_BUFFER, Buffers[i].GetDataBuffer(), GL_STATIC_DRAW);
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, Buffers[i].GetGroupSize(), GL_FLOAT, false, 0, 0);
-		}
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO.GetIndexID());
+		glBindVertexArray(VAO.GetHandle());
 
 		// Type for images and shapes should be GL_TRIANGLES
 		// Type for lines should be GL_LINES
 		// Type for points should be GL_POINTS
 
-		glDrawElements(Type, VBO.GetIndex().length, GL_UNSIGNED_INT, 0);
+		glDrawElements(Type, VAO.GetSize(), GL_UNSIGNED_INT, 0);
 
-		for (int i = 0; i < Buffers.length; i++)
-		{
-			glDisableVertexAttribArray(i);
-		}
 	}
 
 	public static void DrawCamera(int CamTexture)
@@ -495,7 +603,7 @@ public class Rendering
 		ApplyTexture(CamTexture, 0);
 		ApplyShader(DrawingShader.DrawCamera);
 
-		Draw(FullScreenBox, GL_TRIANGLES);
+		Draw(DrawImage, GL_TRIANGLES);
 	}
 
 	// The current active camera model
