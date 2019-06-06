@@ -494,6 +494,6 @@ public class Polygon extends Shape<Polygon>
 	@Override
 	public Polygon Clone()
 	{
-		return new Polygon(Position, Corners.ToArray());
+		return new Polygon(Position.Derive(), Corners.ToArray());
 	}
 }
