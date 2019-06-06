@@ -26,6 +26,8 @@ import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -41,7 +43,7 @@ import Rendering.Utils.RenderableContainer;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-public class Camera extends JComponent implements Movable, RenderableContainer
+public class Camera extends JComponent implements Movable, RenderableContainer, ComponentListener
 {
 
 	private String Name = "Unnamed Camera";
@@ -65,7 +67,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	private int FBOTexture;
 
 	private Matrix4f Projection;
-	private Matrix4f RawModel;
+	private Matrix4f RawModel = new Matrix4f();
 	private Matrix4f RSModel;
 	private Matrix4f RefModel;
 
@@ -81,39 +83,12 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		GenerateProjection();
 		GenerateModel();
+
+		this.addComponentListener(this);
 	}
 
 	public void Update()
 	{
-		if (getHeight() != 0 && getWidth() != 0)
-		{
-			this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
-		}
-
-		if (!this.CameraCollision.GetScale().equals(this.GetCameraScale()))
-		{
-			this.CameraCollision = new Rectangle(Position, GetCameraScale());
-
-			GL.createCapabilities();
-
-			GenerateFBO();
-
-			this.SetZoom(this.Zoom);
-
-			GenerateProjection();
-			GenerateModel();
-
-			if (this instanceof SingleFollowCamera)
-			{
-				((SingleFollowCamera) this).UpdateFollowShape();
-			}
-
-			else if (this instanceof MultiFollowCamera)
-			{
-				// ((MultiFollowCamera) this).UpdateFollowShape();
-			}
-		}
-
 		if (this instanceof SingleFollowCamera)
 		{
 			((SingleFollowCamera) this).UpdateFollowing();
@@ -127,7 +102,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 	private void GenerateModel()
 	{
-		this.RawModel = new Matrix4f();
 		this.RSModel = new Matrix4f().setTranslation(0, 0, 0);
 		this.RefModel = new Matrix4f().translate(-Position.GetX(), Position.GetY(), 0);
 	}
@@ -256,6 +230,32 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		return this.ZoomCollision.CollidesWith(Collision);
 	}
 
+	public void UpdateSize()
+	{
+		this.AspectRatio = new Vector2f(1, getHeight() / getWidth());
+
+		this.CameraCollision = new Rectangle(Position, GetCameraScale());
+
+		GL.createCapabilities();
+
+		GenerateFBO();
+
+		this.SetZoom(this.Zoom);
+
+		GenerateProjection();
+		GenerateModel();
+
+		if (this instanceof SingleFollowCamera)
+		{
+			((SingleFollowCamera) this).UpdateFollowShape();
+		}
+
+		else if (this instanceof MultiFollowCamera)
+		{
+			// ((MultiFollowCamera) this).UpdateFollowShape();
+		}
+	}
+
 	@Override
 	public void finalize()
 	{
@@ -268,6 +268,33 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		{
 			glDeleteTextures(FBOTexture);
 		}
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent arg0)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent arg0)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentResized(ComponentEvent arg0)
+	{
+		UpdateSize();
+	}
+
+	@Override
+	public void componentShown(ComponentEvent arg0)
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 }
