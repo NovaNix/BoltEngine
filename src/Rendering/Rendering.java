@@ -661,11 +661,7 @@ public class Rendering
 
 	public enum DrawingShader
 	{
-		DrawImage("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawimage.frag"), DrawCamera("/vertexshaders/drawcamera.vert", "/fragmentshaders/drawimage.frag"), DrawOval("/vertexshaders/drawoval.vert", "/fragmentshaders/drawoval.frag"), DrawShape("/vertexshaders/drawshape.vert", "/fragmentshaders/drawshape.frag"), DrawPoint("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawshape.frag"),
-
-		DrawLine("/vertexshaders/drawline.vert", "/fragmentshaders/drawshape.frag"),
-
-		DrawSprite("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawsprite.frag");
+		DrawImage("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawimage.frag"), DrawCamera("/vertexshaders/drawcamera.vert", "/fragmentshaders/drawimage.frag"), DrawOval("/vertexshaders/drawoval.vert", "/fragmentshaders/drawoval.frag"), DrawShape("/vertexshaders/drawshape.vert", "/fragmentshaders/drawshape.frag"), DrawPoint("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawshape.frag"), DrawLine("/vertexshaders/drawline.vert", "/fragmentshaders/drawshape.frag"), DrawSprite("/vertexshaders/defaultshader.vert", "/fragmentshaders/drawsprite.frag");
 
 		Shader DrawShader;
 

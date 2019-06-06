@@ -242,9 +242,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	@Override
 	public void Move(Vector2f Translation)
 	{
-		System.out.println("Moved! Moved " + Translation.ToString());
 		this.Position.Add(Translation);
-		System.out.println("Center: " + CameraCollision.GetCenter().ToString());
 	}
 
 	@Override

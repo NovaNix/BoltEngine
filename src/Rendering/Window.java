@@ -20,7 +20,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowIcon;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -111,7 +110,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwMakeContextCurrent(WindowHandle);
 
-		glfwSwapInterval(1);
+		// glfwSwapInterval(1);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
 	}
