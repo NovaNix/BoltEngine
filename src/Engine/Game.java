@@ -59,6 +59,9 @@ public abstract class Game implements Runnable
 		int TPS = 0;
 		int FPS = 0;
 
+		TickHandler.Reset();
+		RenderHandler.Reset();
+
 		while (Running)
 		{
 
