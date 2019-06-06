@@ -22,6 +22,12 @@ public abstract class Game implements Runnable
 	private double TickSpeed;
 	private double RenderSpeed;
 
+	protected boolean PrintFPS = false;
+	protected boolean PrintTPS = false;
+
+	protected boolean PrintRenderSpeed = false;
+	protected boolean PrintTickSpeed = false;
+
 	public Game(float Tps)
 	{
 		TickHandler = new TickRegulator(Tps);
@@ -61,23 +67,23 @@ public abstract class Game implements Runnable
 
 			if (TickHandler.TickTime())
 			{
-				double Now = System.currentTimeMillis();
+				double Now1 = System.currentTimeMillis();
 
 				UpdateInput();
 				Tick();
 
-				TickSpeed = System.currentTimeMillis() - Now;
+				TickSpeed = System.currentTimeMillis() - Now1;
 
 				TPS++;
 			}
 
 			if (RenderHandler.TickTime())
 			{
-				double Now = System.currentTimeMillis();
+				double Now2 = System.currentTimeMillis();
 
 				Render();
 
-				RenderSpeed = System.currentTimeMillis() - Now;
+				RenderSpeed = System.currentTimeMillis() - Now2;
 
 				FPS++;
 			}
@@ -89,6 +95,26 @@ public abstract class Game implements Runnable
 
 				this.TPS = TPS;
 				this.FPS = FPS;
+
+				if (PrintFPS)
+				{
+					System.out.println("FPS: " + FPS);
+				}
+
+				if (PrintTPS)
+				{
+					System.out.println("TPS: " + TPS);
+				}
+
+				if (PrintRenderSpeed)
+				{
+					System.out.println("RenderSpeed: " + RenderSpeed);
+				}
+
+				if (PrintTickSpeed)
+				{
+					System.out.println("TickSpeed: " + TickSpeed);
+				}
 
 				TPS = 0;
 				FPS = 0;
