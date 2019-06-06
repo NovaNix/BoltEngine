@@ -30,6 +30,12 @@ public abstract class Shape<H extends Shape> implements Followable, Renderable, 
 
 	public abstract boolean CollidesWith(Vector2f Point);
 
+	public abstract boolean CollidesWith(Line Collision, boolean IncludeContour);
+
+	public abstract boolean CollidesWith(Shape Collision, boolean IncludeContour);
+
+	public abstract boolean CollidesWith(Vector2f Point, boolean IncludeContour);
+
 	public abstract void SetScale(Vector2f Scale);
 
 	public abstract void SetPosition(Vector2f Position);

@@ -29,6 +29,12 @@ public class Rectangle extends Polygon
 		this.Scale = Scale;
 	}
 
+	@Override
+	public Vector2f GetScale()
+	{
+		return Scale;
+	}
+
 	public boolean CollidesWith(Rectangle Collision)
 	{
 		if (Rotation == 0 && Collision.GetRotation() == 0)
@@ -59,5 +65,11 @@ public class Rectangle extends Polygon
 	public float GetRotation()
 	{
 		return Rotation;
+	}
+
+	@Override
+	public Rectangle Clone()
+	{
+		return new Rectangle(Position.Derive(), Scale.Derive());
 	}
 }

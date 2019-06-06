@@ -355,6 +355,11 @@ public class Polygon extends Shape<Polygon>
 
 		if (Collision instanceof Polygon)
 		{
+			if (Collision instanceof Rectangle && this instanceof Rectangle)
+			{
+				return ((Rectangle) this).CollidesWith((Rectangle) Collision);
+			}
+
 			return CollidesWith((Polygon) Collision);
 		}
 
@@ -495,5 +500,38 @@ public class Polygon extends Shape<Polygon>
 	public Polygon Clone()
 	{
 		return new Polygon(Position.Derive(), Corners.ToArray());
+	}
+
+	@Override
+	public boolean CollidesWith(Line Collision, boolean IncludeContour)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean CollidesWith(Shape Collision, boolean IncludeContour)
+	{
+		if (IncludeContour == true)
+		{
+			return CollidesWith(Collision);
+		}
+
+		else
+		{
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean CollidesWith(Vector2f Point, boolean IncludeContour)
+	{
+		if (IncludeContour == true)
+		{
+			return CollidesWith(Point);
+		}
+
+		return false;
 	}
 }
