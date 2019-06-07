@@ -50,11 +50,6 @@ public class Texture
 
 	}
 
-	public Texture(Sprite Convert)
-	{
-
-	}
-
 	public Texture(ByteBuffer Data, Vector2f Size)
 	{
 		this.Size = Size;
