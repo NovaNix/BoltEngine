@@ -26,8 +26,6 @@ import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -43,7 +41,7 @@ import Rendering.Utils.RenderableContainer;
 import Utils.Movable;
 import Vectors.Vector2f;
 
-public class Camera extends JComponent implements Movable, RenderableContainer, ComponentListener
+public class Camera extends JComponent implements Movable, RenderableContainer
 {
 
 	private String Name = "Unnamed Camera";
@@ -83,15 +81,13 @@ public class Camera extends JComponent implements Movable, RenderableContainer, 
 
 		GenerateProjection();
 		GenerateModel();
-
-		this.addComponentListener(this);
 	}
 
 	public void Update()
 	{
-		if (this instanceof SingleFollowCamera)
+		if (this instanceof FollowCamera)
 		{
-			((SingleFollowCamera) this).UpdateFollowing();
+			((FollowCamera) this).UpdateFollowing();
 		}
 	}
 
@@ -268,33 +264,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer, 
 		{
 			glDeleteTextures(FBOTexture);
 		}
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void componentResized(ComponentEvent arg0)
-	{
-		UpdateSize();
-	}
-
-	@Override
-	public void componentShown(ComponentEvent arg0)
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 }

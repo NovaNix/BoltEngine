@@ -7,7 +7,7 @@ import Geometry.Shapes.Shape;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 
-public class SingleFollowCamera extends Camera
+public class SingleFollowCamera extends FollowCamera
 {
 
 	Followable Following = null;
@@ -19,6 +19,7 @@ public class SingleFollowCamera extends Camera
 		super(Name, Position);
 	}
 
+	@Override
 	public void UpdateFollowing()
 	{
 		if (Following != null)
@@ -47,6 +48,7 @@ public class SingleFollowCamera extends Camera
 		}
 	}
 
+	@Override
 	public void UpdateFollowShape()
 	{
 		if (FollowCollision instanceof Circle)
@@ -79,6 +81,7 @@ public class SingleFollowCamera extends Camera
 		FollowCollision = new Rectangle(FollowPosition, new Vector2f(XDistance * 2, YDistance * 2));
 	}
 
+	@Override
 	public void StopFollowing()
 	{
 		Following = null;
@@ -86,11 +89,13 @@ public class SingleFollowCamera extends Camera
 		FollowCollision = null;
 	}
 
+	@Override
 	public boolean IsFollowing()
 	{
 		return Following != null;
 	}
 
+	@Override
 	public boolean IsFollowing(Followable Tested)
 	{
 		return Tested == Following;
