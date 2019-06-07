@@ -174,7 +174,7 @@ public class Window implements GLFWWindowSizeCallbackI
 	public void Show()
 	{
 		glfwShowWindow(WindowHandle);
-
+		Screen.UpdateSize();
 		IsVisible = true;
 	}
 

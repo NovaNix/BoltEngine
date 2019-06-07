@@ -104,6 +104,11 @@ public abstract class WindowScreen
 		SimulatedEnviroment.setPreferredSize(Size);
 		SimulatedEnviroment.setMaximumSize(Size);
 		SimulatedEnviroment.pack();
+
+		for (int i = 0; i < Cameras.size(); i++)
+		{
+			Cameras.get(i).UpdateSize();
+		}
 	}
 
 }
