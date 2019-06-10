@@ -4,7 +4,6 @@
 package Rendering.Image;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,10 +23,8 @@ public class ColorPalette
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ColorPalette GeneratePalette(Image Texture)
+	public static ColorPalette GeneratePalette(BufferedImage NewImage)
 	{
-		BufferedImage NewImage = (BufferedImage) Texture;
-
 		ArrayList<Color> Colors = new ArrayList<Color>();
 
 		@SuppressWarnings("rawtypes")
@@ -57,7 +54,7 @@ public class ColorPalette
 		{
 			for (int y = 0; y < NewImage.getHeight(); y++)
 			{
-				Color PixelColor = new Color(NewImage.getRGB(x, y), true);
+				Color PixelColor = new Color(NewImage.getRGB(x, y));
 
 				boolean AlreadyAdded = false;
 
@@ -150,24 +147,24 @@ public class ColorPalette
 	public int[] ToList()
 	{
 		int Size = Colors.keySet().size();
-		
+
 		int[] ColorList = new int[Size * 4];
-		
+
 		for (int i = 0; i < Size; i++)
 		{
 			Color Hue = Colors.get(i);
-			
+
 			int Position = i * 4;
-			
+
 			ColorList[Position] = Hue.getRed();
 			ColorList[Position + 1] = Hue.getGreen();
 			ColorList[Position + 2] = Hue.getBlue();
 			ColorList[Position + 3] = Hue.getAlpha();
-		}	
-		
+		}
+
 		return ColorList;
 	}
-	
+
 	public void Print()
 	{
 		System.out.println("Color Palette Table:" + System.lineSeparator());

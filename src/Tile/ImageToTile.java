@@ -42,7 +42,7 @@ public class ImageToTile
 		{
 			for (int y = 0; y < TileImage.getHeight(); y++)
 			{
-				Tiles.SetTile(x, y, new Tile(Key.get(Colors[x][y]), new Vector2f(x, y)));
+				Tiles.SetTile(x, y, GetTileAt(x, y, Key, Colors[x][y]));
 			}
 		}
 
@@ -53,19 +53,23 @@ public class ImageToTile
 	{
 		BufferedImage TileImage = EasyLoader.LoadLocalImage(TileImagePath);
 
-		Color[][] Colors = GetColors(TileImage);
+		return LoadTiles(Key, TileImage);
+	}
 
-		TileMap Tiles = new TileMap(TileImage.getWidth(), TileImage.getHeight(), TileMap.ORIGIN_TOP_LEFT);
+	private static Tile GetTileAt(int x, int y, HashMap<Color, Tile> Key, Color Col)
+	{
 
-		for (int x = 0; x < TileImage.getWidth(); x++)
+		System.out.println("Color = " + Col.getRed() + ", " + Col.getGreen() + ", " + Col.getBlue() + ", " + Col.getAlpha() + ", Coord = " + x + ", " + y);
+
+		if (Key.containsKey(Col))
 		{
-			for (int y = 0; y < TileImage.getHeight(); y++)
+			if (Key.get(Col) != null)
 			{
-				Tiles.SetTile(x, y, new Tile(Key.get(Colors[x][y]), new Vector2f(x, y)));
+				return new Tile(Key.get(Col), new Vector2f(x, y));
 			}
 		}
 
-		return Tiles;
+		return null;
 	}
 
 	private static Color[][] GetColors(BufferedImage TileImage)

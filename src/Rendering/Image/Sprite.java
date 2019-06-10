@@ -17,9 +17,9 @@ public class Sprite
 	Texture Compiled;
 	ColorPalette Colors;
 
-	public Sprite(Image Template)
+	public Sprite(BufferedImage Template)
 	{
-		BufferedImage Temp = (BufferedImage) Template;
+		BufferedImage Temp = Template;
 		this.Size = new Vector2f(Temp.getWidth(), Temp.getHeight());
 		this.Colors = ColorPalette.GeneratePalette(Template);
 		this.Pixels = GenerateCompressedPixels(Template, Colors);
@@ -61,7 +61,7 @@ public class Sprite
 		{
 			for (int y = 0; y < ReadableImage.getHeight(); y++)
 			{
-				CompressedPixels[x][y] = Colors.GetColorID(new Color(ReadableImage.getRGB(x, y), true));
+				CompressedPixels[x][y] = Colors.GetColorID(new Color(ReadableImage.getRGB(x, y)));
 			}
 		}
 
