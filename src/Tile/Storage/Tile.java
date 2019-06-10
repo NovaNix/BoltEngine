@@ -1,9 +1,10 @@
 package Tile.Storage;
 
+import java.util.HashMap;
+
 import Geometry.Shapes.Shape;
 import Rendering.Renderable;
 import Rendering.Rendering;
-import Rendering.Image.Sprite;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -11,18 +12,34 @@ import Vectors.Vector2f;
 public class Tile implements Renderable
 {
 
-	Sprite Texture;
+	String ID;
+	String Name;
+
+	Texture Texture;
 	Vector2f Scale;
 	Shape Collision;
 
 	Vector2f Position = new Vector2f(0, 0);
 
+	static HashMap<String, Tile> TileTemplates = new HashMap<String, Tile>();
+
 	// Should be used for creating the tile templates
-	public Tile(Sprite Texture, Vector2f Scale, Shape Collision)
+	public Tile(String ID, String Name, Texture Tex, Vector2f Scale, Shape Collision)
 	{
-		this.Texture = Texture;
+		this.ID = ID;
+		this.Name = Name;
+
+		this.Texture = Tex;
 		this.Scale = Scale;
 		this.Collision = Collision;
+
+		TileTemplates.put(ID, this);
+	}
+
+	// Returns the created Tile Template with the ID
+	public static Tile GetTile(String ID)
+	{
+		return TileTemplates.get(ID);
 	}
 
 	// Should be used for creating the tiles in the world
@@ -43,10 +60,21 @@ public class Tile implements Renderable
 			Collision.Move(Position);
 		}
 
-		Tex = Texture.GetImage();
+		this.ID = Type.GetID();
+		this.Name = Type.GetName();
 	}
 
-	public Sprite GetTexture()
+	public String GetID()
+	{
+		return ID;
+	}
+
+	public String GetName()
+	{
+		return Name;
+	}
+
+	public Texture GetTexture()
 	{
 		return Texture;
 	}
@@ -66,12 +94,10 @@ public class Tile implements Renderable
 		return this.Collision.CollidesWith(Collision);
 	}
 
-	Texture Tex;
-
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedImage(Tex, Position, Scale, 0);
+		Rendering.RenderReferencedImage(Texture, Position, Scale, 0);
 	}
 
 }

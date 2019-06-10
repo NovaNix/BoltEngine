@@ -1,5 +1,7 @@
 package Tile.Storage;
 
+import java.util.ArrayList;
+
 import Geometry.Shapes.Shape;
 import Rendering.Renderable;
 
@@ -7,6 +9,9 @@ public class TileMap implements Renderable
 {
 
 	Tile[][] Tiles;
+
+	ArrayList<Tile> NonNullTiles = new ArrayList<Tile>();
+	ArrayList<Tile> PhysicalTiles = new ArrayList<Tile>();
 
 	int OriginType;
 
@@ -21,11 +26,84 @@ public class TileMap implements Renderable
 	{
 		Tiles = new Tile[Width][Height];
 		this.OriginType = OriginType;
+
+		NonNullTiles = GetNonNullTiles(Tiles);
+		PhysicalTiles = GetPhysicalTiles(Tiles);
+	}
+
+	public static ArrayList<Tile> GetNonNullTiles(Tile[][] Tile)
+	{
+		ArrayList<Tile> NonNull = new ArrayList<Tile>();
+
+		int XSize = Tile.length;
+		int YSize = Tile[0].length;
+
+		for (int x = 0; x < XSize; x++)
+		{
+			for (int y = 0; y < YSize; y++)
+			{
+				if (Tile[x][y] != null)
+				{
+					NonNull.add(Tile[x][y]);
+				}
+
+				else
+				{
+					System.out.println("Non Null Found at " + x + ", " + y);
+				}
+			}
+		}
+
+		return NonNull;
+	}
+
+	public static ArrayList<Tile> GetPhysicalTiles(Tile[][] Tile)
+	{
+		ArrayList<Tile> NonNull = new ArrayList<Tile>();
+
+		int XSize = Tile.length;
+		int YSize = Tile[0].length;
+
+		for (int x = 0; x < XSize; x++)
+		{
+			for (int y = 0; y < YSize; y++)
+			{
+				if (Tile[x][y] != null)
+				{
+					if (Tile[x][y].GetCollision() != null)
+					{
+						NonNull.add(Tile[x][y]);
+					}
+				}
+
+				else
+				{
+					System.out.println("Non Null Found at " + x + ", " + y);
+				}
+			}
+		}
+
+		return NonNull;
 	}
 
 	public void SetTile(int X, int Y, Tile T)
 	{
 		Tiles[X][Y] = T;
+
+		if (T != null)
+		{
+			NonNullTiles.add(T);
+
+			if (T.GetCollision() != null)
+			{
+				PhysicalTiles.add(T);
+			}
+		}
+
+		else
+		{
+			System.out.println("Non Null Found at " + X + ", " + Y);
+		}
 	}
 
 	public Tile GetTile(int X, int Y)
@@ -35,22 +113,11 @@ public class TileMap implements Renderable
 
 	public boolean CollidesWith(Shape Collision)
 	{
-		int XSize = Tiles.length;
-		int YSize = Tiles[0].length;
-
-		for (int x = 0; x < XSize; x++)
+		for (int i = 0; i < PhysicalTiles.size(); i++)
 		{
-			for (int y = 0; y < YSize; y++)
+			if (Collision.CollidesWith(PhysicalTiles.get(i).GetCollision()))
 			{
-				Shape S = Tiles[x][y].GetCollision();
-
-				if (S != null)
-				{
-					if (Collision.CollidesWith(S))
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 		}
 
@@ -60,22 +127,9 @@ public class TileMap implements Renderable
 	@Override
 	public void Render()
 	{
-		int XSize = Tiles.length;
-		int YSize = Tiles[0].length;
-
-		for (int x = 0; x < XSize; x++)
+		for (int i = 0; i < NonNullTiles.size(); i++)
 		{
-			for (int y = 0; y < YSize; y++)
-			{
-				Tiles[x][y].Render();
-
-				// Shape Coll = Tiles[x][y].GetCollision();
-				//
-				// if (Coll != null)
-				// {
-				// Coll.Render();
-				// }
-			}
+			NonNullTiles.get(i).Render();
 		}
 
 	}
