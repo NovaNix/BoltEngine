@@ -32,4 +32,10 @@ public class BoltEngine
 		MessageManagerThread.start();
 	}
 
+	public static void ShutDown()
+	{
+		MessagingEngineManager.Kill();
+
+	}
+
 }
