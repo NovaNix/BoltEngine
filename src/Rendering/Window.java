@@ -20,13 +20,22 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowIcon;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Color;
@@ -110,8 +119,6 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glfwMakeContextCurrent(WindowHandle);
 
-		// glfwSwapInterval(1);
-
 		glfwSetWindowSizeCallback(WindowHandle, this);
 	}
 
@@ -174,7 +181,15 @@ public class Window implements GLFWWindowSizeCallbackI
 	public void Show()
 	{
 		glfwShowWindow(WindowHandle);
+
+		glEnable(GL_TEXTURE_2D);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+
 		Screen.UpdateSize();
+
 		IsVisible = true;
 	}
 
@@ -208,6 +223,16 @@ public class Window implements GLFWWindowSizeCallbackI
 		{
 			Show();
 		}
+	}
+
+	public void EnableVSync()
+	{
+		glfwSwapInterval(1);
+	}
+
+	public void DisableVSync()
+	{
+		glfwSwapInterval(0);
 	}
 
 	public boolean ShouldClose()
