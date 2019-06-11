@@ -30,6 +30,7 @@ import Rendering.OpenGL.ArrayBuffer;
 import Rendering.OpenGL.Shader;
 import Rendering.OpenGL.VertexArrayObject;
 import Rendering.OpenGL.VertexBufferObject;
+import Rendering.Text.TextImageCreator;
 import Vectors.Vector2f;
 
 public class Rendering
@@ -557,7 +558,14 @@ public class Rendering
 
 	private static void DrawText(Vector2f Position, String Text, Font Style, Color Hue)
 	{
+		if (Text.equals(""))
+		{
+			return;
+		}
 
+		Texture TextImage = TextImageCreator.GenerateTextImage(Text, Hue, Style);
+
+		DrawImage(TextImage, Position, TextImage.GetSize(), 0);
 	}
 
 	public enum RenderingType

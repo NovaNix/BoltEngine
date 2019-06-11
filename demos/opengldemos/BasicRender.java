@@ -66,6 +66,8 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 		Cam.AddRenderable(() -> Rendering.RenderRawLine(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 255, 100)));
 
+		Cam.AddRenderable(() -> Rendering.RenderRawText(new Vector2f(500, 0), "Rendering!", EasyLoader.LoadLocalFont("/fonts/Pixel Basic.ttf").deriveFont(40f), new Color(0, 255, 0)));
+
 		Win.AddCamera(Cam);
 
 		Win.SetVisible(true);

@@ -1,7 +1,12 @@
 package GUI.Elements;
 
+import java.awt.Color;
+import java.awt.Font;
+
+import Geometry.Shapes.Rectangle;
 import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
+import Rendering.Text.TextImageCreator;
 import TimeKeeping.Timer;
 import Vectors.Vector2f;
 
@@ -22,7 +27,11 @@ public class Button extends GUIElement
 
 	Timer ClickTimer = new Timer(0.5f);
 
-	public Button(Vector2f Position, Vector2f Scale, String Text, Texture Regular, Texture Clicked, Runnable ClickEvent)
+	Vector2f TextPosition;
+
+	Font Style;
+
+	public Button(Vector2f Position, Vector2f Scale, String Text, Font Style, float FontSize, Texture Regular, Texture Clicked, Runnable ClickEvent)
 	{
 		super(Position, Scale, true);
 
@@ -37,6 +46,46 @@ public class Button extends GUIElement
 		this.ActiveTexture = Regular;
 
 		this.ClickEvent = ClickEvent;
+
+		this.Style = Style.deriveFont(FontSize);
+
+		Vector2f TextScale = TextImageCreator.GetTextSize(Text, Style);
+
+		float TextX = Position720p.GetX() + ((Scale.GetX() - TextScale.GetX()) / 2);
+		float TextY = Position720p.GetY() + ((Scale.GetY() - TextScale.GetY()) / 2);
+
+		TextPosition = new Vector2f(TextX, TextY);
+	}
+
+	@Override
+	public void UpdateScale(Vector2f GUIScale)
+	{
+		float XSize = GUIScale.GetX() / 1280;
+		float YSize = GUIScale.GetY() / 720;
+
+		Size = Math.min(XSize, YSize);
+
+		float XPosition = XPercent1 * GUIScale.GetX();
+		float YPosition = YPercent1 * GUIScale.GetY();
+
+		Position = new Vector2f(XPosition, YPosition);
+
+		float XScale = Size * Scale720p.GetX();
+		float YScale = Size * Scale720p.GetY();
+
+		Scale = new Vector2f(XScale, YScale);
+
+		Vector2f TextScale = TextImageCreator.GetTextSize(Text, Style);
+
+		float TextX = Position720p.GetX() + ((Scale.GetX() - TextScale.GetX()) / 2);
+		float TextY = Position720p.GetY() + ((Scale.GetY() - TextScale.GetY()) / 2);
+
+		TextPosition = new Vector2f(TextX, TextY);
+
+		Updated = true;
+
+		InteractBoundary = new Rectangle(Position, Scale);
+
 	}
 
 	@Override
@@ -50,13 +99,12 @@ public class Button extends GUIElement
 	public void Render()
 	{
 		Rendering.RenderRawImage(ActiveTexture, Position, Scale, 0);
-		// Rendering.RenderRawText(Position, Text, Font.ARIAL, new Color(0, 0, 0));
+		Rendering.RenderRawText(TextPosition, Text, Style, Color.BLACK);
 	}
 
 	@Override
 	public void Tick()
 	{
-		// System.out.println("Tick2");
 
 	}
 
