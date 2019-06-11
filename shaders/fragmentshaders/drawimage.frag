@@ -13,11 +13,6 @@ out vec4 Color;
 void main()
 {
 
-	if (1 > texture(Texture1, TexCoords).w)
-	{
-		discard;
-	}
-
 	float xoffset = 1 / ImageSize.x;
 	float yoffset = 1 / ImageSize.y;
 	
