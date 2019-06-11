@@ -2,6 +2,7 @@ package GUI.Elements;
 
 import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
+import TimeKeeping.Timer;
 import Vectors.Vector2f;
 
 public class Button extends GUIElement
@@ -18,6 +19,8 @@ public class Button extends GUIElement
 	Texture ActiveTexture;
 
 	Runnable ClickEvent;
+
+	Timer ClickTimer = new Timer(0.5f);
 
 	public Button(Vector2f Position, Vector2f Scale, String Text, Texture Regular, Texture Clicked, Runnable ClickEvent)
 	{
@@ -53,7 +56,7 @@ public class Button extends GUIElement
 	@Override
 	public void Tick()
 	{
-		// TODO Auto-generated method stub
+		// System.out.println("Tick2");
 
 	}
 
@@ -94,7 +97,7 @@ public class Button extends GUIElement
 	protected void Select()
 	{
 		ActiveTexture = ClickedButton;
-
+		ClickTimer.Set();
 	}
 
 	@Override
@@ -102,6 +105,12 @@ public class Button extends GUIElement
 	{
 		ActiveTexture = RegularButton;
 
+	}
+
+	@Override
+	public boolean ShouldDeselect()
+	{
+		return ClickTimer.Check();
 	}
 
 }

@@ -216,4 +216,11 @@ public class GUIElementContainer extends GUIElement
 
 	}
 
+	@Override
+	public boolean ShouldDeselect()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

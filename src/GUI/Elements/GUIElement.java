@@ -14,7 +14,7 @@ public abstract class GUIElement implements PreRenderable, Tickable
 	protected Vector2f Position;
 	protected Vector2f Scale;
 
-	Rectangle InteractBoundary;
+	protected Rectangle InteractBoundary;
 
 	float XPercent1;
 	float XPercent2;
@@ -61,13 +61,15 @@ public abstract class GUIElement implements PreRenderable, Tickable
 
 		Size = Math.min(XSize, YSize);
 
+		System.out.println("Size: " + Size);
+
 		float XPosition = XPercent1 * GUIScale.GetX();
 		float YPosition = YPercent1 * GUIScale.GetY();
 
 		Position = new Vector2f(XPosition, YPosition);
 
-		float XScale = Size * Scale.GetX();
-		float YScale = Size * Scale.GetY();
+		float XScale = Size * Scale720p.GetX();
+		float YScale = Size * Scale720p.GetY();
 
 		Scale = new Vector2f(XScale, YScale);
 
@@ -124,6 +126,8 @@ public abstract class GUIElement implements PreRenderable, Tickable
 	protected abstract void Select();
 
 	protected abstract void Deselect();
+
+	public abstract boolean ShouldDeselect();
 
 	public Rectangle GetInteractBoundary()
 	{

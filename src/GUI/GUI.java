@@ -38,7 +38,6 @@ public class GUI implements PreRenderable, Tickable
 	@Override
 	public void Tick()
 	{
-
 		Update();
 
 		for (int i = 0; i < Elements.size(); i++)
@@ -68,6 +67,15 @@ public class GUI implements PreRenderable, Tickable
 		boolean LeftMouse = Mouse.LeftMouseClicked();
 		boolean MiddleMouse = Mouse.MiddleMouseClicked();
 		boolean RightMouse = Mouse.RightMouseClicked();
+
+		if (Selected != null)
+		{
+			if (Selected.ShouldDeselect())
+			{
+				Selected.SetSelected(false);
+				Selected = null;
+			}
+		}
 
 		for (int i = 0; i < Elements.size(); i++)
 		{

@@ -1,5 +1,6 @@
 package GUI.Elements;
 
+import IO.Mouse;
 import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
@@ -110,6 +111,12 @@ public class GUIImage extends GUIElement
 	protected void Deselect()
 	{
 		ActiveImage = DefaultImage;
+	}
+
+	@Override
+	public boolean ShouldDeselect()
+	{
+		return InteractBoundary.CollidesWith(Mouse.GetMousePosition()) && Mouse.LeftMouseDown();
 	}
 
 }
