@@ -31,6 +31,8 @@ public class Button extends GUIElement
 
 	Font Style;
 
+	float FontSize;
+
 	public Button(Vector2f Position, Vector2f Scale, String Text, Font Style, float FontSize, Texture Regular, Texture Clicked, Runnable ClickEvent)
 	{
 		super(Position, Scale, true);
@@ -48,6 +50,8 @@ public class Button extends GUIElement
 		this.ClickEvent = ClickEvent;
 
 		this.Style = Style.deriveFont(FontSize);
+
+		this.FontSize = FontSize;
 
 		Vector2f TextScale = TextImageCreator.GetTextSize(Text, Style);
 
@@ -75,10 +79,12 @@ public class Button extends GUIElement
 
 		Scale = new Vector2f(XScale, YScale);
 
+		Style = Style.deriveFont(FontSize * Size);
+
 		Vector2f TextScale = TextImageCreator.GetTextSize(Text, Style);
 
-		float TextX = Position720p.GetX() + ((Scale.GetX() - TextScale.GetX()) / 2);
-		float TextY = Position720p.GetY() + ((Scale.GetY() - TextScale.GetY()) / 2);
+		float TextX = Position.GetX() + ((Scale.GetX() - TextScale.GetX()) / 2);
+		float TextY = Position.GetY() + ((Scale.GetY() - TextScale.GetY()) / 2);
 
 		TextPosition = new Vector2f(TextX, TextY);
 
