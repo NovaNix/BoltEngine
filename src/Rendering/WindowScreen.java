@@ -59,13 +59,18 @@ public abstract class WindowScreen
 
 		if (WindowGUI != null)
 		{
-			WindowGUI.Update();
+			WindowGUI.Tick();
 		}
 	}
 
 	public abstract void AddCamera(Camera Cam) throws ExcessCamerasException;
 
 	Lock RenderLock = new ReentrantLock();
+
+	public void SetGUI(GUI UI)
+	{
+		WindowGUI = UI;
+	}
 
 	public ByteBuffer TakeScreenShot()
 	{
@@ -124,7 +129,10 @@ public abstract class WindowScreen
 			Cameras.get(i).UpdateSize();
 		}
 
-		WindowGUI.SetSize(new Vector2f(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight()));
+		if (WindowGUI != null)
+		{
+			WindowGUI.SetSize(new Vector2f(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight()));
+		}
 	}
 
 }

@@ -1,11 +1,11 @@
 package GUI;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import GUI.Elements.GUIElement;
 import IO.Mouse;
 import Rendering.Handling.PreRenderable;
-import Rendering.Handling.Rendering;
 import Rendering.OpenGL.FrameBufferObject;
 import Utils.Tickable;
 import Vectors.Vector2f;
@@ -24,10 +24,15 @@ public class GUI implements PreRenderable, Tickable
 
 	GUIElement Selected;
 
+	boolean Updated = true;
+
 	public GUI(Vector2f Size)
 	{
 		this.Position = new Vector2f();
 		this.Size = Size;
+
+		FBO = new FrameBufferObject(Size);
+		FBO.SetBackgroundColor(new Color(0, 0, 0, 0));
 	}
 
 	@Override
@@ -41,18 +46,16 @@ public class GUI implements PreRenderable, Tickable
 			Elements.get(i).Tick();
 		}
 
-		boolean ElementUpdated = false;
-
 		for (int i = 0; i < StaticElements.size(); i++)
 		{
 			if (StaticElements.get(i).IsUpdated())
 			{
-				ElementUpdated = true;
+				Updated = true;
 				StaticElements.get(i).PreRender();
 			}
 		}
 
-		if (ElementUpdated)
+		if (Updated)
 		{
 			PreRender();
 		}
@@ -137,6 +140,8 @@ public class GUI implements PreRenderable, Tickable
 		{
 			NonStaticElements.add(Element);
 		}
+
+		Updated = true;
 	}
 
 	public void RemoveElement(GUIElement Element)
@@ -152,12 +157,17 @@ public class GUI implements PreRenderable, Tickable
 		{
 			NonStaticElements.remove(Element);
 		}
+
+		Updated = true;
 	}
 
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(FBO.GetTextureHandle(), Size, Position, Size, 0f);
+		for (int i = 0; i < StaticElements.size(); i++)
+		{
+			StaticElements.get(i).Render();
+		}
 
 		for (int i = 0; i < NonStaticElements.size(); i++)
 		{
@@ -168,14 +178,6 @@ public class GUI implements PreRenderable, Tickable
 	@Override
 	public void PreRender()
 	{
-		FBO.Bind();
-
-		for (int i = 0; i < StaticElements.size(); i++)
-		{
-			StaticElements.get(i).Render();
-		}
-
-		FBO.UnBind();
 
 	}
 
