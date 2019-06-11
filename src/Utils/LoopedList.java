@@ -11,6 +11,8 @@ import Engine.BoltMath;
 public class LoopedList<E> extends ArrayList<E>
 {
 
+	private static final long serialVersionUID = -4873773011572105942L;
+
 	public LoopedList()
 	{
 		super();
