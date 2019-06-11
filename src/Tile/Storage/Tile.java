@@ -3,8 +3,8 @@ package Tile.Storage;
 import java.util.HashMap;
 
 import Geometry.Shapes.Shape;
-import Rendering.Renderable;
-import Rendering.Rendering;
+import Rendering.Handling.Renderable;
+import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 

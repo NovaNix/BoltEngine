@@ -2,9 +2,9 @@ package Geometry;
 
 import java.awt.Color;
 
-import Rendering.Renderable;
-import Rendering.Rendering;
-import Rendering.Rendering.RenderingType;
+import Rendering.Handling.Renderable;
+import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering.RenderingType;
 import Vectors.Vector2f;
 
 public class Segment extends Line implements Renderable

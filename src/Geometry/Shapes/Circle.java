@@ -2,11 +2,12 @@ package Geometry.Shapes;
 
 import Geometry.Line;
 import Geometry.Segment;
-import Rendering.Rendering;
+import Rendering.Handling.Rendering;
 import Utils.BoltUtils;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 
+@SuppressWarnings("rawtypes")
 public class Circle extends Shape<Circle>
 {
 

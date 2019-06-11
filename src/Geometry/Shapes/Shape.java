@@ -2,11 +2,12 @@ package Geometry.Shapes;
 
 import Geometry.Line;
 import Geometry.Segment;
-import Rendering.Renderable;
 import Rendering.Cameras.Followable;
+import Rendering.Handling.Renderable;
 import Utils.Movable;
 import Vectors.Vector2f;
 
+@SuppressWarnings("rawtypes")
 public abstract class Shape<H extends Shape> implements Followable, Renderable, Movable
 {
 

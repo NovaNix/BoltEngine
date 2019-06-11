@@ -24,9 +24,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLDebugMessageCallbackI;
 
 import IO.File.EasyLoader;
-import Rendering.Rendering;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
+import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
 import TimeKeeping.TickRegulator;
 import TimeKeeping.Timer;
