@@ -59,7 +59,8 @@ public class ImageToTile
 	private static Tile GetTileAt(int x, int y, HashMap<Color, Tile> Key, Color Col)
 	{
 
-		System.out.println("Color = " + Col.getRed() + ", " + Col.getGreen() + ", " + Col.getBlue() + ", " + Col.getAlpha() + ", Coord = " + x + ", " + y);
+		// System.out.println("Color = " + Col.getRed() + ", " + Col.getGreen() + ", " +
+		// Col.getBlue() + ", " + Col.getAlpha() + ", Coord = " + x + ", " + y);
 
 		if (Key.containsKey(Col))
 		{
