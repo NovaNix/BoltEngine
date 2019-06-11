@@ -13,6 +13,10 @@ out vec4 Color;
 void main()
 {
 
+	if (1 > texture(Texture1, TexCoords).w)
+	{
+		discard;
+	}
 
 	float xoffset = 1 / ImageSize.x;
 	float yoffset = 1 / ImageSize.y;
@@ -40,6 +44,11 @@ void main()
     	
     for(int i = 0; i < 9; i++)
     	col += sampleTex[i] * Kernel[i];
+ 
+ 	if (col.w < 1)
+ 	{
+ 		discard;
+ 	}
     
     Color = col;
 

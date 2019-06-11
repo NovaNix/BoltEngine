@@ -2,10 +2,9 @@ package Rendering.Image;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_RGBA8;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_BORDER_COLOR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
@@ -14,7 +13,6 @@ import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameterfv;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
@@ -70,10 +68,7 @@ public class Texture
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		float[] borderColor = { 1.0f, 1.0f, 0.0f, 1.0f };
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (int) Size.GetX(), (int) Size.GetY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, (int) Size.GetX(), (int) Size.GetY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
@@ -85,7 +80,7 @@ public class Texture
 		{
 			for (int x = 0; x < Extract.getWidth(); x++)
 			{
-				Color PixelColor = new Color(Extract.getRGB(x, y));
+				Color PixelColor = new Color(Extract.getRGB(x, y), true);
 
 				Buffer.put((byte) PixelColor.getRed());
 				Buffer.put((byte) PixelColor.getGreen());

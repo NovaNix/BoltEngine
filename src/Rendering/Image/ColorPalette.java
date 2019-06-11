@@ -54,7 +54,7 @@ public class ColorPalette
 		{
 			for (int y = 0; y < NewImage.getHeight(); y++)
 			{
-				Color PixelColor = new Color(NewImage.getRGB(x, y));
+				Color PixelColor = new Color(NewImage.getRGB(x, y), true);
 
 				boolean AlreadyAdded = false;
 
