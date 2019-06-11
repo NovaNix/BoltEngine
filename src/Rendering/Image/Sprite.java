@@ -4,7 +4,6 @@
 package Rendering.Image;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import Vectors.Vector2f;
@@ -51,9 +50,9 @@ public class Sprite
 		this.Colors = Colors;
 	}
 
-	public static int[][] GenerateCompressedPixels(Image Template, ColorPalette Colors)
+	public static int[][] GenerateCompressedPixels(BufferedImage Template, ColorPalette Colors)
 	{
-		BufferedImage ReadableImage = (BufferedImage) Template;
+		BufferedImage ReadableImage = Template;
 
 		int[][] CompressedPixels = new int[ReadableImage.getWidth()][ReadableImage.getHeight()];
 
@@ -61,14 +60,14 @@ public class Sprite
 		{
 			for (int y = 0; y < ReadableImage.getHeight(); y++)
 			{
-				CompressedPixels[x][y] = Colors.GetColorID(new Color(ReadableImage.getRGB(x, y)));
+				CompressedPixels[x][y] = Colors.GetColorID(new Color(ReadableImage.getRGB(x, y), true));
 			}
 		}
 
 		return CompressedPixels;
 	}
 
-	private void CompileImage()
+	protected void CompileImage()
 	{
 		BufferedImage Compiled = new BufferedImage((int) Size.GetX(), (int) Size.GetY(), BufferedImage.TYPE_4BYTE_ABGR);
 
