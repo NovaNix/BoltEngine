@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 
 import org.lwjgl.BufferUtils;
 
+import GUI.GUI;
 import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
 import Rendering.Handling.Rendering;
@@ -33,6 +34,8 @@ public abstract class WindowScreen
 	protected JFrame SimulatedEnviroment;
 
 	protected Vector2f MousePosition = new Vector2f(0, 0);
+
+	GUI WindowGUI;
 
 	public WindowScreen(Window ConnectedWindow)
 	{
@@ -52,6 +55,11 @@ public abstract class WindowScreen
 		for (int i = 0; i < Cameras.size(); i++)
 		{
 			Cameras.get(i).Update();
+		}
+
+		if (WindowGUI != null)
+		{
+			WindowGUI.Update();
 		}
 	}
 
@@ -90,6 +98,11 @@ public abstract class WindowScreen
 		{
 			Rendering.DrawCamera(CameraTexHandles[i]);
 		}
+
+		if (WindowGUI != null)
+		{
+			WindowGUI.Render();
+		}
 	}
 
 	public Vector2f GetMousePosition()
@@ -110,6 +123,8 @@ public abstract class WindowScreen
 		{
 			Cameras.get(i).UpdateSize();
 		}
+
+		WindowGUI.SetSize(new Vector2f(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight()));
 	}
 
 }

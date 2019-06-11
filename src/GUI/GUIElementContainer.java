@@ -3,33 +3,36 @@ package GUI;
 import java.util.ArrayList;
 
 import GUI.Elements.GUIElement;
-import Rendering.Handling.PreRenderable;
+import IO.Mouse;
 import Rendering.Handling.Rendering;
 import Rendering.OpenGL.FrameBufferObject;
-import Utils.Tickable;
 import Vectors.Vector2f;
 
-public class GUIElementContainer implements PreRenderable, Tickable
+public class GUIElementContainer extends GUIElement
 {
 
 	ArrayList<GUIElement> Elements = new ArrayList<GUIElement>();
 	ArrayList<GUIElement> NonStaticElements = new ArrayList<GUIElement>();
 	ArrayList<GUIElement> StaticElements = new ArrayList<GUIElement>();
 
-	Vector2f Position;
-	Vector2f Size;
-
 	FrameBufferObject FBO;
+
+	GUIElement Selected;
 
 	public GUIElementContainer(Vector2f Position, Vector2f Size)
 	{
+		super(Position, Size, false);
+
 		this.Position = Position;
-		this.Size = Size;
+		this.Scale = Size;
 	}
 
 	@Override
 	public void Tick()
 	{
+
+		Update();
+
 		for (int i = 0; i < Elements.size(); i++)
 		{
 			Elements.get(i).Tick();
@@ -52,19 +55,57 @@ public class GUIElementContainer implements PreRenderable, Tickable
 		}
 	}
 
-	public Vector2f GetPosition()
+	public void Update()
 	{
-		return Position;
-	}
+		Vector2f MousePosition = Mouse.GetMousePosition();
 
-	public Vector2f GetScale()
-	{
-		return Size;
+		boolean LeftMouse = Mouse.LeftMouseClicked();
+		boolean MiddleMouse = Mouse.MiddleMouseClicked();
+		boolean RightMouse = Mouse.RightMouseClicked();
+
+		for (int i = 0; i < Elements.size(); i++)
+		{
+			GUIElement Element = Elements.get(i);
+
+			if (Element.GetInteractBoundary().CollidesWith(MousePosition))
+			{
+				if (LeftMouse)
+				{
+					Selected = Element;
+
+					Element.SetSelected(true);
+					Element.LeftClick();
+				}
+
+				else if (RightMouse)
+				{
+					Element.RightClick();
+				}
+
+				else if (MiddleMouse)
+				{
+					Element.MiddleClick();
+				}
+
+				else
+				{
+					Element.SetHover(true);
+				}
+			}
+
+			else
+			{
+				Element.SetHover(false);
+			}
+		}
+
 	}
 
 	public void SetSize(Vector2f Size)
 	{
-		this.Size = Size;
+		this.Scale = Size;
+
+		UpdateScale(Size);
 
 		for (int i = 0; i < Elements.size(); i++)
 		{
@@ -105,7 +146,7 @@ public class GUIElementContainer implements PreRenderable, Tickable
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(FBO.GetTextureHandle(), Size, Position, Size, 0f);
+		Rendering.RenderRawImage(FBO.GetTextureHandle(), Scale, Position, Scale, 0f);
 
 		for (int i = 0; i < NonStaticElements.size(); i++)
 		{
@@ -124,6 +165,54 @@ public class GUIElementContainer implements PreRenderable, Tickable
 		}
 
 		FBO.UnBind();
+
+	}
+
+	@Override
+	protected void Hover()
+	{
+		Update();
+	}
+
+	@Override
+	protected void UnHover()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void LeftClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void MiddleClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void RightClick()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void Select()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void Deselect()
+	{
+		// TODO Auto-generated method stub
 
 	}
 

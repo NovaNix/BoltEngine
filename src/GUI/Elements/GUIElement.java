@@ -11,8 +11,8 @@ public abstract class GUIElement implements PreRenderable, Tickable
 	Vector2f Position720p;
 	Vector2f Scale720p;
 
-	Vector2f Position;
-	Vector2f Scale;
+	protected Vector2f Position;
+	protected Vector2f Scale;
 
 	Rectangle InteractBoundary;
 
@@ -84,11 +84,13 @@ public abstract class GUIElement implements PreRenderable, Tickable
 		if (Hover && Hovering == false)
 		{
 			Hover();
+			Updated = true;
 		}
 
 		else if (!Hover && Hovering)
 		{
 			UnHover();
+			Updated = true;
 		}
 	}
 
@@ -109,11 +111,13 @@ public abstract class GUIElement implements PreRenderable, Tickable
 		if (Select && Selected == false)
 		{
 			Select();
+			Updated = true;
 		}
 
 		else if (!Select && Selected)
 		{
 			Deselect();
+			Updated = true;
 		}
 	}
 
