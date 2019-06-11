@@ -1,5 +1,6 @@
 package GUI.Elements;
 
+import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -14,7 +15,11 @@ public class Button extends GUIElement
 	Texture RegularHoverButton;
 	Texture ClickedHoverButton;
 
-	public Button(Vector2f Position, Vector2f Scale, String Text, Texture Regular, Texture Clicked)
+	Texture ActiveTexture;
+
+	Runnable ClickEvent;
+
+	public Button(Vector2f Position, Vector2f Scale, String Text, Texture Regular, Texture Clicked, Runnable ClickEvent)
 	{
 		super(Position, Scale, true);
 
@@ -25,6 +30,10 @@ public class Button extends GUIElement
 
 		this.RegularHoverButton = Regular;
 		this.ClickedHoverButton = Clicked;
+
+		this.ActiveTexture = Regular;
+
+		this.ClickEvent = ClickEvent;
 	}
 
 	@Override
@@ -37,7 +46,8 @@ public class Button extends GUIElement
 	@Override
 	public void Render()
 	{
-
+		Rendering.RenderRawImage(ActiveTexture, Position, Scale, 0);
+		// Rendering.RenderRawText(Position, Text, Font.ARIAL, new Color(0, 0, 0));
 	}
 
 	@Override
@@ -50,22 +60,20 @@ public class Button extends GUIElement
 	@Override
 	protected void Hover()
 	{
-		// TODO Auto-generated method stub
-
+		ActiveTexture = RegularHoverButton;
 	}
 
 	@Override
 	protected void UnHover()
 	{
-		// TODO Auto-generated method stub
+		ActiveTexture = RegularButton;
 
 	}
 
 	@Override
 	public void LeftClick()
 	{
-		// TODO Auto-generated method stub
-
+		ClickEvent.run();
 	}
 
 	@Override
@@ -85,14 +93,14 @@ public class Button extends GUIElement
 	@Override
 	protected void Select()
 	{
-		// TODO Auto-generated method stub
+		ActiveTexture = ClickedButton;
 
 	}
 
 	@Override
 	protected void Deselect()
 	{
-		// TODO Auto-generated method stub
+		ActiveTexture = RegularButton;
 
 	}
 
