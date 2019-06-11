@@ -50,7 +50,7 @@ public class TileMap implements Renderable
 
 				else
 				{
-					System.out.println("Non Null Found at " + x + ", " + y);
+					// System.out.println("Non Null Found at " + x + ", " + y);
 				}
 			}
 		}
@@ -79,7 +79,7 @@ public class TileMap implements Renderable
 
 				else
 				{
-					System.out.println("Non Null Found at " + x + ", " + y);
+					// System.out.println("Non Null Found at " + x + ", " + y);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ public class TileMap implements Renderable
 
 		else
 		{
-			System.out.println("Non Null Found at " + X + ", " + Y);
+			// System.out.println("Non Null Found at " + X + ", " + Y);
 		}
 	}
 
