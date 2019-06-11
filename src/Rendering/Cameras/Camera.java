@@ -1,30 +1,6 @@
 package Rendering.Cameras;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_RGB;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glDeleteTextures;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
-import static org.lwjgl.opengl.GL30.glBindFramebuffer;
-import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
-import static org.lwjgl.opengl.GL30.glDeleteFramebuffers;
-import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
-import static org.lwjgl.opengl.GL30.glGenFramebuffers;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.ArrayList;
 
@@ -35,14 +11,17 @@ import org.lwjgl.opengl.GL;
 
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
-import Rendering.Renderable;
-import Rendering.Rendering;
+import Rendering.Handling.Renderable;
+import Rendering.Handling.Rendering;
+import Rendering.OpenGL.FrameBufferObject;
 import Rendering.Utils.RenderableContainer;
 import Utils.Movable;
 import Vectors.Vector2f;
 
 public class Camera extends JComponent implements Movable, RenderableContainer
 {
+
+	private static final long serialVersionUID = -5565281269552084759L;
 
 	private String Name = "Unnamed Camera";
 
@@ -61,8 +40,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 	private Vector2f AspectRatio;
 
-	private int FBOHandle;
-	private int FBOTexture;
+	private FrameBufferObject FBO;
 
 	private Matrix4f Projection;
 	private Matrix4f RawModel = new Matrix4f();
@@ -104,14 +82,9 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 	public int Render()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+		FBO.Bind();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-		GenerateProjection();
-		GenerateModel();
+		FBO.Clear();
 
 		glViewport(0, 0, getWidth(), getHeight());
 
@@ -122,46 +95,15 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 			this.Rendered.get(i).Render();
 		}
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		FBO.UnBind();
 
-		return FBOTexture;
+		return FBO.GetTextureHandle();
 	}
 
 	public void GenerateFBO()
 	{
-		if (FBOHandle != 0)
-		{
-			glDeleteFramebuffers(FBOHandle);
-		}
-
-		if (FBOTexture != 0)
-		{
-			glDeleteTextures(FBOTexture);
-		}
-
-		FBOHandle = glGenFramebuffers();
-		FBOTexture = glGenTextures();
-
-		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
-		glBindTexture(GL_TEXTURE_2D, FBOTexture);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOTexture, 0);
-
-		System.out.println("Made VBO");
-
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			System.out.println("Failed to generate FBO!");
-			System.exit(1);
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+		GL.createCapabilities();
+		FBO = new FrameBufferObject(GetCameraScale());
 	}
 
 	@Override
@@ -213,12 +155,14 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	public void Move(Vector2f Translation)
 	{
 		this.Position.Add(Translation);
+		GenerateModel();
 	}
 
 	@Override
 	public void SetPosition(Vector2f Position)
 	{
 		this.Position.SetPosition(Position);
+		GenerateModel();
 	}
 
 	public boolean OnCamera(Shape Collision)
@@ -232,38 +176,27 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		this.CameraCollision = new Rectangle(Position, GetCameraScale());
 
-		GL.createCapabilities();
+		if (FBO == null)
+		{
+			GenerateFBO();
+		}
 
-		GenerateFBO();
+		FBO.SetSize(GetCameraScale());
 
 		this.SetZoom(this.Zoom);
 
 		GenerateProjection();
-		GenerateModel();
 
-		if (this instanceof SingleFollowCamera)
+		if (this instanceof FollowCamera)
 		{
-			((SingleFollowCamera) this).UpdateFollowShape();
-		}
-
-		else if (this instanceof MultiFollowCamera)
-		{
-			// ((MultiFollowCamera) this).UpdateFollowShape();
+			((FollowCamera) this).UpdateFollowing();
 		}
 	}
 
 	@Override
 	public void finalize()
 	{
-		if (FBOHandle != 0)
-		{
-			glDeleteFramebuffers(FBOHandle);
-		}
 
-		if (FBOTexture != 0)
-		{
-			glDeleteTextures(FBOTexture);
-		}
 	}
 
 }
