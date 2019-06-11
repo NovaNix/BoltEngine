@@ -1,8 +1,8 @@
-package Rendering;
+package Rendering.Handling;
 
 import java.awt.Color;
 
-import Rendering.Rendering.RenderingType;
+import Rendering.Handling.Rendering.RenderingType;
 
 // Specified that something can be rendered
 public interface Renderable

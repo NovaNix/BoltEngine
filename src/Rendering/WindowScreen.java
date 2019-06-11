@@ -20,6 +20,7 @@ import org.lwjgl.BufferUtils;
 
 import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
+import Rendering.Handling.Rendering;
 import Vectors.Vector2f;
 
 public abstract class WindowScreen

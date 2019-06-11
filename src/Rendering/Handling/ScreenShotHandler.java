@@ -1,4 +1,4 @@
-package Rendering;
+package Rendering.Handling;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

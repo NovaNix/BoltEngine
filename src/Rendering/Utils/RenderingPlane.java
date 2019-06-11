@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import Algorithms.Sorting.Sortable;
-import Rendering.Renderable;
+import Rendering.Handling.Renderable;
 import Vectors.Vector2f;
 
 public class RenderingPlane implements RenderableContainer, Renderable, Sortable<Renderable>

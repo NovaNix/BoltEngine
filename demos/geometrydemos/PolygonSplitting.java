@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 import Geometry.Shapes.Polygon;
 import Geometry.Shapes.Triangle;
-import Rendering.Rendering.RenderingType;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Cameras.SingleFollowCamera;
+import Rendering.Handling.Rendering.RenderingType;
 import Vectors.Vector2f;
 
 public class PolygonSplitting

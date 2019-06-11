@@ -1,6 +1,6 @@
 package Rendering.Utils;
 
-import Rendering.Renderable;
+import Rendering.Handling.Renderable;
 
 public interface RenderableContainer
 {

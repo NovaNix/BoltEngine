@@ -53,7 +53,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	private long WindowHandle;
 
-	private Vector2f CurrentSize = new Vector2f(1280, 780);
+	private Vector2f CurrentSize = new Vector2f(1280, 720);
 
 	private boolean IsVisible = false;
 
@@ -96,10 +96,10 @@ public class Window implements GLFWWindowSizeCallbackI
 			System.out.println("Error Generating Window!");
 		}
 
-		WindowHandle = glfwCreateWindow(1280, 780, Name, NULL, NULL);
+		WindowHandle = glfwCreateWindow(1280, 720, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwWindowHint(GLFW_SAMPLES, 1);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

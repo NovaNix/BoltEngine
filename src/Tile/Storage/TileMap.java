@@ -3,8 +3,9 @@ package Tile.Storage;
 import java.util.ArrayList;
 
 import Geometry.Shapes.Shape;
-import Rendering.Renderable;
+import Rendering.Handling.Renderable;
 
+@SuppressWarnings("rawtypes")
 public class TileMap implements Renderable
 {
 

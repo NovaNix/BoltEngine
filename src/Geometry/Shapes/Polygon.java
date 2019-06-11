@@ -8,7 +8,7 @@ import Engine.BoltMath;
 import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segment;
-import Rendering.Rendering.RenderingType;
+import Rendering.Handling.Rendering.RenderingType;
 import Utils.BoltUtils;
 import Utils.LoopedList;
 import Utils.Vector2fUtils;
@@ -16,6 +16,7 @@ import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
 import Vectors.Vector2fGroup;
 
+@SuppressWarnings("rawtypes")
 public class Polygon extends Shape<Polygon>
 {
 

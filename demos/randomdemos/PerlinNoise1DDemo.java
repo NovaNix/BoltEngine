@@ -5,11 +5,11 @@ import java.awt.Color;
 import Engine.BoltEngine;
 import Engine.Game;
 import Random.Noise.PerlinNoise1D;
-import Rendering.Renderable;
-import Rendering.Rendering;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Cameras.SingleFollowCamera;
+import Rendering.Handling.Renderable;
+import Rendering.Handling.Rendering;
 import Vectors.Vector2f;
 
 public class PerlinNoise1DDemo extends Game
