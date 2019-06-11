@@ -12,11 +12,8 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 import Vectors.Vector2f;
 
-public class Mouse implements GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI
+public class Mouse
 {
-
-	static Mouse CallbackHandler = new Mouse();
-
 	static Vector2f MousePos = new Vector2f(0, 0);
 
 	static boolean LeftDown;
@@ -29,8 +26,55 @@ public class Mouse implements GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI
 
 	public static void InitMouse(long WindowHandle)
 	{
-		glfwSetCursorPosCallback(WindowHandle, CallbackHandler);
-		glfwSetMouseButtonCallback(WindowHandle, CallbackHandler);
+		glfwSetCursorPosCallback(WindowHandle, new GLFWCursorPosCallbackI()
+		{
+
+			@Override
+			public void invoke(long window, double xpos, double ypos)
+			{
+				MousePos = new Vector2f((float) xpos, (float) ypos);
+			}
+		});
+
+		glfwSetMouseButtonCallback(WindowHandle, new GLFWMouseButtonCallbackI()
+		{
+
+			@Override
+			public void invoke(long window, int button, int action, int mods)
+			{
+				boolean DownState = action == GLFW_PRESS;
+
+				switch (button)
+				{
+					case GLFW_MOUSE_BUTTON_LEFT:
+						LeftDown = DownState;
+						break;
+					case GLFW_MOUSE_BUTTON_RIGHT:
+						RightDown = DownState;
+						break;
+					case GLFW_MOUSE_BUTTON_MIDDLE:
+						MiddleDown = DownState;
+						break;
+				}
+
+				if (DownState == false)
+				{
+					switch (button)
+					{
+						case GLFW_MOUSE_BUTTON_LEFT:
+							LeftClicked = true;
+							System.out.println("Mouse Clicked");
+							break;
+						case GLFW_MOUSE_BUTTON_RIGHT:
+							RightClicked = true;
+							break;
+						case GLFW_MOUSE_BUTTON_MIDDLE:
+							MiddleClicked = true;
+							break;
+					}
+				}
+			}
+		});
 	}
 
 	public static boolean LeftMouseDown()
@@ -68,59 +112,11 @@ public class Mouse implements GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI
 		return MousePos.Derive();
 	}
 
-	@Override
-	public void invoke(long window, double xpos, double ypos)
+	public static void ClearClicks()
 	{
-		MousePos = new Vector2f((float) xpos, (float) ypos);
-	}
-
-	@Override
-	public String getSignature()
-	{
-		// TODO Auto-generated method stub
-		return GLFWMouseButtonCallbackI.super.getSignature();
-	}
-
-	@Override
-	public void callback(long args)
-	{
-		// TODO Auto-generated method stub
-		GLFWCursorPosCallbackI.super.callback(args);
-	}
-
-	@Override
-	public void invoke(long window, int button, int action, int mods)
-	{
-		boolean DownState = action == GLFW_PRESS;
-
-		switch (button)
-		{
-			case GLFW_MOUSE_BUTTON_LEFT:
-				LeftDown = DownState;
-				break;
-			case GLFW_MOUSE_BUTTON_RIGHT:
-				RightDown = DownState;
-				break;
-			case GLFW_MOUSE_BUTTON_MIDDLE:
-				MiddleDown = DownState;
-				break;
-		}
-
-		if (DownState == false)
-		{
-			switch (button)
-			{
-				case GLFW_MOUSE_BUTTON_LEFT:
-					LeftClicked = true;
-					break;
-				case GLFW_MOUSE_BUTTON_RIGHT:
-					RightClicked = true;
-					break;
-				case GLFW_MOUSE_BUTTON_MIDDLE:
-					MiddleClicked = true;
-					break;
-			}
-		}
+		LeftClicked = false;
+		RightClicked = false;
+		MiddleClicked = false;
 	}
 
 }

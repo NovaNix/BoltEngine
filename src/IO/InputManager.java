@@ -13,6 +13,8 @@ public class InputManager
 
 	public static void Update()
 	{
+		Mouse.ClearClicks();
+
 		glfwPollEvents();
 	}
 
