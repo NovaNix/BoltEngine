@@ -95,8 +95,10 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 			this.Rendered.get(i).Render();
 		}
 
+		FBO.Compress();
+		
 		FBO.UnBind();
-
+		
 		return FBO.GetTextureHandle();
 	}
 
