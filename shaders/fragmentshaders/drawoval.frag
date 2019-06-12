@@ -12,10 +12,13 @@ void main()
 
 	float Dis = distance(OvalCoord, vec2(0.5,0.5));
 
+	vec4 Col1 = InnerColor;
+	vec4 Col2 = OuterColor;
+
 	if (Dis > 0.5)
 	{
 		discard;
 	}
 
-	Color = mix(InnerColor, OuterColor, Dis);
+	Color = mix(Col1, Col2, Dis);
 }
