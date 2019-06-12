@@ -84,7 +84,7 @@ public class ImageToTile
 		{
 			for (int y = 0; y < Height; y++)
 			{
-				Colors[x][y] = new Color(TileImage.getRGB(x, y));
+				Colors[x][y] = new Color(TileImage.getRGB(x, y), true);
 			}
 		}
 
