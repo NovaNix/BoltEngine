@@ -1,6 +1,6 @@
 package Rendering.OpenGL;
 
-import static org.lwjgl.opengl.GL45.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGB;
@@ -15,12 +15,17 @@ import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
+import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
+import static org.lwjgl.opengl.GL32.GL_TEXTURE_2D_MULTISAMPLE;
+import static org.lwjgl.opengl.GL32.glTexImage2DMultisample;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Color;
@@ -32,6 +37,9 @@ public class FrameBufferObject
 
 	int FBOHandle;
 	int FBOTexture;
+
+	int RenderableFBOHandle;
+	int RenderableFBOTexture;
 
 	Vector2f Size;
 
@@ -53,15 +61,18 @@ public class FrameBufferObject
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, FBOTexture);
 
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, getWidth(), getHeight(), true);
-		
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-//		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB,
+		// GL_UNSIGNED_BYTE, NULL);
+
+		// glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER,
+		// GL_NEAREST);
+		// glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER,
+		// GL_NEAREST);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, FBOTexture, 0);
 
-		System.out.println("Made VBO");
+		System.out.println("Made VBO 1");
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
@@ -70,6 +81,33 @@ public class FrameBufferObject
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		RenderableFBOHandle = glGenFramebuffers();
+		RenderableFBOTexture = glGenTextures();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, RenderableFBOHandle);
+		glBindTexture(GL_TEXTURE_2D, RenderableFBOTexture);
+
+		// glTexImage2DMultisample(GL_TEXTURE_2D, 4, GL_RGB, getWidth(), getHeight(),
+		// true);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, RenderableFBOTexture, 0);
+
+		System.out.println("Made VBO 2");
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			System.out.println("Failed to generate FBO!");
+			System.exit(1);
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	}
 
 	public void SetSize(Vector2f Size)
@@ -79,13 +117,12 @@ public class FrameBufferObject
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, FBOTexture);
 
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, getWidth(), getHeight(), true);
+
+		glBindTexture(GL_TEXTURE_2D, RenderableFBOTexture);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	}
 
-	public void Compress()
-	{
-		glBlitFramebuffer(0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST); 
-	}
-	
 	public void Clear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -120,7 +157,12 @@ public class FrameBufferObject
 
 	public int GetTextureHandle()
 	{
-		return FBOTexture;
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, RenderableFBOHandle); // Make sure no FBO is set as the draw framebuffer
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOHandle); // Make sure your multisampled FBO is the read framebuffer
+
+		glBlitFramebuffer(0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+		return RenderableFBOTexture;
 	}
 
 	@Override

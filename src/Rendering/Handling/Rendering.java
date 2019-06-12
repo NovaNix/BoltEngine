@@ -1,6 +1,6 @@
 package Rendering.Handling;
 
-import static org.lwjgl.opengl.GL45.*;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
@@ -608,7 +608,7 @@ public class Rendering
 
 	public static void DrawCamera(int CamTexture)
 	{
-		ApplyCamTexture(CamTexture, 0);
+		ApplyTexture(CamTexture, 0);
 		ApplyShader(DrawingShader.DrawCamera);
 
 		Draw(DrawImage, GL_TRIANGLES);
@@ -651,16 +651,6 @@ public class Rendering
 			glBindTexture(GL_TEXTURE_2D, Apply);
 		}
 	}
-	
-	// Applys the specified texture to the specified sampler
-		private static void ApplyCamTexture(int Apply, int Sampler)
-		{
-			if ((Sampler >= 0) && (Sampler <= 31))
-			{
-				glActiveTexture(GL_TEXTURE0 + Sampler);
-				glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, Apply);
-			}
-		}
 
 	private static Shader ActiveShader;
 
