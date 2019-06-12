@@ -1,6 +1,8 @@
 package AI.StateMachine;
 
-public class StateMachine
+import AI.AI;
+
+public class StateMachine extends AI
 {
 
 	State CurrentState;
@@ -18,6 +20,14 @@ public class StateMachine
 	public State GetCurrentState()
 	{
 		return CurrentState;
+	}
+
+	@Override
+	public void Tick()
+	{
+		UpdateState();
+
+		CurrentState.RunAction();
 	}
 
 }
