@@ -3,7 +3,7 @@ package Vectors;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Utils.LoopedList;
+import Storage.LoopedList;
 
 public class Vector2fGroup
 {
