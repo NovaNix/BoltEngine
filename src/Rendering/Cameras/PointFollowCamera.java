@@ -7,9 +7,14 @@ public class PointFollowCamera extends FollowCamera
 
 	Followable Following = null;
 
-	public PointFollowCamera(String Name, Vector2f Position)
+	public PointFollowCamera()
 	{
-		super(Name, Position);
+		super();
+	}
+	
+	public PointFollowCamera(Vector2f Position)
+	{
+		super(Position);
 	}
 
 	@Override

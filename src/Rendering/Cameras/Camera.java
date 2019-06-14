@@ -23,8 +23,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 	private static final long serialVersionUID = -5565281269552084759L;
 
-	private String Name = "Unnamed Camera";
-
 	private ArrayList<Renderable> Rendered = new ArrayList<Renderable>();
 
 	private Vector2f Position = new Vector2f(0, 0);
@@ -33,10 +31,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	protected Rectangle CameraCollision;
 
 	private Rectangle ZoomCollision;
-
-	private float Zoom = 1f;
-
-	private Vector2f ZoomOffset = new Vector2f(0, 0);
 
 	private Vector2f AspectRatio;
 
@@ -47,10 +41,20 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	private Matrix4f RSModel;
 	private Matrix4f RefModel;
 
-	public Camera(String Name, Vector2f Position)
+	public Camera()
 	{
-		this.Name = Name;
+		this.Position = new Vector2f(0, 0);
 
+		this.CameraCollision = new Rectangle(Position, new Vector2f(0, 0));
+
+		this.AspectRatio = new Vector2f(0, 0);
+
+		GenerateProjection();
+		GenerateModel();
+	}
+	
+	public Camera(Vector2f Position)
+	{
 		this.Position = Position;
 
 		this.CameraCollision = new Rectangle(Position, new Vector2f(0, 0));
@@ -77,7 +81,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	private void GenerateModel()
 	{
 		this.RSModel = new Matrix4f().setTranslation(0, 0, 0);
-		this.RefModel = new Matrix4f().translate(-Position.GetX(), Position.GetY(), 0);
+		this.RefModel = new Matrix4f().rotateZ(Rotation).translate(-Position.GetX(), Position.GetY(), 0);
 	}
 
 	public int Render()
@@ -118,33 +122,11 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		this.Rendered.remove(ToRemove);
 	}
 
-	public void SetZoom(float Zoom)
-	{
-		this.Zoom = Zoom;
-
-		Vector2f ZoomCollisionScale = this.CameraCollision.GetScale().Derive();
-		ZoomCollisionScale.Divide(new Vector2f(Zoom, Zoom));
-
-		float XTranslation = (this.CameraCollision.GetScale().GetX() - ZoomCollisionScale.GetX()) / 2;
-		float YTranslation = (this.CameraCollision.GetScale().GetY() - ZoomCollisionScale.GetY()) / 2;
-
-		this.ZoomOffset = new Vector2f(XTranslation, YTranslation);
-
-		Vector2f ZoomCollisionPosition = this.Position.Derive();
-		ZoomCollisionPosition.Add(this.ZoomOffset);
-
-		this.ZoomCollision = new Rectangle(ZoomCollisionPosition, ZoomCollisionScale);
-	}
-
 	public Vector2f GetCameraScale()
 	{
 		return new Vector2f(getWidth(), getHeight());
 	}
 
-	public float GetZoom()
-	{
-		return this.Zoom;
-	}
 
 	public Vector2f GetPosition()
 	{
@@ -182,8 +164,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		}
 
 		FBO.SetSize(GetCameraScale());
-
-		this.SetZoom(this.Zoom);
 
 		GenerateProjection();
 

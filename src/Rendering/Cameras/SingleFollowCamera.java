@@ -14,9 +14,14 @@ public class SingleFollowCamera extends FollowCamera
 
 	Shape FollowCollision;
 
-	public SingleFollowCamera(String Name, Vector2f Position)
+	public SingleFollowCamera()
 	{
-		super(Name, Position);
+		super();
+	}
+	
+	public SingleFollowCamera(Vector2f Position)
+	{
+		super(Position);
 	}
 
 	@Override

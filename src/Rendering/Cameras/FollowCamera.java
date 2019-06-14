@@ -5,9 +5,14 @@ import Vectors.Vector2f;
 public abstract class FollowCamera extends Camera
 {
 
-	public FollowCamera(String Name, Vector2f Position)
+	public FollowCamera()
 	{
-		super(Name, Position);
+		super();
+	}
+	
+	public FollowCamera(Vector2f Position)
+	{
+		super(Position);
 	}
 
 	public abstract void UpdateFollowing();
