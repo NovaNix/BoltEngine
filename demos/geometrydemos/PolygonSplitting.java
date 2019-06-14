@@ -16,7 +16,7 @@ public class PolygonSplitting
 
 	static Window Win = new Window("Polygon Splitting");
 
-	static Camera Cam = new SingleFollowCamera("Default Perspective", new Vector2f(0, 0));
+	static Camera Cam = new SingleFollowCamera();
 
 	 static Polygon Poly = new Polygon(new Vector2f[] { new Vector2f(30, 20), new
 	 Vector2f(20, 90), new Vector2f(40, 130), new Vector2f(50, 70), new

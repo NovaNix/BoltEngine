@@ -37,7 +37,7 @@ public class BasicRender implements GLDebugMessageCallbackI
 
 	static Window Win = new Window("Basic Render");
 
-	static Camera Cam = new Camera("Default Perspective", new Vector2f(0, 0));
+	static Camera Cam = new Camera();
 
 	static Texture DirtTexture;
 

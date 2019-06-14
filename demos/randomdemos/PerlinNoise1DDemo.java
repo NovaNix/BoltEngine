@@ -37,7 +37,7 @@ public class PerlinNoise1DDemo extends Game
 	public void StartUp()
 	{
 		Win = new Window("Perlin Noise Demo");
-		Cam = new SingleFollowCamera("POV", new Vector2f(0, 0));
+		Cam = new SingleFollowCamera();
 
 		Win.AddCamera(Cam);
 
