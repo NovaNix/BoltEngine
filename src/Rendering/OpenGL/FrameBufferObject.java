@@ -62,14 +62,6 @@ public class FrameBufferObject
 
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, getWidth(), getHeight(), true);
 
-		// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB,
-		// GL_UNSIGNED_BYTE, NULL);
-
-		// glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER,
-		// GL_NEAREST);
-		// glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER,
-		// GL_NEAREST);
-
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, FBOTexture, 0);
 
 		System.out.println("Made VBO 1");
@@ -157,9 +149,9 @@ public class FrameBufferObject
 
 	public int GetTextureHandle()
 	{
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, RenderableFBOHandle); // Make sure no FBO is set as the draw framebuffer
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOHandle); // Make sure your multisampled FBO is the read framebuffer
-
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, RenderableFBOHandle);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOHandle); 
+		
 		glBlitFramebuffer(0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		return RenderableFBOTexture;
