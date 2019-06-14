@@ -104,7 +104,7 @@ public class Window implements GLFWWindowSizeCallbackI
 		{
 			System.out.println("Error Generating Window!");
 		}
-
+		
 		WindowHandle = glfwCreateWindow(1280, 720, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
@@ -116,7 +116,7 @@ public class Window implements GLFWWindowSizeCallbackI
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-
+		
 		glfwMakeContextCurrent(WindowHandle);
 
 		glfwSetWindowSizeCallback(WindowHandle, this);
@@ -166,8 +166,6 @@ public class Window implements GLFWWindowSizeCallbackI
 		try
 		{
 			Screen.AddCamera(Cam);
-
-			glfwMakeContextCurrent(WindowHandle);
 
 			GL.createCapabilities();
 
