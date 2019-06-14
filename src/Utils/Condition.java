@@ -1,6 +1,6 @@
 package Utils;
 
-public interface Question
+public interface Condition
 {
 
 	public boolean Test();

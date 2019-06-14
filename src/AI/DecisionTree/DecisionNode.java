@@ -1,6 +1,6 @@
 package AI.DecisionTree;
 
-import Utils.Question;
+import Utils.Condition;
 
 public abstract class DecisionNode extends Node
 {
@@ -8,9 +8,9 @@ public abstract class DecisionNode extends Node
 	Node YesNode;
 	Node NoNode;
 
-	Question Test;
+	Condition Test;
 
-	public DecisionNode(Node YesNode, Node NoNode, Question Test)
+	public DecisionNode(Node YesNode, Node NoNode, Condition Test)
 	{
 		this.YesNode = YesNode;
 		this.NoNode = NoNode;

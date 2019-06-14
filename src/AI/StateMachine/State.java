@@ -3,12 +3,12 @@ package AI.StateMachine;
 import java.util.HashMap;
 import java.util.Set;
 
-import Utils.Question;
+import Utils.Condition;
 
 public class State
 {
 
-	public HashMap<Question, State> Transitions = new HashMap<Question, State>();
+	public HashMap<Condition, State> Transitions = new HashMap<Condition, State>();
 
 	Runnable StateAction;
 
@@ -19,9 +19,9 @@ public class State
 
 	public State Update()
 	{
-		Set<Question> Conditions = Transitions.keySet();
+		Set<Condition> Conditions = Transitions.keySet();
 
-		for (Question Key : Conditions)
+		for (Condition Key : Conditions)
 		{
 			if (Key.Test())
 			{
@@ -42,12 +42,12 @@ public class State
 		StateAction.run();
 	}
 
-	public void AddTransition(State TransitionTo, Question Condition)
+	public void AddTransition(State TransitionTo, Condition Condition)
 	{
 		Transitions.put(Condition, TransitionTo);
 	}
 
-	public void RemoveTransition(State TransitionTo, Question Condition)
+	public void RemoveTransition(State TransitionTo, Condition Condition)
 	{
 		Transitions.remove(Condition, TransitionTo);
 	}
