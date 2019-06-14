@@ -69,8 +69,6 @@ public class PathFinding extends TechDemo
 		Rendering.RenderRawBox(new Vector2f(8 * 32, 96), new Vector2f((8 * 32) + 32, 96 + 32), 2, new Color(0, 255, 0));
 		
 		Rendering.RenderRawBox(new Vector2f(0, 0), new Vector2f(320, 7 * 32), 4, new Color(255, 255, 255));
-		
-		System.out.println("Win size:" + Win.GetSize().ToString());
 	}
 	
 	public static void RenderPath()
