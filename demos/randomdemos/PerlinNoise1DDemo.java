@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import Engine.BoltEngine;
 import Engine.Game;
+import Engine.Debugging.TechDemo;
+import IO.InputManager;
 import Random.Noise.PerlinNoise1D;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
@@ -12,11 +14,8 @@ import Rendering.Handling.Renderable;
 import Rendering.Handling.Rendering;
 import Vectors.Vector2f;
 
-public class PerlinNoise1DDemo extends Game
+public class PerlinNoise1DDemo extends TechDemo
 {
-
-	Window Win;
-	Camera Cam;
 
 	PerlinNoise1D Noise;
 
@@ -29,19 +28,13 @@ public class PerlinNoise1DDemo extends Game
 
 	public PerlinNoise1DDemo()
 	{
-		super(30);
+		super("Perlin Noise Demo", 30);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void StartUp()
+	public void Boot()
 	{
-		Win = new Window("Perlin Noise Demo");
-		Cam = new SingleFollowCamera();
-
-		Win.AddCamera(Cam);
-
-		Win.Show();
 
 		Noise = new PerlinNoise1D(2553, 100);
 
@@ -65,12 +58,6 @@ public class PerlinNoise1DDemo extends Game
 		});
 	}
 
-	@Override
-	public void ShutDown()
-	{
-		// Win.();
-
-	}
 
 	@Override
 	protected void Tick()
@@ -82,22 +69,7 @@ public class PerlinNoise1DDemo extends Game
 	@Override
 	protected void UpdateInput()
 	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void Render()
-	{
-		Win.Render();
-
-	}
-
-	@Override
-	protected boolean EndGame()
-	{
-		// TODO Auto-generated method stub
-		return Win.ShouldClose();
+		InputManager.Update();
 	}
 
 }

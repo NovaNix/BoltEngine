@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import AI.PathFinding.AStar;
 import AI.PathFinding.Path;
+import Engine.BoltEngine;
+import Engine.Debugging.TechDemo;
 import IO.InputManager;
 import IO.File.EasyLoader;
 import Rendering.Window;
@@ -13,12 +15,13 @@ import Rendering.Handling.Rendering;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
-public class PathFinding 
+public class PathFinding extends TechDemo
 {
 
-	static Window Win = new Window("Path Finding");
-
-	static Camera Cam = new Camera();
+	public PathFinding() {
+		super("Path Finding", 30);
+		// TODO Auto-generated constructor stub
+	}
 	
 	static Texture Dirt;
 	
@@ -45,31 +48,10 @@ public class PathFinding
 	
 	public static void main(String[] args)
 	{
-		Cam.AddRenderable(() -> RenderGrid());
-		Cam.AddRenderable(() -> RenderPath());
-
-		Win.AddCamera(Cam);
-
-		Win.SetVisible(true);
-
-		Dirt = new Texture(EasyLoader.LoadLocalImage("/DemoImages/Dirt.png"));
-		
-		MazePath = AStar.PathFind(Map, 1, 3, 8, 3, false);
-		
-		InputManager.Init(Win.GetHandle());
-		
-		while (!Win.ShouldClose())
-		{
-			InputManager.Update();
-			
-			Render();
-		}
-		
-		System.exit(0);
-
+		BoltEngine.StartGame(new PathFinding());
 	}
 
-	public static void RenderGrid()
+	public void RenderGrid()
 	{
 		for (int x = 0; x < Map.length; x++)
 		{
@@ -85,6 +67,10 @@ public class PathFinding
 		Rendering.RenderRawBox(new Vector2f(32, 96), new Vector2f(64, 128), 2, new Color(255, 0, 0));
 		
 		Rendering.RenderRawBox(new Vector2f(8 * 32, 96), new Vector2f((8 * 32) + 32, 96 + 32), 2, new Color(0, 255, 0));
+		
+		Rendering.RenderRawBox(new Vector2f(0, 0), new Vector2f(320, 7 * 32), 4, new Color(255, 255, 255));
+		
+		System.out.println("Win size:" + Win.GetSize().ToString());
 	}
 	
 	public static void RenderPath()
@@ -104,9 +90,27 @@ public class PathFinding
 		}
 	}
 
-	public static void Render()
+	@Override
+	public void Boot() 
 	{
-		Win.Render();
+		Cam.AddRenderable(() -> RenderGrid());
+		Cam.AddRenderable(() -> RenderPath());
+
+		Dirt = new Texture(EasyLoader.LoadLocalImage("/DemoImages/Dirt.png"));
+		
+		MazePath = AStar.PathFind(Map, 1, 3, 8, 3, true);	
+	}
+
+	@Override
+	protected void Tick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void UpdateInput() 
+	{
+		InputManager.Update();
 	}
 
 	
