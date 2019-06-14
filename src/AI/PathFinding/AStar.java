@@ -39,16 +39,25 @@ public class AStar
 		
 		boolean Done = false;
 		
+		int Cycle = 0;
+		
 		while (!Done)
 		{
-			if (OpenNodes.size() == 0)
-			{
-				System.out.println("No Path!");
-				
-				return null;
-			}
+			System.out.println("Cycle: " + Cycle);
+			
+			Cycle++;
+			
+//			if (OpenNodes.size() == 0)
+//			{
+//				System.out.println("No Path!");
+//				
+//				return null;
+//			}
 			
 			GridNode CurrentNode = GetLowestBox();
+			
+			CurrentX = (int) CurrentNode.GetX();
+			CurrentY = (int) CurrentNode.GetY();
 			
 			ClosedList[CurrentX][CurrentY] = CurrentNode;
 			OpenList[CurrentX][CurrentY] = null;
@@ -150,8 +159,8 @@ public class AStar
 			for (int y = 0; y < 3; y++)
 			{
 				
-				int PosX = (int) ParentNode.GetX() + (x - 1);
-				int PosY = (int) ParentNode.GetY() + (y - 1);
+				int PosX = ((int) ParentNode.GetX()) + (x - 1);
+				int PosY = ((int) ParentNode.GetY()) + (y - 1);
 				
 				if ((PosX < 0 || PosX >= Grid.length) || (PosY < 0 || PosY >= Grid[0].length))
 				{
