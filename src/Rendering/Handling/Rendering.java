@@ -48,6 +48,8 @@ public class Rendering
 	private static float[] IdentityKernel = new float[] { 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f };
 	private static float[] BlurKernel = new float[] { 1.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 4.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 1.0f / 16 };
 
+	private static float[] ActiveKernel = IdentityKernel;
+	
 	private static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2), new ArrayBuffer(BoxTexture, 2) }, BoxIndex);
 
 	private static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2) });
@@ -484,7 +486,7 @@ public class Rendering
 
 		ActiveShader.SetUniform("ImageSize", SpriteSize.GetX(), SpriteSize.GetY());
 
-		ActiveShader.SetUniform("Kernel", IdentityKernel);
+		ActiveShader.SetUniform("Kernel", ActiveKernel);
 
 		ActiveShader.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
 		ActiveShader.SetUniform("Texture1", 0);
@@ -632,6 +634,16 @@ public class Rendering
 		ActiveCameraModel = ReferencedCameraModel;
 	}
 
+	public static void EnableBlur()
+	{
+		ActiveKernel = BlurKernel;
+	}
+	
+	public static void DisableBlur()
+	{
+		ActiveKernel = IdentityKernel;
+	}
+	
 	// Applys the specified texture to the specified sampler
 	private static void ApplyTexture(Texture Apply, int Sampler)
 	{
