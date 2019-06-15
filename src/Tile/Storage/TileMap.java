@@ -125,6 +125,16 @@ public class TileMap implements Renderable
 		return false;
 	}
 
+	public int GetWidth()
+	{
+		return Tiles.length;
+	}
+	
+	public int GetHeight()
+	{
+		return Tiles[0].length;
+	}
+	
 	@Override
 	public void Render()
 	{
