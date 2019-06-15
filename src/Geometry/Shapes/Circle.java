@@ -136,7 +136,9 @@ public class Circle extends Shape<Circle>
 	@Override
 	public boolean CollidesWith(Line Collision)
 	{
-		return (GetCollisionPointsWith(Collision) != null);
+		Vector2f[] Collisions = GetCollisionPointsWith(Collision);
+		
+		return Collisions.length != 0;
 	}
 
 	@Override
@@ -145,6 +147,11 @@ public class Circle extends Shape<Circle>
 		if (Collision instanceof Circle)
 		{
 			return Center.GetDistanceTo(Collision.GetCenter()) <= Radius + ((Circle) Collision).GetRadius();
+		}
+		
+		else if (Collision instanceof Polygon)
+		{
+			return Collision.CollidesWith(this);
 		}
 
 		return false;
