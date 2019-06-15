@@ -19,6 +19,11 @@ public class Timer
 		this.Timer = System.currentTimeMillis();
 	}
 
+	public boolean IsSet()
+	{
+		return Active;
+	}
+	
 	public boolean Check()
 	{
 		if (Active)
