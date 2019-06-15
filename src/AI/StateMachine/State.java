@@ -42,14 +42,18 @@ public class State
 		StateAction.run();
 	}
 
-	public void AddTransition(State TransitionTo, Condition Condition)
+	public State AddTransition(State TransitionTo, Condition Condition)
 	{
 		Transitions.put(Condition, TransitionTo);
+		
+		return this;
 	}
 
-	public void RemoveTransition(State TransitionTo, Condition Condition)
+	public State RemoveTransition(State TransitionTo, Condition Condition)
 	{
 		Transitions.remove(Condition, TransitionTo);
+		
+		return this;
 	}
 
 }
