@@ -314,29 +314,6 @@ public class Polygon extends Shape<Polygon>
 	}
 
 	@Override
-	public Segment[] GetCollisionSegmentsWith(Line Collision)
-	{
-		Segment[] Collisions = new Segment[Sides.size()];
-
-		for (int i = 0; i < Sides.size(); i++)
-		{
-			if (Sides.get(i).GetIntersectionWith(Collision) != null)
-			{
-				Collisions[i] = Sides.get(i);
-			}
-		}
-
-		return (Segment[]) BoltUtils.RemoveNulls(Collisions);
-	}
-
-	@Override
-	public Segment[] GetCollisionSegmentsWith(Shape Collision)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean CollidesWith(Line Collision)
 	{
 		if (CollidesWith(Collision.GetPointOnLine()))

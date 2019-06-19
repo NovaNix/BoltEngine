@@ -120,20 +120,6 @@ public class Circle extends Shape<Circle>
 	}
 
 	@Override
-	public Segment[] GetCollisionSegmentsWith(Line Collision)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Segment[] GetCollisionSegmentsWith(Shape Collision)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean CollidesWith(Line Collision)
 	{
 		Vector2f[] Collisions = GetCollisionPointsWith(Collision);

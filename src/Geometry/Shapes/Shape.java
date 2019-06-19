@@ -21,10 +21,6 @@ public abstract class Shape<H extends Shape> implements Followable, Renderable, 
 
 	public abstract Vector2f[] GetCollisionPointsWith(Shape Collision);
 
-	public abstract Segment[] GetCollisionSegmentsWith(Line Collision);
-
-	public abstract Segment[] GetCollisionSegmentsWith(Shape Collision);
-
 	public abstract boolean CollidesWith(Line Collision);
 
 	public abstract boolean CollidesWith(Shape Collision);
