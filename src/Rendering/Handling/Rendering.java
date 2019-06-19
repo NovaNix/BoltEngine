@@ -62,7 +62,7 @@ public class Rendering
 
 	private static Matrix4f Projection;
 
-	private static Matrix4f RawCameraModel;
+	private static Matrix4f RawCameraModel = new Matrix4f();
 	private static Matrix4f RSCameraModel;
 	private static Matrix4f ReferencedCameraModel;
 
@@ -190,9 +190,8 @@ public class Rendering
 	};
 
 	// Prepares for rendering and applys the specified matrices
-	public static void Start(Matrix4f RawCamModel, Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
+	public static void Start(Matrix4f RSCamModel, Matrix4f RefCamModel, Matrix4f CamProjection)
 	{
-		RawCameraModel = RawCamModel;
 		RSCameraModel = RSCamModel;
 		ReferencedCameraModel = RefCamModel;
 
@@ -212,8 +211,8 @@ public class Rendering
 	// Images
 	// Lines
 	// Rectangles
-	// Text (WIP)
-	// Point (WIP)
+	// Text 
+	// Point 
 	// Oval
 
 	// Dynamic

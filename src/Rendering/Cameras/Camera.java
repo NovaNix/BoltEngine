@@ -37,7 +37,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	private FrameBufferObject FBO;
 
 	private Matrix4f Projection;
-	private Matrix4f RawModel = new Matrix4f();
 	private Matrix4f RSModel;
 	private Matrix4f RefModel;
 
@@ -92,7 +91,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		glViewport(0, 0, getWidth(), getHeight());
 
-		Rendering.Start(RawModel, RSModel, RefModel, Projection);
+		Rendering.Start(RSModel, RefModel, Projection);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
 		{
