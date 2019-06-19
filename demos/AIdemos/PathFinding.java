@@ -1,12 +1,14 @@
 package AIdemos;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 
 import AI.PathFinding.AStar;
 import AI.PathFinding.Path;
 import Engine.BoltEngine;
 import Engine.Debugging.TechDemo;
 import IO.InputManager;
+import IO.Keyboard;
 import IO.File.EasyLoader;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
@@ -105,10 +107,18 @@ public class PathFinding extends TechDemo
 		
 	}
 
+	boolean IncludeDiagonals = true;
+	
 	@Override
 	protected void UpdateInput() 
 	{
 		InputManager.Update();
+		
+		if (Keyboard.KeyTyped(KeyEvent.VK_SPACE))
+		{
+			IncludeDiagonals = !IncludeDiagonals;
+			MazePath = AStar.PathFind(Map, 1, 3, 8, 3, IncludeDiagonals);	
+		}
 	}
 
 	

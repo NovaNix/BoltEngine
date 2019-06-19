@@ -14,6 +14,7 @@ public class Keyboard implements GLFWKeyCallbackI
 	static Keyboard CallbackHandler = new Keyboard();
 
 	static HashMap<Integer, Boolean> Keys = new HashMap<Integer, Boolean>();
+	static HashMap<Integer, Boolean> Typed = new HashMap<Integer, Boolean>();
 
 	// Keycodes pulled from internet
 	// Keycodes are from javascript, so they may be different
@@ -132,6 +133,20 @@ public class Keyboard implements GLFWKeyCallbackI
 		return false;
 	}
 
+	public static boolean KeyTyped(int Key)
+	{
+		if (Typed.containsKey(Key))
+		{
+			boolean TypedValue = Typed.get(Key);
+			
+			Typed.replace(Key, false);
+			
+			return TypedValue;
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods)
 	{
@@ -139,6 +154,7 @@ public class Keyboard implements GLFWKeyCallbackI
 		if (action == GLFW_RELEASE)
 		{
 			Keys.put(key, false);
+			Typed.put(key, true);
 		}
 
 		else if (action == GLFW_PRESS)
