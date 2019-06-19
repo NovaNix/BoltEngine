@@ -1,8 +1,9 @@
 package AI.StateMachine;
 
 import AI.AI;
+import Utils.Tickable;
 
-public class StateMachine extends AI
+public class StateMachine implements Tickable
 {
 
 	State CurrentState;

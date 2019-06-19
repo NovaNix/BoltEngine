@@ -1,8 +1,9 @@
 package AI.DecisionTree;
 
 import AI.AI;
+import Utils.Tickable;
 
-public class DecisionTree extends AI
+public class DecisionTree implements Tickable
 {
 
 	Node StartNode;
