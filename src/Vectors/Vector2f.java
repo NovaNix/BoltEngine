@@ -264,6 +264,14 @@ public class Vector2f extends Vector<Vector2f>
 		UpdateHashCode();
 	}
 
+	public void Multiply(float Change)
+	{
+		this.X *= Change;
+		this.Y *= Change;
+
+		UpdateHashCode();
+	}
+
 	@Override
 	public void Divide(Vector2f Change)
 	{
