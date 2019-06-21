@@ -28,7 +28,7 @@ public abstract class GUIElement implements PreRenderable, Tickable
 	boolean Static;
 	boolean Updated = true;
 
-	float Size;
+	protected float Size;
 
 	public GUIElement(Vector2f Position, Vector2f Scale, boolean Static)
 	{
