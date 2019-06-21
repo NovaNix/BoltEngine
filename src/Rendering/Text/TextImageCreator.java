@@ -4,7 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -34,7 +35,10 @@ public class TextImageCreator
 			int Height = Metrics.getHeight() + Metrics.getMaxDescent();
 
 			BufferedImage ReturnedTexture = new BufferedImage(Width, Height, BufferedImage.TYPE_4BYTE_ABGR);
-			Graphics g = ReturnedTexture.getGraphics();
+			Graphics2D g = (Graphics2D) ReturnedTexture.getGraphics().create();
+
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+			g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			g.setFont(Style);
 			g.setColor(Hue);
 			g.drawString(Text, 0, Metrics.getHeight());
