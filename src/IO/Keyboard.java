@@ -1,5 +1,8 @@
 package IO;
 
+import static org.lwjgl.glfw.GLFW.GLFW_MOD_ALT;
+import static org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL;
+import static org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
@@ -26,7 +29,6 @@ public class Keyboard implements GLFWKeyCallbackI
 	public static final int KEY_CTRL = 17;
 	public static final int KEY_ALT = 18;
 	public static final int KEY_PAUSE = 19;
-	public static final int KEY_CAPSLOCK = 20;
 	public static final int KEY_ESCAPE = 27;
 	public static final int KEY_PAGEUP = 33;
 	public static final int KEY_PAGEDOWN = 34;
@@ -74,9 +76,7 @@ public class Keyboard implements GLFWKeyCallbackI
 	public static final int KEY_X = 88;
 	public static final int KEY_Y = 89;
 	public static final int KEY_Z = 90;
-	public static final int KEY_LEFTWINDOWKEY = 91;
-	public static final int KEY_RIGHTWINDOWKEY = 92;
-	public static final int KEY_SELECTKEY = 93;
+
 	public static final int KEY_NUMPAD0 = 96;
 	public static final int KEY_NUMPAD1 = 97;
 	public static final int KEY_NUMPAD2 = 98;
@@ -104,8 +104,6 @@ public class Keyboard implements GLFWKeyCallbackI
 	public static final int KEY_F10 = 121;
 	public static final int KEY_F11 = 122;
 	public static final int KEY_F12 = 123;
-	public static final int KEY_NUMLOCK = 144;
-	public static final int KEY_SCROLLLOCK = 145;
 	public static final int KEY_SEMICOLON = 186;
 	public static final int KEY_EQUALSIGN = 187;
 	public static final int KEY_COMMA = 188;
@@ -138,19 +136,18 @@ public class Keyboard implements GLFWKeyCallbackI
 		if (Typed.containsKey(Key))
 		{
 			boolean TypedValue = Typed.get(Key);
-			
+
 			Typed.replace(Key, false);
-			
+
 			return TypedValue;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods)
 	{
-
 		if (action == GLFW_RELEASE)
 		{
 			Keys.put(key, false);
@@ -160,6 +157,36 @@ public class Keyboard implements GLFWKeyCallbackI
 		else if (action == GLFW_PRESS)
 		{
 			Keys.put(key, true);
+		}
+
+		if ((mods & GLFW_MOD_SHIFT) == 1)
+		{
+			Keys.put(KEY_SHIFT, true);
+		}
+
+		else
+		{
+			Keys.put(KEY_SHIFT, false);
+		}
+
+		if ((mods & GLFW_MOD_ALT) == 1)
+		{
+			Keys.put(KEY_ALT, true);
+		}
+
+		else
+		{
+			Keys.put(KEY_ALT, false);
+		}
+
+		if ((mods & GLFW_MOD_CONTROL) == 1)
+		{
+			Keys.put(KEY_CTRL, true);
+		}
+
+		else
+		{
+			Keys.put(KEY_CTRL, false);
 		}
 	}
 
