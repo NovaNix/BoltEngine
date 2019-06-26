@@ -49,7 +49,7 @@ public class Rendering
 	private static float[] BlurKernel = new float[] { 1.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 4.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 1.0f / 16 };
 
 	private static float[] ActiveKernel = IdentityKernel;
-	
+
 	private static VertexBufferObject FullScreenBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2), new ArrayBuffer(BoxTexture, 2) }, BoxIndex);
 
 	private static VertexBufferObject LineBox = new VertexBufferObject(new ArrayBuffer[] { new ArrayBuffer(BoxVertex, 2) });
@@ -211,8 +211,8 @@ public class Rendering
 	// Images
 	// Lines
 	// Rectangles
-	// Text 
-	// Point 
+	// Text
+	// Point
 	// Oval
 
 	// Dynamic
@@ -618,17 +618,17 @@ public class Rendering
 	// The current active camera model
 	private static Matrix4f ActiveCameraModel;
 
-	private static void EnableRaw()
+	public static void EnableRaw()
 	{
 		ActiveCameraModel = RawCameraModel;
 	}
 
-	private static void EnableRS()
+	public static void EnableRS()
 	{
 		ActiveCameraModel = RSCameraModel;
 	}
 
-	private static void EnableReferenced()
+	public static void EnableReferenced()
 	{
 		ActiveCameraModel = ReferencedCameraModel;
 	}
@@ -637,12 +637,12 @@ public class Rendering
 	{
 		ActiveKernel = BlurKernel;
 	}
-	
+
 	public static void DisableBlur()
 	{
 		ActiveKernel = IdentityKernel;
 	}
-	
+
 	// Applys the specified texture to the specified sampler
 	private static void ApplyTexture(Texture Apply, int Sampler)
 	{

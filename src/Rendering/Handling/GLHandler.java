@@ -7,28 +7,29 @@ public class GLHandler
 {
 
 	ArrayList<GLRequest> Requests = new ArrayList<GLRequest>();
-	
+
 	// Threading
 
 	// Creation
-	
+
 	// Trash Handling
-	
+
 	public enum GLType
 	{
 		Texture, VBO, VAO, FBO
 	}
-	
+
 	public enum Action
 	{
 		Create, Destroy
 	}
-	
+
 	private class GLRequest
 	{
+
 		public GLRequest(GLType Type, Action Request)
 		{
-			
+
 		}
 	}
 

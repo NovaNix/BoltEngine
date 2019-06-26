@@ -59,7 +59,7 @@ public class Texture
 		this.Data = Data;
 	}
 
-	private void GenerateTexture(ByteBuffer Data, Vector2f Size, int ID)
+	private static void GenerateTexture(ByteBuffer Data, Vector2f Size, int ID)
 	{
 		glBindTexture(GL_TEXTURE_2D, ID);
 

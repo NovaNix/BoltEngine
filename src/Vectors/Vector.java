@@ -22,5 +22,4 @@ public abstract class Vector<H extends Vector>
 
 	public abstract void Print();
 
-	public abstract String ToString();
 }

@@ -289,6 +289,46 @@ public class Vector2f extends Vector<Vector2f>
 		UpdateHashCode();
 	}
 
+	public void Add(float ChangeX, float ChangeY)
+	{
+		this.X += ChangeX;
+		this.Y += ChangeY;
+
+		UpdateHashCode();
+	}
+
+	public void Subtract(float ChangeX, float ChangeY)
+	{
+		this.X -= ChangeX;
+		this.Y -= ChangeY;
+
+		UpdateHashCode();
+	}
+
+	public void Multiply(float ChangeX, float ChangeY)
+	{
+		this.X *= ChangeX;
+		this.Y *= ChangeY;
+
+		UpdateHashCode();
+	}
+
+	public void Divide(float ChangeX, float ChangeY)
+	{
+		this.X /= ChangeX;
+		this.Y /= ChangeY;
+
+		UpdateHashCode();
+	}
+
+	public void SetPosition(float ChangeX, float ChangeY)
+	{
+		SetX(ChangeX);
+		SetY(ChangeY);
+
+		UpdateHashCode();
+	}
+
 	@Override
 	public void Print()
 	{
@@ -296,7 +336,7 @@ public class Vector2f extends Vector<Vector2f>
 	}
 
 	@Override
-	public String ToString()
+	public String toString()
 	{
 		return "" + GetX() + ", " + GetY();
 	}

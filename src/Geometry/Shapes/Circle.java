@@ -1,7 +1,6 @@
 package Geometry.Shapes;
 
 import Geometry.Line;
-import Geometry.Segment;
 import Rendering.Handling.Rendering;
 import Utils.BoltUtils;
 import Vectors.ReferencedVector2f;
@@ -17,7 +16,7 @@ public class Circle extends Shape<Circle>
 		this.Radius = Radius;
 
 		this.Position = new ReferencedVector2f(Center);
-		Position.Add(new Vector2f(-Radius, -Radius));
+		Position.Add(-Radius, -Radius);
 	}
 
 	@Override
@@ -123,7 +122,7 @@ public class Circle extends Shape<Circle>
 	public boolean CollidesWith(Line Collision)
 	{
 		Vector2f[] Collisions = GetCollisionPointsWith(Collision);
-		
+
 		return Collisions.length != 0;
 	}
 
@@ -134,7 +133,7 @@ public class Circle extends Shape<Circle>
 		{
 			return Center.GetDistanceTo(Collision.GetCenter()) <= Radius + ((Circle) Collision).GetRadius();
 		}
-		
+
 		else if (Collision instanceof Polygon)
 		{
 			return Collision.CollidesWith(this);
