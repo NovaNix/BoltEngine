@@ -1,7 +1,6 @@
 package Geometry.Shapes;
 
 import Geometry.Line;
-import Geometry.Segment;
 import Rendering.Cameras.Followable;
 import Rendering.Handling.Renderable;
 import Utils.Movable;
@@ -26,12 +25,6 @@ public abstract class Shape<H extends Shape> implements Followable, Renderable, 
 	public abstract boolean CollidesWith(Shape Collision);
 
 	public abstract boolean CollidesWith(Vector2f Point);
-
-	public abstract boolean CollidesWith(Line Collision, boolean IncludeContour);
-
-	public abstract boolean CollidesWith(Shape Collision, boolean IncludeContour);
-
-	public abstract boolean CollidesWith(Vector2f Point, boolean IncludeContour);
 
 	public abstract void SetScale(Vector2f Scale);
 

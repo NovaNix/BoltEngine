@@ -25,7 +25,7 @@ public class RequestManager implements Runnable
 	}
 
 	@Override
-	public void run()
+	public synchronized void run()
 	{
 		Alive = true;
 

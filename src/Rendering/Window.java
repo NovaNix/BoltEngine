@@ -108,7 +108,7 @@ public class Window implements GLFWWindowSizeCallbackI
 		WindowHandle = glfwCreateWindow(1280, 720, Name, NULL, NULL);
 
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwWindowHint(GLFW_SAMPLES, 1);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

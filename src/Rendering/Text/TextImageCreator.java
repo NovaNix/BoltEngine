@@ -6,8 +6,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -33,12 +31,9 @@ public class TextImageCreator
 		else
 		{
 
-			FontRenderContext frc = new FontRenderContext(null, false, true);
-
-			// get the height and width of the text
-			Rectangle2D bounds = Style.getStringBounds(Text, frc);
-			int Width = (int) Math.round(bounds.getWidth());
-			int Height = (int) Math.round(bounds.getHeight());
+			FontMetrics Metrics = FontMetricGrabber.getFontMetrics(Style);
+			int Width = Metrics.stringWidth(Text);
+			int Height = Metrics.getHeight() + Metrics.getMaxDescent();
 
 			BufferedImage ReturnedTexture = new BufferedImage(Width, Height, BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D g = (Graphics2D) ReturnedTexture.getGraphics().create();
@@ -47,7 +42,7 @@ public class TextImageCreator
 			g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			g.setFont(Style);
 			g.setColor(Hue);
-			g.drawString(Text, 0, Height);
+			g.drawString(Text, 0, Metrics.getHeight());
 
 			g.dispose();
 

@@ -70,6 +70,8 @@ public abstract class WindowScreen
 	public void SetGUI(GUI UI)
 	{
 		WindowGUI = UI;
+
+		WindowGUI.SetSize(new Vector2f(ConnectedWindow.GetWidth(), ConnectedWindow.GetHeight()));
 	}
 
 	public ByteBuffer TakeScreenShot()

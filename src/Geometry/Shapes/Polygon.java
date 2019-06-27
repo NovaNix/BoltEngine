@@ -101,28 +101,6 @@ public class Polygon extends Shape<Polygon>
 		this.BoundingBubble = new Circle(Center, Radius);
 	}
 
-	// Returns the points of this polygon compressed between -1 and 1 on the x and y
-	// axis
-	public Vector2f[] GetCompressed()
-	{
-		Vector2f BottemLeft = new Vector2f(Vector2fUtils.GetMinX(Corners.ToArray()).GetX(), Vector2fUtils.GetMinY(Corners.ToArray()).GetY());
-		Vector2f TopRight = new Vector2f(Vector2fUtils.GetMaxX(Corners.ToArray()).GetX(), Vector2fUtils.GetMaxY(Corners.ToArray()).GetY());
-
-		float PolygonWidth = BottemLeft.GetXDistanceTo(TopRight);
-		float PolygonHeight = BottemLeft.GetYDistanceTo(TopRight);
-
-		Vector2f PCenter = BottemLeft.Derive();
-		PCenter.Add(new Vector2f(PolygonWidth / 2, PolygonHeight / 2));
-
-		Vector2fGroup Vectors = Corners.Clone();
-
-		Vectors.Subtract(PCenter);
-		Vectors.Divide(new Vector2f(PolygonWidth / 2, PolygonHeight / 2));
-
-		return Vectors.ToArray();
-
-	}
-
 	// Returns the triangulation of this polygon
 	public Triangle[] ExtractTriangles()
 	{
@@ -480,36 +458,4 @@ public class Polygon extends Shape<Polygon>
 		return new Polygon(Position.Derive(), Corners.ToArray());
 	}
 
-	@Override
-	public boolean CollidesWith(Line Collision, boolean IncludeContour)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean CollidesWith(Shape Collision, boolean IncludeContour)
-	{
-		if (IncludeContour == true)
-		{
-			return CollidesWith(Collision);
-		}
-
-		else
-		{
-
-		}
-		return false;
-	}
-
-	@Override
-	public boolean CollidesWith(Vector2f Point, boolean IncludeContour)
-	{
-		if (IncludeContour == true)
-		{
-			return CollidesWith(Point);
-		}
-
-		return false;
-	}
 }

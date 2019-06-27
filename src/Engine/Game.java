@@ -19,7 +19,7 @@ public abstract class Game implements Runnable
 
 	// These hold how fast tick and render are run in milliseconds
 	// Stopwatches are not used to measure the time due to potential accuracy issues
-	private long TickSpeed;
+	private double TickSpeed;
 	private double RenderSpeed;
 
 	protected boolean PrintFPS = false;
@@ -70,12 +70,12 @@ public abstract class Game implements Runnable
 
 			if (TickHandler.TickTime())
 			{
-				long Now1 = System.nanoTime();
+				double Now1 = System.currentTimeMillis();
 
 				UpdateInput();
 				Tick();
 
-				TickSpeed = System.nanoTime() - Now1;
+				TickSpeed = System.currentTimeMillis() - Now1;
 
 				TPS++;
 			}

@@ -198,30 +198,4 @@ public class Circle extends Shape<Circle>
 		return new Circle(Center.Derive(), Radius);
 	}
 
-	@Override
-	public boolean CollidesWith(Line Collision, boolean IncludeContour)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean CollidesWith(Shape Collision, boolean IncludeContour)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean CollidesWith(Vector2f Point, boolean IncludeContour)
-	{
-		if (IncludeContour == true)
-		{
-			return CollidesWith(Point);
-		}
-
-		else
-		{
-			return Center.GetDistanceTo(Point) < Radius;
-		}
-	}
-
 }

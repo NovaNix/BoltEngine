@@ -26,10 +26,10 @@ public class GUI implements PreRenderable, Tickable
 
 	boolean Updated = true;
 
-	public GUI(Vector2f Size)
+	public GUI()
 	{
 		this.Position = new Vector2f();
-		this.Size = Size;
+		this.Size = new Vector2f(1280, 720);
 
 		FBO = new FrameBufferObject(Size);
 		FBO.SetBackgroundColor(new Color(0, 0, 0, 0));
