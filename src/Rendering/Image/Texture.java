@@ -1,7 +1,6 @@
 package Rendering.Image;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -14,6 +13,9 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 import java.awt.Color;
@@ -22,9 +24,10 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import Rendering.OpenGL.Shader;
 import Vectors.Vector2f;
 
-public class Texture
+public class Texture extends Graphic
 {
 
 	ByteBuffer Data;
@@ -33,9 +36,10 @@ public class Texture
 
 	Vector2f Size;
 
+	Shader DrawShader;
+
 	public Texture(BufferedImage Convert)
 	{
-
 		this.Size = new Vector2f(Convert.getWidth(), Convert.getHeight());
 
 		ByteBuffer ColorData = ExtractColorData(Convert);
@@ -45,6 +49,11 @@ public class Texture
 		GenerateTexture(ColorData, Size, TextureID);
 
 		Data = ColorData;
+
+		if (DrawShader == null)
+		{
+			DrawShader = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
+		}
 
 	}
 
@@ -57,14 +66,19 @@ public class Texture
 		GenerateTexture(Data, Size, TextureID);
 
 		this.Data = Data;
+
+		if (DrawShader == null)
+		{
+			DrawShader = new Shader("/vertexshaders/defaultshader.vert", true, "/fragmentshaders/drawimage.frag", true);
+		}
 	}
 
 	private static void GenerateTexture(ByteBuffer Data, Vector2f Size, int ID)
 	{
 		glBindTexture(GL_TEXTURE_2D, ID);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -123,6 +137,31 @@ public class Texture
 	public void finalize()
 	{
 		// glDeleteTextures(TextureID);
+	}
+
+	@Override
+	public void BindGraphic()
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, TextureID);
+	}
+
+	float[] ActiveKernel = new float[] { 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f };
+
+	@Override
+	public void BindShader()
+	{
+		DrawShader.Bind();
+
+		DrawShader.SetUniform("Texture1", 0);
+		DrawShader.SetUniform("ImageSize", GetWidth(), GetHeight());
+		DrawShader.SetUniform("Kernel", ActiveKernel);
+	}
+
+	@Override
+	public Shader GetDrawingShader()
+	{
+		return DrawShader;
 	}
 
 }

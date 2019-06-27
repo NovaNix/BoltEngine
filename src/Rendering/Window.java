@@ -137,11 +137,7 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		Screen.Render();
 
-		long Now = System.nanoTime();
-
 		glfwSwapBuffers(WindowHandle);
-
-		System.out.println("Swap Buffer Time: " + (System.nanoTime() - Now));
 
 	}
 

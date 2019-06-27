@@ -6,92 +6,66 @@ package Rendering.Image;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 
 public class ColorPalette
 {
 
-	HashMap<Integer, Color> Colors = new HashMap<Integer, Color>();
+	Color[] Colors;
 
 	public ColorPalette(Color[] Colors)
 	{
-		for (int i = 0; i < Colors.length; i++)
-		{
-			this.Colors.put(i, Colors[i]);
-		}
+		this.Colors = Colors;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static ColorPalette GeneratePalette(BufferedImage NewImage)
 	{
 		ArrayList<Color> Colors = new ArrayList<Color>();
 
-		@SuppressWarnings("rawtypes")
-		Comparator Comparator = new Comparator()
+		// System.out.println("Generating Color Palette");
+
+		int Loop = 0;
+
+		for (int y = 0; y < NewImage.getHeight(); y++)
 		{
-
-			@Override
-			public int compare(Object arg0, Object arg1)
+			for (int x = 0; x < NewImage.getWidth(); x++)
 			{
-				Color Color1 = (Color) arg0;
-				Color Color2 = (Color) arg1;
 
-				if (Color1.getRGB() == Color2.getRGB())
+				Color PixelColor = new Color(NewImage.getRGB(x, y), true);
+
+				boolean AlreadyAdded = Colors.contains(PixelColor);
+
+				if (!AlreadyAdded)
 				{
-					return 0;
+					// System.out.println("Added Color " + PixelColor.getRed() + ", " +
+					// PixelColor.getGreen() + ", " + PixelColor.getRed() + ", " +
+					// PixelColor.getAlpha());
+					Colors.add(PixelColor);
+					Loop++;
 				}
 
 				else
 				{
-					return -1;
-				}
-
-			}
-		};
-
-		for (int x = 0; x < NewImage.getWidth(); x++)
-		{
-			for (int y = 0; y < NewImage.getHeight(); y++)
-			{
-				Color PixelColor = new Color(NewImage.getRGB(x, y), true);
-
-				boolean AlreadyAdded = false;
-
-				for (int i = 0; i < Colors.size(); i++)
-				{
-					if (Comparator.compare(PixelColor, Colors.get(i)) == 0)
-					{
-						AlreadyAdded = true;
-						break;
-					}
-
-				}
-
-				if (!AlreadyAdded)
-				{
-					Colors.add(PixelColor);
+					// System.out.println("Duplicate");
 				}
 			}
 		}
+
+		System.out.println("Colors added: " + Loop);
 
 		Color[] NewColorList = new Color[Colors.size()];
 
-		for (int i = 0; i < Colors.size(); i++)
-		{
-			NewColorList[i] = Colors.get(i);
-		}
+		NewColorList = Colors.toArray(NewColorList);
 
 		return new ColorPalette(NewColorList);
 	}
 
 	public void ReplaceColorWith(Color Replaced, Color Replacement)
 	{
-		for (Integer Key : Colors.keySet())
+		for (int i = 0; i < Colors.length; i++)
 		{
-			if (Colors.get(Key).equals(Replaced))
+			if (Colors[i].equals(Replaced))
 			{
-				Colors.put(Key, Replacement);
+				Colors[i] = Replaced;
 			}
 		}
 	}
@@ -103,41 +77,22 @@ public class ColorPalette
 
 	public Color GetColorAtID(int ID)
 	{
-		return Colors.get(ID);
+		return Colors[ID];
 	}
 
-	@SuppressWarnings("unchecked")
+	public int GetColorCount()
+	{
+		return Colors.length;
+	}
+
 	public int GetColorID(Color Tested)
 	{
 
-		@SuppressWarnings("rawtypes")
-		Comparator Comparator = new Comparator()
+		for (int i = 0; i < Colors.length; i++)
 		{
-
-			@Override
-			public int compare(Object arg0, Object arg1)
+			if (Colors[i].equals(Tested))
 			{
-				Color Color1 = (Color) arg0;
-				Color Color2 = (Color) arg1;
-
-				if (Color1.getRGB() == Color2.getRGB())
-				{
-					return 0;
-				}
-
-				else
-				{
-					return -1;
-				}
-
-			}
-		};
-
-		for (Integer Key : Colors.keySet())
-		{
-			if (Comparator.compare(Tested, Colors.get(Key)) == 0)
-			{
-				return Key;
+				return i;
 			}
 		}
 
@@ -146,13 +101,11 @@ public class ColorPalette
 
 	public int[] ToList()
 	{
-		int Size = Colors.keySet().size();
+		int[] ColorList = new int[Colors.length * 4];
 
-		int[] ColorList = new int[Size * 4];
-
-		for (int i = 0; i < Size; i++)
+		for (int i = 0; i < Colors.length; i++)
 		{
-			Color Hue = Colors.get(i);
+			Color Hue = Colors[i];
 
 			int Position = i * 4;
 
@@ -169,14 +122,14 @@ public class ColorPalette
 	{
 		System.out.println("Color Palette Table:" + System.lineSeparator());
 
-		for (Integer Key : Colors.keySet())
+		for (int i = 0; i < Colors.length; i++)
 		{
-			int R = Colors.get(Key).getRed();
-			int G = Colors.get(Key).getGreen();
-			int B = Colors.get(Key).getBlue();
-			int A = Colors.get(Key).getAlpha();
+			int R = Colors[i].getRed();
+			int G = Colors[i].getGreen();
+			int B = Colors[i].getBlue();
+			int A = Colors[i].getAlpha();
 
-			System.out.println(Key + ": " + R + ", " + G + ", " + B + ", " + A);
+			System.out.println(i + ": " + R + ", " + G + ", " + B + ", " + A);
 		}
 
 		System.out.println(System.lineSeparator());

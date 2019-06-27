@@ -97,7 +97,7 @@ public class Tile implements Renderable
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedImage(Texture, Position, Scale, 0);
+		Rendering.RenderReferencedGraphic(Texture, Position, Scale, 0);
 	}
 
 }

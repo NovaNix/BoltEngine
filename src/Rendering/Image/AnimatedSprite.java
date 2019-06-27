@@ -9,8 +9,6 @@ public class AnimatedSprite extends Sprite
 
 	Sprite[] Sprites;
 
-	Sprite ActiveSprite;
-
 	FrameRegulator Clock;
 
 	public AnimatedSprite(BufferedImage[] Template, float FPS)
@@ -37,25 +35,19 @@ public class AnimatedSprite extends Sprite
 		Clock.Stop();
 	}
 
-	@Override
-	protected void CompileImage()
-	{
-		ActiveSprite.SwitchToPalette(Colors);
-		this.Compiled = ActiveSprite.GetImage();
-	}
-
-	public Texture GetImage()
-	{
-		ActiveSprite = Sprites[Clock.GetRelativeFrame(Sprites.length)];
-
-		this.CompileImage();
-
-		return Compiled;
-	}
-
 	public int[] GetPixelData()
 	{
-		return ActiveSprite.GetPixelData();
+		return Sprites[Clock.GetRelativeFrame(Sprites.length)].GetPixelData();
 	}
 
+	public Sprite GetCurrentFrame()
+	{
+		return Sprites[Clock.GetRelativeFrame(Sprites.length)];
+	}
+
+	@Override
+	public void BindGraphic()
+	{
+		GetCurrentFrame().BindGraphic();
+	}
 }

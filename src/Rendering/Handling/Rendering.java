@@ -25,6 +25,7 @@ import java.awt.Font;
 
 import org.joml.Matrix4f;
 
+import Rendering.Image.Graphic;
 import Rendering.Image.Texture;
 import Rendering.OpenGL.ArrayBuffer;
 import Rendering.OpenGL.Shader;
@@ -322,6 +323,13 @@ public class Rendering
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
+	public static void RenderRawGraphic(Graphic Sprite, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableRaw();
+
+		DrawGraphic(Sprite, Position, Scale, Rotation);
+	}
+
 	public static void RenderRawImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRaw();
@@ -374,6 +382,13 @@ public class Rendering
 		DrawImage(Sprite, Position, Scale, Rotation);
 	}
 
+	public static void RenderRSGraphic(Graphic Sprite, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableRS();
+
+		DrawGraphic(Sprite, Position, Scale, Rotation);
+	}
+
 	public static void RenderRSImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
 	{
 		EnableRS();
@@ -424,6 +439,13 @@ public class Rendering
 		EnableReferenced();
 
 		DrawImage(Sprite, Position, Scale, Rotation);
+	}
+
+	public static void RenderReferencedGraphic(Graphic Sprite, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		EnableReferenced();
+
+		DrawGraphic(Sprite, Position, Scale, Rotation);
 	}
 
 	public static void RenderReferencedImage(int Sprite, Vector2f SpriteSize, Vector2f Position, Vector2f Scale, float Rotation)
@@ -489,6 +511,21 @@ public class Rendering
 
 		ActiveShader.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
 		ActiveShader.SetUniform("Texture1", 0);
+		ActiveShader.SetUniform("Projection", Projection);
+
+		Draw(DrawImage, GL_TRIANGLES);
+
+	}
+
+	private static void DrawGraphic(Graphic Image, Vector2f Position, Vector2f Scale, float Rotation)
+	{
+		Image.BindGraphic();
+		Image.BindShader();
+
+		ActiveShader = Image.GetDrawingShader();
+
+		ActiveShader.SetUniform("CameraModel", ActiveCameraModel);
+		ActiveShader.SetUniform("ObjectModel", GenerateModel(Position, Scale, Rotation));
 		ActiveShader.SetUniform("Projection", Projection);
 
 		Draw(DrawImage, GL_TRIANGLES);

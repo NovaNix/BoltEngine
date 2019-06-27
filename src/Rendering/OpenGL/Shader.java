@@ -27,6 +27,7 @@ import static org.lwjgl.opengl.GL20.glUniform3i;
 import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniform4i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
@@ -291,6 +292,11 @@ public class Shader
 	public int GetShaderID()
 	{
 		return ShaderID;
+	}
+
+	public void Bind()
+	{
+		glUseProgram(ShaderID);
 	}
 
 	@Override
