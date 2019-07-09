@@ -7,7 +7,7 @@ public abstract class Game implements Runnable
 {
 
 	// Stores if the game is currently running
-	private boolean Running = false;
+	protected boolean Running = false;
 
 	// These handle the speed of tick updating and rendering
 	private TickRegulator TickHandler;

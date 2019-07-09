@@ -26,6 +26,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
@@ -129,15 +130,17 @@ public class Window implements GLFWWindowSizeCallbackI
 
 	public void Render()
 	{
-		GL.createCapabilities();
 
+		// synchronized (SwapBufferThread.Lock)
+		// {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glClearColor(BackgroundColor.getRed() / 255f, BackgroundColor.getGreen() / 255f, BackgroundColor.getBlue() / 255f, BackgroundColor.getAlpha() / 255f);
-
 		Screen.Render();
+		// }
 
 		glfwSwapBuffers(WindowHandle);
+
+		// SwapBufferThread.SwapBuffer(WindowHandle);
 
 	}
 
@@ -185,6 +188,13 @@ public class Window implements GLFWWindowSizeCallbackI
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+
+		glEnable(GL_DEPTH_TEST);
+
+		// glDepthFunc(GL_LESS);
+
+		// glEnable(GL_CULL_FACE);
+		// glCullFace(GL_BACK);
 
 		Screen.UpdateSize();
 

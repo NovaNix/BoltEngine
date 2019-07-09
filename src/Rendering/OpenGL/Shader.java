@@ -160,10 +160,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		FloatBuffer Data = BufferUtils.createFloatBuffer(16);
 		Value.get(Data);
@@ -176,10 +173,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform1i(Location, Value);
 
@@ -189,10 +183,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform2i(Location, Value1, Value2);
 
@@ -202,10 +193,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform3i(Location, Value1, Value2, Value3);
 
@@ -215,10 +203,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform4i(Location, Value1, Value2, Value3, Value4);
 
@@ -228,10 +213,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform1f(Location, Value);
 
@@ -241,10 +223,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform2f(Location, Value1, Value2);
 
@@ -254,10 +233,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform3f(Location, Value1, Value2, Value3);
 
@@ -267,10 +243,7 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform4f(Location, Value1, Value2, Value3, Value4);
 
@@ -280,13 +253,19 @@ public class Shader
 	{
 		int Location = glGetUniformLocation(ShaderID, Name);
 
-		if (Location == -1)
-		{
-			System.out.println("Tried to set an uniform that didnt exist: " + Name);
-		}
+		UniformErrorCheck(Location, Name);
 
 		glUniform1fv(Location, Value);
 
+	}
+
+	// Using this method to quickly comment out for speed reasons
+	private static void UniformErrorCheck(int Location, String Name)
+	{
+		if (Location == -1)
+		{
+			System.err.println("Tried to set an uniform that didnt exist: " + Name);
+		}
 	}
 
 	public int GetShaderID()

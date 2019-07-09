@@ -48,10 +48,10 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		this.AspectRatio = new Vector2f(0, 0);
 
-		GenerateProjection();
+		// GenerateProjection();
 		GenerateModel();
 	}
-	
+
 	public Camera(Vector2f Position)
 	{
 		this.Position = Position;
@@ -60,7 +60,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		this.AspectRatio = new Vector2f(0, 0);
 
-		GenerateProjection();
+		// GenerateProjection();
 		GenerateModel();
 	}
 
@@ -72,12 +72,12 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 		}
 	}
 
-	private void GenerateProjection()
+	protected void GenerateProjection()
 	{
 		this.Projection = new Matrix4f().setOrtho2D(0, getWidth(), -getHeight(), 0);
 	}
 
-	private void GenerateModel()
+	protected void GenerateModel()
 	{
 		this.RSModel = new Matrix4f().setTranslation(0, 0, 0);
 		this.RefModel = new Matrix4f().rotateZ(Rotation).translate(-Position.GetX(), Position.GetY(), 0);
@@ -85,9 +85,9 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 	public int Render()
 	{
-		FBO.Bind();
-
 		FBO.Clear();
+
+		FBO.Bind();
 
 		glViewport(0, 0, getWidth(), getHeight());
 
@@ -125,7 +125,6 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 	{
 		return new Vector2f(getWidth(), getHeight());
 	}
-
 
 	public Vector2f GetPosition()
 	{

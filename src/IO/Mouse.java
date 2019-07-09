@@ -1,10 +1,14 @@
 package IO;
 
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
@@ -24,8 +28,12 @@ public class Mouse
 	static boolean RightClicked;
 	static boolean MiddleClicked;
 
+	static long Window;
+
 	public static void InitMouse(long WindowHandle)
 	{
+		Window = WindowHandle;
+
 		glfwSetCursorPosCallback(WindowHandle, new GLFWCursorPosCallbackI()
 		{
 
@@ -110,6 +118,25 @@ public class Mouse
 	public static Vector2f GetMousePosition()
 	{
 		return MousePos.Derive();
+	}
+
+	static boolean Visible = true;
+
+	public static void HideMouse()
+	{
+		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		Visible = false;
+	}
+
+	public static void ShowMouse()
+	{
+		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		Visible = true;
+	}
+
+	public static boolean MouseVisible()
+	{
+		return Visible;
 	}
 
 	public static void ClearClicks()

@@ -6,8 +6,12 @@ package IO.File;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -186,6 +190,87 @@ public class EasyLoader
 		{
 			return false;
 		}
+	}
+
+	// Returns the line data of the file excluding empty spaces
+	public static String[] ExtractFileLines(String File)
+	{
+
+		BufferedReader Reader = null;
+
+		InputStream Input = EasyLoader.class.getResourceAsStream(File);
+
+		InputStreamReader InputReader = new InputStreamReader(Input);
+
+		Reader = new BufferedReader(InputReader);
+
+		ArrayList<String> Lines = new ArrayList<String>();
+
+		String Line;
+
+		try
+		{
+			while ((Line = Reader.readLine()) != null)
+			{
+				if (!Line.equals(""))
+				{
+					Lines.add(Line);
+				}
+			}
+
+			Reader.close();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String[] LineArray = new String[Lines.size()];
+
+		LineArray = Lines.toArray(LineArray);
+
+		return LineArray;
+
+	}
+
+	public static String[] ExtractFileLines(String File, String Comment)
+	{
+
+		BufferedReader Reader = null;
+
+		InputStream Input = EasyLoader.class.getResourceAsStream(File);
+
+		InputStreamReader InputReader = new InputStreamReader(Input);
+
+		Reader = new BufferedReader(InputReader);
+
+		ArrayList<String> Lines = new ArrayList<String>();
+
+		String Line;
+
+		try
+		{
+			while ((Line = Reader.readLine()) != null)
+			{
+				if (!Line.equals("") && !Line.startsWith(Comment))
+				{
+					Lines.add(Line);
+				}
+			}
+
+			Reader.close();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String[] LineArray = new String[Lines.size()];
+
+		LineArray = Lines.toArray(LineArray);
+
+		return LineArray;
+
 	}
 
 }

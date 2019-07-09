@@ -14,10 +14,15 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
 import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
@@ -37,6 +42,7 @@ public class FrameBufferObject
 
 	int FBOHandle;
 	int FBOTexture;
+	int FBODepthBuffer;
 
 	int RenderableFBOHandle;
 	int RenderableFBOTexture;
@@ -54,6 +60,8 @@ public class FrameBufferObject
 
 	private void Init()
 	{
+		// MultiSampled VBO
+
 		FBOHandle = glGenFramebuffers();
 		FBOTexture = glGenTextures();
 
@@ -64,13 +72,28 @@ public class FrameBufferObject
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, FBOTexture, 0);
 
-		System.out.println("Made VBO 1");
+		FBODepthBuffer = glGenTextures();
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, FBODepthBuffer);
+
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_DEPTH_COMPONENT24, getWidth(), getHeight(), true);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, FBODepthBuffer, 0);
+
+		int Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+		if (Status != GL_FRAMEBUFFER_COMPLETE)
 		{
-			System.out.println("Failed to generate FBO!");
+			System.err.println("Failed to generate FBO! Error Code " + Status);
+			System.err.println("Incomplete Multisample: " + GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE);
+			System.err.println("Incomplete Attachment: " + GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT);
+			System.err.println("Incomplete Drawbuffer: " + GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER);
 			System.exit(1);
 		}
+
+		System.out.println("Made VBO 1");
+
+		// Renderable VBO
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -117,9 +140,18 @@ public class FrameBufferObject
 
 	public void Clear()
 	{
+		glBindFramebuffer(GL_FRAMEBUFFER, FBOHandle);
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glClearColor(BackgroundColor.getRed() / 255f, BackgroundColor.getGreen() / 255f, BackgroundColor.getBlue() / 255f, BackgroundColor.getAlpha() / 255f);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, RenderableFBOHandle);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glClearColor(BackgroundColor.getRed() / 255f, BackgroundColor.getGreen() / 255f, BackgroundColor.getBlue() / 255f, BackgroundColor.getAlpha() / 255f);
+
 	}
 
 	public void SetBackgroundColor(Color Col)
@@ -150,8 +182,8 @@ public class FrameBufferObject
 	public int GetTextureHandle()
 	{
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, RenderableFBOHandle);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOHandle); 
-		
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOHandle);
+
 		glBlitFramebuffer(0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		return RenderableFBOTexture;

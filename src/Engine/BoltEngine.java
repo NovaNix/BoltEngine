@@ -26,7 +26,7 @@ public class BoltEngine
 	{
 		CurrentGame = Start;
 
-		GameThread = new Thread(CurrentGame);
+		GameThread = new Thread(CurrentGame, "Game Thread");
 
 		GameThread.start();
 	}
