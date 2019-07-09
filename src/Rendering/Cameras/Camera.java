@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL;
 import Geometry.Shapes.Rectangle;
 import Geometry.Shapes.Shape;
 import Rendering.Handling.Renderable;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.OpenGL.FrameBufferObject;
 import Rendering.Utils.RenderableContainer;
 import Utils.Movable;
@@ -91,7 +91,7 @@ public class Camera extends JComponent implements Movable, RenderableContainer
 
 		glViewport(0, 0, getWidth(), getHeight());
 
-		Rendering.Start(RSModel, RefModel, Projection);
+		Rendering2D.Start(RSModel, RefModel, Projection);
 
 		for (int i = 0; i < this.Rendered.size(); i++)
 		{

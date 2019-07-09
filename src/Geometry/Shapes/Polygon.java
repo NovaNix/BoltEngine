@@ -8,7 +8,7 @@ import Engine.BoltMath;
 import Geometry.Line;
 import Geometry.Ray;
 import Geometry.Segment;
-import Rendering.Handling.Rendering.RenderingType;
+import Rendering.Handling.Rendering2D.RenderingType;
 import Storage.LoopedList;
 import Utils.BoltUtils;
 import Utils.Vector2fUtils;

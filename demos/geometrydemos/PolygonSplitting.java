@@ -9,7 +9,7 @@ import IO.InputManager;
 import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Cameras.SingleFollowCamera;
-import Rendering.Handling.Rendering.RenderingType;
+import Rendering.Handling.Rendering2D.RenderingType;
 import Vectors.Vector2f;
 
 public class PolygonSplitting extends TechDemo

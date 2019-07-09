@@ -1,7 +1,7 @@
 package GUI.Elements;
 
 import IO.Mouse;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -58,7 +58,7 @@ public class GUIImage extends GUIElement
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(ActiveImage, Position, Scale, Rotation);
+		Rendering2D.RenderRawImage(ActiveImage, Position, Scale, Rotation);
 	}
 
 	@Override

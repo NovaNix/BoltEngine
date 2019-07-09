@@ -34,7 +34,7 @@ import Rendering.OpenGL.VertexBufferObject;
 import Rendering.Text.TextImageCreator;
 import Vectors.Vector2f;
 
-public class Rendering
+public class Rendering2D
 {
 
 	// All the VBOs for the draw methods

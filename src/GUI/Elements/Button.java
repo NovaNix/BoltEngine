@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import Geometry.Shapes.Rectangle;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Rendering.Text.TextImageCreator;
 import TimeKeeping.Timer;
@@ -104,8 +104,8 @@ public class Button extends GUIElement
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(ActiveTexture, Position, Scale, 0);
-		Rendering.RenderRawText(TextPosition, Text, Style, Color.BLACK);
+		Rendering2D.RenderRawImage(ActiveTexture, Position, Scale, 0);
+		Rendering2D.RenderRawText(TextPosition, Text, Style, Color.BLACK);
 	}
 
 	@Override

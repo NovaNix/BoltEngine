@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import Geometry.Shapes.Shape;
 import Rendering.Handling.Renderable;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -97,7 +97,7 @@ public class Tile implements Renderable
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedGraphic(Texture, Position, Scale, 0);
+		Rendering2D.RenderReferencedGraphic(Texture, Position, Scale, 0);
 	}
 
 }

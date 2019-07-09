@@ -1,7 +1,7 @@
 package Geometry.Shapes;
 
 import Geometry.Line;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Utils.BoltUtils;
 import Vectors.ReferencedVector2f;
 import Vectors.Vector2f;
@@ -157,7 +157,7 @@ public class Circle extends Shape<Circle>
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedOval(Center, new Vector2f(Radius, Radius));
+		Rendering2D.RenderReferencedOval(Center, new Vector2f(Radius, Radius));
 	}
 
 	@Override

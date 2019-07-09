@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import GUI.Elements.GUIElement;
 import IO.Mouse;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.OpenGL.FrameBufferObject;
 import Vectors.Vector2f;
 
@@ -146,7 +146,7 @@ public class GUIElementContainer extends GUIElement
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(FBO.GetTextureHandle(), Scale, Position, Scale, 0f);
+		Rendering2D.RenderRawImage(FBO.GetTextureHandle(), Scale, Position, Scale, 0f);
 
 		for (int i = 0; i < NonStaticElements.size(); i++)
 		{

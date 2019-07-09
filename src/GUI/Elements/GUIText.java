@@ -3,7 +3,7 @@ package GUI.Elements;
 import java.awt.Color;
 import java.awt.Font;
 
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Rendering.Text.TextImageCreator;
 import Vectors.Vector2f;
@@ -37,7 +37,7 @@ public class GUIText extends GUIElement
 	@Override
 	public void Render()
 	{
-		Rendering.RenderRawImage(PreRendered, Position, Scale, 0);
+		Rendering2D.RenderRawImage(PreRendered, Position, Scale, 0);
 	}
 
 	@Override

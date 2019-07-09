@@ -19,7 +19,7 @@ import Engine.BoltEngine;
 import Engine.Debugging.TechDemo;
 import IO.InputManager;
 import IO.File.EasyLoader;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -96,15 +96,15 @@ public class BasicRender extends TechDemo implements GLDebugMessageCallbackI
 
 		glDebugMessageCallback(new BasicRender(), 0);
 
-		Cam.AddRenderable(() -> Rendering.RenderRawImage(DirtTexture, new Vector2f(50, 50), new Vector2f(500, 500), Rotation));
+		Cam.AddRenderable(() -> Rendering2D.RenderRawImage(DirtTexture, new Vector2f(50, 50), new Vector2f(500, 500), Rotation));
 
-		Cam.AddRenderable(() -> Rendering.RenderRawOval(new Vector2f(700, 400), new Vector2f(250, 200)));
+		Cam.AddRenderable(() -> Rendering2D.RenderRawOval(new Vector2f(700, 400), new Vector2f(250, 200)));
 
-		Cam.AddRenderable(() -> Rendering.RenderRawBox(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 0, 100)));
+		Cam.AddRenderable(() -> Rendering2D.RenderRawBox(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 0, 100)));
 
-		Cam.AddRenderable(() -> Rendering.RenderRawLine(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 255, 100)));
+		Cam.AddRenderable(() -> Rendering2D.RenderRawLine(new Vector2f(0, 0), new Vector2f(1280, 780), 10, new Color(255, 255, 100)));
 
-		Cam.AddRenderable(() -> Rendering.RenderRawText(new Vector2f(500, 0), "Rendering!", EasyLoader.LoadLocalFont("/fonts/Pixel Basic.ttf").deriveFont(40f), new Color(0, 255, 0)));
+		Cam.AddRenderable(() -> Rendering2D.RenderRawText(new Vector2f(500, 0), "Rendering!", EasyLoader.LoadLocalFont("/fonts/Pixel Basic.ttf").deriveFont(40f), new Color(0, 255, 0)));
 		
 	}
 

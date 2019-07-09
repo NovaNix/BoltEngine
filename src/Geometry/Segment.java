@@ -3,8 +3,8 @@ package Geometry;
 import java.awt.Color;
 
 import Rendering.Handling.Renderable;
-import Rendering.Handling.Rendering;
-import Rendering.Handling.Rendering.RenderingType;
+import Rendering.Handling.Rendering2D;
+import Rendering.Handling.Rendering2D.RenderingType;
 import Vectors.Vector2f;
 
 public class Segment extends Line implements Renderable
@@ -163,12 +163,12 @@ public class Segment extends Line implements Renderable
 	@Override
 	public void Render()
 	{
-		Rendering.RenderReferencedLine(Point1, Point2, 1f, new Color(255, 255, 255));
+		Rendering2D.RenderReferencedLine(Point1, Point2, 1f, new Color(255, 255, 255));
 	}
 
 	@Override
 	public void Render(Color Hue, RenderingType Type)
 	{
-		Rendering.RenderReferencedLine(Point1, Point2, 1f, Hue);
+		Rendering2D.RenderReferencedLine(Point1, Point2, 1f, Hue);
 	}
 }

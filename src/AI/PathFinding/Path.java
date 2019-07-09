@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import Geometry.Segment;
 import Rendering.Handling.Renderable;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Vectors.Vector2f;
 
 public class Path implements Renderable
@@ -109,7 +109,7 @@ public class Path implements Renderable
 	{
 		for (int i = 0; i < PathPoints.size() - 1; i++)
 		{
-			Rendering.RenderReferencedLine(PathPoints.get(i), PathPoints.get(i + 1), 2, Color.WHITE);
+			Rendering2D.RenderReferencedLine(PathPoints.get(i), PathPoints.get(i + 1), 2, Color.WHITE);
 		}
 
 	}

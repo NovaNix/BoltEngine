@@ -10,7 +10,7 @@ import Engine.Debugging.TechDemo;
 import IO.InputManager;
 import IO.Keyboard;
 import IO.File.EasyLoader;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Rendering.Image.Texture;
 import Vectors.Vector2f;
 
@@ -48,16 +48,16 @@ public class PathFinding extends TechDemo
 			{
 				if (Map[x][y] == t)
 				{
-					Rendering.RenderRawImage(Dirt, new Vector2f(x * 32, y * 32), new Vector2f(32, 32), 0);
+					Rendering2D.RenderRawImage(Dirt, new Vector2f(x * 32, y * 32), new Vector2f(32, 32), 0);
 				}
 			}
 		}
 
-		Rendering.RenderRawBox(new Vector2f(32, 96), new Vector2f(64, 128), 2, new Color(255, 0, 0));
+		Rendering2D.RenderRawBox(new Vector2f(32, 96), new Vector2f(64, 128), 2, new Color(255, 0, 0));
 
-		Rendering.RenderRawBox(new Vector2f(8 * 32, 96), new Vector2f((8 * 32) + 32, 96 + 32), 2, new Color(0, 255, 0));
+		Rendering2D.RenderRawBox(new Vector2f(8 * 32, 96), new Vector2f((8 * 32) + 32, 96 + 32), 2, new Color(0, 255, 0));
 
-		Rendering.RenderRawBox(new Vector2f(0, 0), new Vector2f(320, 7 * 32), 4, new Color(255, 255, 255));
+		Rendering2D.RenderRawBox(new Vector2f(0, 0), new Vector2f(320, 7 * 32), 4, new Color(255, 255, 255));
 	}
 
 	public static void RenderPath()
@@ -73,7 +73,7 @@ public class PathFinding extends TechDemo
 			Point1.Add(new Vector2f(16, 16));
 			Point2.Add(new Vector2f(16, 16));
 
-			Rendering.RenderRawLine(Point1, Point2, 1, new Color(0, 255, 0));
+			Rendering2D.RenderRawLine(Point1, Point2, 1, new Color(0, 255, 0));
 		}
 	}
 

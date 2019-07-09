@@ -11,7 +11,7 @@ import Rendering.Window;
 import Rendering.Cameras.Camera;
 import Rendering.Cameras.SingleFollowCamera;
 import Rendering.Handling.Renderable;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Vectors.Vector2f;
 
 public class PerlinNoise1DDemo extends TechDemo
@@ -51,7 +51,7 @@ public class PerlinNoise1DDemo extends TechDemo
 			{
 				for (int i = 0; i < HeightMap.length - 1; i++)
 				{
-					Rendering.RenderRawLine(new Vector2f(i, HeightMap[i]), new Vector2f(i, 0), 2, new Color(255, 255, 255));
+					Rendering2D.RenderRawLine(new Vector2f(i, HeightMap[i]), new Vector2f(i, 0), 2, new Color(255, 255, 255));
 				}
 
 			}

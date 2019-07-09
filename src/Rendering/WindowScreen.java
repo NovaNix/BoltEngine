@@ -21,7 +21,7 @@ import org.lwjgl.BufferUtils;
 import GUI.GUI;
 import Rendering.Cameras.Camera;
 import Rendering.Exceptions.ExcessCamerasException;
-import Rendering.Handling.Rendering;
+import Rendering.Handling.Rendering2D;
 import Vectors.Vector2f;
 
 public abstract class WindowScreen
@@ -103,7 +103,7 @@ public abstract class WindowScreen
 
 		for (int i = 0; i < Cameras.size(); i++)
 		{
-			Rendering.DrawCamera(CameraTexHandles[i]);
+			Rendering2D.DrawCamera(CameraTexHandles[i]);
 		}
 
 		if (WindowGUI != null)

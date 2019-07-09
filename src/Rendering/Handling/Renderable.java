@@ -2,7 +2,7 @@ package Rendering.Handling;
 
 import java.awt.Color;
 
-import Rendering.Handling.Rendering.RenderingType;
+import Rendering.Handling.Rendering2D.RenderingType;
 
 // Specified that something can be rendered
 public interface Renderable
