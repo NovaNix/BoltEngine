@@ -44,7 +44,7 @@ public class Rendering2D
 	private static float[] BoxTexture = { 0, 1, 1, 1, 1, 0, 0, 0 };
 	private static float[] PointVertex = { 0, 0 };
 
-	private static int[] BoxIndex = { 0, 1, 2, 0, 2, 3 };
+	private static int[] BoxIndex = { 0, 1, 2, 2, 3, 0 };
 
 	private static float[] IdentityKernel = new float[] { 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f };
 	private static float[] BlurKernel = new float[] { 1.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 4.0f / 16, 2.0f / 16, 1.0f / 16, 2.0f / 16, 1.0f / 16 };

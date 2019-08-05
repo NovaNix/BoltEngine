@@ -25,7 +25,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_LEQUAL;
 import static org.lwjgl.opengl.GL11.GL_ONE;
@@ -195,8 +195,9 @@ public class Window implements GLFWWindowSizeCallbackI
 
 		glDepthFunc(GL_LEQUAL);
 
-		// glEnable(GL_CULL_FACE);
-		// glCullFace(GL_BACK);
+//		glEnable(GL_CULL_FACE);
+//		glCullFace(GL_BACK);
+//		glFrontFace(GL_CW);
 
 		Screen.UpdateSize();
 

@@ -11,30 +11,14 @@ out vec4 Color;
 
 void main()
 {
-	vec4 SpriteIndex = texture(Texture1, TexCoords);
+	vec4 ColorIndex = texture(Texture1, TexCoords);
 
-	float ID = (SpriteIndex.x * 255) + (SpriteIndex.y * 255) + (SpriteIndex.z * 255) + (SpriteIndex.w * 255);
-
-	float Offset = (1 / ColorCount) / 2;
+	float ID = (ColorIndex.x * 255) + (ColorIndex.y  * 255) + (ColorIndex.z * 255) + (ColorIndex.w * 255);
 	
-	if (ColorCount % 2 == 1)
-	{
-		float TexCoord = (ID) / (ColorCount);
+	ID = ID / ColorCount;
 
-		vec4 PaletteColor = texture(Texture2, vec2(TexCoord, 0));
+	ID = ID + ((1.0 / ColorCount) / 2);
 
-		Color = PaletteColor;
-
-	}
-	
-	else 
-	{
-		float TexCoord = (ID - 1) / (ColorCount);
-
-		vec4 PaletteColor = texture(Texture2, vec2(TexCoord + Offset, 0));
-
-		Color = PaletteColor;
-	
-	}
+	Color = texture(Texture2, vec2(ID, 0));
 	
 }
