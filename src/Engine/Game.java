@@ -43,8 +43,12 @@ public abstract class Game implements Runnable
 	@Override
 	public void run()
 	{
-		StartUp();
+		PreInit();
+		Init();
+		PostInit();
+		
 		GameLoop();
+		
 		ShutDown();
 	}
 
@@ -129,7 +133,9 @@ public abstract class Game implements Runnable
 		Running = false;
 	}
 
-	public abstract void StartUp();
+	public abstract void PreInit();
+	public abstract void Init();
+	public abstract void PostInit();
 
 	public abstract void ShutDown();
 

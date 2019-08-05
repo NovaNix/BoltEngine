@@ -21,7 +21,7 @@ public abstract class TechDemo extends Game
 	}
 
 	@Override
-	public void StartUp() {
+	public void Init() {
 		
 		Win = new Window(DemoName);
 		
