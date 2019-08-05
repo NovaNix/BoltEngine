@@ -21,7 +21,13 @@ public abstract class TechDemo extends Game
 	}
 
 	@Override
-	public void StartUp() {
+	public void PreInit()
+	{
+		
+	}
+	
+	@Override
+	public void Init() {
 		
 		Win = new Window(DemoName);
 		
@@ -34,6 +40,12 @@ public abstract class TechDemo extends Game
 		InputManager.Init(Win.GetHandle());
 		
 		Boot();
+	}
+	
+	@Override
+	public void PostInit()
+	{
+		
 	}
 
 	public abstract void Boot();
