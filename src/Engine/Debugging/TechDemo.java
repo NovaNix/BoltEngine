@@ -21,12 +21,15 @@ public abstract class TechDemo extends Game
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void PreInit()
 	{
 		
 	}
 	
 	@Override
+=======
+>>>>>>> refs/remotes/origin/master
 	public void Init() {
 		
 		Win = new Window(DemoName);
