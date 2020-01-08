@@ -1,3 +1,4 @@
+# Note: Bolt Engine may not work properly, and is not currently being maintained. Please view Rune Engine instead.
 # Bolt Engine 
 Bolt Engine is a simple 2D Videogame Engine built using Java, and utilizes LWJGL 3  
 The engine seeks to reduce the code needed to do tasks such as Rendering, Collision Detection, Physics, Audio, and more
